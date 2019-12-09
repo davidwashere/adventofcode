@@ -105,7 +105,7 @@ members.sort(key=lambda member: member.num_stars, reverse=True)
 # print(members) 
 
 def print_heading():
-    print(f"Num Name                              Last Star  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25")
+    print(f"Pos Name                              Last Star  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25")
     print(f"{'-'*3} {'-'*20} {'-'*22} ", end='') 
     for _ in range(1, 26):
         print(f"{'-'*2} ", end='')
@@ -134,6 +134,12 @@ def print_member(index, member):
 
 
 print_heading()
+last_stars = -1
+cur_pos = 0
 for i, member in enumerate(members):
-    print_member(i, member)
+    if last_stars != member.num_stars:
+        cur_pos = i
+        last_stars = member.num_stars
+
+    print_member(cur_pos, member)
 
