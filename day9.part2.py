@@ -80,21 +80,16 @@ class Amplifier:
                 if DEBUG:
                     print(f"   NEXT [{param}, ", end='')
                 op1 = self._get_op_value(mode_param1, param)
-                # op1 = self.data[param] if mode_param1 == 0 else param
 
                 param = self.data[self.pos+2]
                 if DEBUG:
                     print(f"{param}, ", end='')
                 op2 = self._get_op_value(mode_param2, param)
-                # op2 = self.data[param] if mode_param2 == 0 else param
 
                 param = self.data[self.pos+3]
                 if DEBUG:
                     print(f"{param}]")
-                # destindex = self._get_op_value(mode_param3, param)
-                # destindex = self.data[param] if mode_param3 == 0 else param
                 destindex = self._get_op_index(mode_param3, param)
-                # destindex = param
 
                 if opcode == 1:
                     value = op1 + op2
@@ -103,7 +98,6 @@ class Amplifier:
 
                 if DEBUG:
                     print(f"   Storing {value} at {destindex}")
-                # self.data[destindex] = value
                 self._store(destindex, value)
                 
                 self.pos += 4
@@ -116,14 +110,12 @@ class Amplifier:
                 if opcode == 3: # Grab the input from buffer and store at 1st param
                     if DEBUG:
                         print("   Getting input")
-                    # data[op1] = int(input("Enter Input: "))
                     if inpos > len(self.inputs)-1:
                         print("This probably shouldn't happen, no inputs left to process")
                         self.reset_inputs()
                         return None
 
                     indata = self.inputs[inpos]
-                    # destindex = self._get_op_value(mode_param1, op1)
                     destindex = self._get_op_index(mode_param1, op1)
 
                     if DEBUG:
@@ -132,14 +124,10 @@ class Amplifier:
                         print(f"   Relbase: {self.relbase}")
 
                     self._store(destindex, indata)
-                    # self.data[destindex] = indata
-                    # self.data[op1] = self.inputs[inpos]
                     inpos += 1
                     self.pos += 2
                 elif opcode == 4: # output the value based on 1st param
                     value = self._get_op_value(mode_param1, op1)
-                    # value = op1 if mode_param1 == 1 else self.data[op1]
-                    # if DEBUG:
                     print(f"\n*** Output: {value} *** \n")
                     self.last_output = value
                     self.pos += 2
@@ -151,13 +139,11 @@ class Amplifier:
                 if DEBUG:
                     print(f"   NEXT [{param}, ", end='')
                 op1 = self._get_op_value(mode_param1, param)
-                # op1 = self.data[param] if mode_param1 == 0 else param
 
                 param = self.data[self.pos+2]
                 if DEBUG:
                     print(f"{param}]")
                 op2 = self._get_op_value(mode_param2, param)
-                # op2 = self.data[param] if mode_param2 == 0 else param
             
                 if op1 != 0:
                     if DEBUG:
@@ -171,13 +157,11 @@ class Amplifier:
                 if DEBUG:
                     print(f"   NEXT [{param}, ", end='')
                 op1 = self._get_op_value(mode_param1, param)
-                # op1 = self.data[param] if mode_param1 == 0 else param
 
                 param = self.data[self.pos+2]
                 if DEBUG:
                     print(f"{param}]")
                 op2 = self._get_op_value(mode_param2, param)
-                # op2 = self.data[param] if mode_param2 == 0 else param
             
                 if op1 == 0:
                     if DEBUG:
@@ -191,34 +175,25 @@ class Amplifier:
                 if DEBUG:
                     print(f"   NEXT [{param}, ", end='')
                 op1 = self._get_op_value(mode_param1, param)
-                # op1 = self.data[param] if mode_param1 == 0 else param
 
                 param = self.data[self.pos+2]
                 if DEBUG:
                     print(f"{param}, ", end='')
                 op2 = self._get_op_value(mode_param2, param)
-                # op2 = self.data[param] if mode_param2 == 0 else param
 
                 param = self.data[self.pos+3]
                 if DEBUG:
                     print(f"{param}]")
-                # op3 = data[param] if mode_param3 == 0 else param
-                # op3 = self._get_op_value(mode_param3, param)
                 destindex = self._get_op_index(mode_param3, param)
-                # op3 = param
             
                 if op1 < op2:
                     if DEBUG:
                         print(f"   Setting 1 to pos [{destindex}]")
-                    # self.data[op3] = 1
                     self._store(destindex, 1)
                 else:
                     if DEBUG:
                         print(f"   Setting 0 to pos [{destindex}]")
-                    # self.data[op3] = 0
                     self._store(destindex, 0)
-                    # self._get(op3)
-                    # self._store(op3, 0)
                 
                 self.pos += 4
 
@@ -227,30 +202,24 @@ class Amplifier:
                 if DEBUG:
                     print(f"   NEXT [{param}, ", end='')
                 op1 = self._get_op_value(mode_param1, param)
-                # op1 = self.data[param] if mode_param1 == 0 else param
 
                 param = self.data[self.pos+2]
                 if DEBUG:
                     print(f"{param}, ", end='')
                 op2 = self._get_op_value(mode_param2, param)
-                # op2 = self.data[param] if mode_param2 == 0 else param
 
                 param = self.data[self.pos+3]
                 if DEBUG:
                     print(f"{param}]")
-                # op3 = data[param] if mode_param3 == 0 else param
-                # op3 = param
                 op3 = self._get_op_index(mode_param3, param)
             
                 if op1 == op2:
                     if DEBUG:
                         print(f"   Setting 1 to pos [{op3}]")
-                    # self.data[op3] = 1
                     self._store(op3, 1)
                 else:
                     if DEBUG:
                         print(f"   Setting 0 to pos [{op3}]")
-                    # self.data[op3] = 0
                     self._store(op3, 0)
                 
                 self.pos += 4
@@ -273,14 +242,10 @@ class Amplifier:
     def _get_op_index(self, mode, param):
         try:
             if mode == 0:
-                # return self.data[param]
                 return param
-
             
             if mode == 2:
                 return self.relbase + param
-                # return self.data[self.relbase + param]
-                # return self.relbase + param
 
             raise Exception(f"Cannot get index, sumthing wrong: mode={mode}, param={param}")
 
@@ -292,7 +257,6 @@ class Amplifier:
     def _get_op_value(self, mode, param):
         try:
             if mode == 0:
-                # return self.data[param]
                 return self._get(param)
 
             if mode == 1:
@@ -300,8 +264,6 @@ class Amplifier:
             
             if mode == 2:
                 return self._get(self.relbase + param)
-                # return self.data[self.relbase + param]
-                # return self.relbase + param
 
         except Exception as err:
             print(f"Exception[A]: mode={mode}, param={param}, len={len(self.data)}")
@@ -345,5 +307,5 @@ for string in numstrs:
 #     orig_data.append(0)
 
 prog = Amplifier()
-prog.queue_input(1)
+prog.queue_input(2)
 prog.process()
