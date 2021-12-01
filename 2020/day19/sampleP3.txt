@@ -1,0 +1,12 @@
+0: 3 2 1
+1: "b"
+2: 4 5 | 4 2 5
+3: "a"
+4: "c"
+5: "d"
+
+acdb
+accddb
+acccdddb
+accdb
+acddb
