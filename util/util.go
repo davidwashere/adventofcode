@@ -59,6 +59,7 @@ func MaxAll(nums ...int) int {
 	return max
 }
 
+// Check prints and exits if err != nil
 func Check(err error) {
 	if err != nil {
 		fmt.Println(err)
