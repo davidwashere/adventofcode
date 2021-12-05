@@ -133,12 +133,9 @@ func part1(inputfile string) int {
 	pulled[numsToPull[1]] = true
 	pulled[numsToPull[2]] = true
 	pulled[numsToPull[3]] = true
-	pullPos := 3
-	for {
-		if winningBoard >= 0 || pullPos >= len(numsToPull) {
-			break
-		}
 
+	pullPos := 3
+	for pullPos < len(numsToPull) && winningBoard < 0 {
 		pullPos++
 		pulled[numsToPull[pullPos]] = true
 
@@ -146,7 +143,6 @@ func part1(inputfile string) int {
 			if isWinnerByRows(b.grid, pulled) || isWinnerByCols(b.grid, pulled) {
 				winningBoard = bi
 			}
-
 		}
 	}
 
@@ -169,12 +165,9 @@ func part2(inputfile string) int {
 	pulled[numsToPull[1]] = true
 	pulled[numsToPull[2]] = true
 	pulled[numsToPull[3]] = true
-	pullPos := 3
-	for {
-		if winningBoard >= 0 || pullPos >= len(numsToPull) {
-			break
-		}
 
+	pullPos := 3
+	for pullPos < len(numsToPull) && winningBoard < 0 {
 		pullPos++
 		pulled[numsToPull[pullPos]] = true
 
