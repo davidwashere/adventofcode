@@ -2,6 +2,7 @@ package main
 
 import (
 	"aoc/util"
+	_ "embed"
 	"fmt"
 	"html/template"
 	"os"
@@ -9,6 +10,12 @@ import (
 	"strconv"
 	"time"
 )
+
+//go:embed day.tmpl
+var dayTmpl []byte
+
+//go:embed dayTest.tmpl
+var dayTestTmpl []byte
 
 func usage() {
 	prog := filepath.Base(os.Args[0])
@@ -32,12 +39,13 @@ func createDir(packageName string) {
 	util.Check(err)
 }
 
-func writeFileFromTemplate(filename, tmplName string, fields tmplfields) {
+func writeFileFromTemplate(outFileFormat string, tmpl []byte, fields tmplfields) {
+	filename := fmt.Sprintf(outFileFormat, fields.DayName)
 	f, err := os.Create(filepath.Join(fields.PackageName, filename))
 	util.Check(err)
 	defer f.Close()
 
-	t := template.Must(template.ParseFiles(tmplName))
+	t := template.Must(template.New("t").Parse(string(tmpl)))
 	err = t.Execute(f, fields)
 	util.Check(err)
 }
@@ -65,11 +73,8 @@ func main() {
 
 	createDir(packageName)
 
-	filename := fmt.Sprintf("day%s.go", dayS)
-	writeFileFromTemplate(filename, "day.tmpl", data)
-
-	filename = fmt.Sprintf("day%s_test.go", dayS)
-	writeFileFromTemplate(filename, "dayTest.tmpl", data)
+	writeFileFromTemplate("days%s.go", dayTmpl, data)
+	writeFileFromTemplate("day%s_test.go", dayTestTmpl, data)
 
 	f, err := os.Create(filepath.Join(packageName, "input.txt"))
 	util.Check(err)
