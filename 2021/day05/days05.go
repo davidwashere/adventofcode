@@ -11,31 +11,15 @@ type pt struct {
 
 type IntInfinityGrid struct {
 	data map[int]map[int]int
-
-	maxX int
-	minX int
-	maxY int
-	minY int
 }
 
 func NewIntInfinityGrid() *IntInfinityGrid {
 	grid := new(IntInfinityGrid)
 	grid.data = map[int]map[int]int{}
-
-	grid.maxX = util.MinInt
-	grid.minX = util.MaxInt
-	grid.maxY = util.MinInt
-	grid.minY = util.MaxInt
-
 	return grid
 }
 
 func (g *IntInfinityGrid) Set(val, x, y int) {
-	g.maxX = util.Max(g.maxX, x)
-	g.minX = util.Min(g.minX, x)
-	g.maxY = util.Max(g.maxY, y)
-	g.minY = util.Min(g.minY, y)
-
 	data := g.data
 	if _, ok := data[x]; !ok {
 		data[x] = map[int]int{}
