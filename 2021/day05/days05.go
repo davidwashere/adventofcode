@@ -72,16 +72,8 @@ func part1(inputfile string) int {
 
 	for _, line := range data {
 		ints := util.ParseInts(line)
-
-		p1 := pt{
-			x: ints[0],
-			y: ints[1],
-		}
-
-		p2 := pt{
-			x: ints[2],
-			y: ints[3],
-		}
+		p1 := pt{x: ints[0], y: ints[1]}
+		p2 := pt{x: ints[2], y: ints[3]}
 
 		if p1.x != p2.x && p1.y != p2.y {
 			// Skip diagnal
@@ -89,33 +81,12 @@ func part1(inputfile string) int {
 		}
 
 		pts := []pt{}
-
-		if p1.x == p2.x {
-			// vertical line
-			x := p1.x
-			if p2.y > p1.y {
-				for y := p1.y; y <= p2.y; y++ {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			} else {
-				for y := p1.y; y >= p2.y; y-- {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			}
-
-		} else if p1.y == p2.y {
-			// horizontal line
-			y := p1.y
-			if p2.x > p1.x {
-				for x := p1.x; x <= p2.x; x++ {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			} else {
-				for x := p1.x; x >= p2.x; x-- {
-					pts = append(pts, pt{x: x, y: y})
-				}
+		for x := util.Min(p1.x, p2.x); x <= util.Max(p1.x, p2.x); x++ {
+			for y := util.Min(p1.y, p2.y); y <= util.Max(p1.y, p2.y); y++ {
+				pts = append(pts, pt{x: x, y: y})
 			}
 		}
+
 		for _, p := range pts {
 			val := grid.Get(p.x, p.y)
 			grid.Set(val+1, p.x, p.y)
@@ -138,66 +109,27 @@ func part2(inputfile string) int {
 
 	for _, line := range data {
 		ints := util.ParseInts(line)
+		p1 := pt{x: ints[0], y: ints[1]}
+		p2 := pt{x: ints[2], y: ints[3]}
 
-		p1 := pt{
-			x: ints[0],
-			y: ints[1],
+		dirX := 0
+		if p2.x < p1.x {
+			dirX = -1
+		} else if p2.x > p1.x {
+			dirX = 1
 		}
-
-		p2 := pt{
-			x: ints[2],
-			y: ints[3],
+		dirY := 0
+		if p2.y < p1.y {
+			dirY = -1
+		} else if p2.y > p1.y {
+			dirY = 1
 		}
 
 		pts := []pt{}
-		if p1.x != p2.x && p1.y != p2.y {
-			if p2.y > p1.y {
-				if p2.x > p1.x {
-					for x, y := p1.x, p1.y; x <= p2.x; x, y = x+1, y+1 {
-						pts = append(pts, pt{x: x, y: y})
-					}
-				} else {
-					for x, y := p1.x, p1.y; x >= p2.x; x, y = x-1, y+1 {
-						pts = append(pts, pt{x: x, y: y})
-					}
-				}
-			} else {
-				if p2.x > p1.x {
-					for x, y := p1.x, p1.y; x <= p2.x; x, y = x+1, y-1 {
-						pts = append(pts, pt{x: x, y: y})
-					}
-				} else {
-					for x, y := p1.x, p1.y; x >= p2.x; x, y = x-1, y-1 {
-						pts = append(pts, pt{x: x, y: y})
-					}
-				}
-			}
-		} else if p1.x == p2.x {
-			// vertical line
-			x := p1.x
-			if p2.y > p1.y {
-				for y := p1.y; y <= p2.y; y++ {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			} else {
-				for y := p1.y; y >= p2.y; y-- {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			}
-
-		} else if p1.y == p2.y {
-			// horizontal line
-			y := p1.y
-			if p2.x > p1.x {
-				for x := p1.x; x <= p2.x; x++ {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			} else {
-				for x := p1.x; x >= p2.x; x-- {
-					pts = append(pts, pt{x: x, y: y})
-				}
-			}
+		for x, y := p1.x, p1.y; x != p2.x || y != p2.y; x, y = x+dirX, y+dirY {
+			pts = append(pts, pt{x: x, y: y})
 		}
+		pts = append(pts, pt{x: p2.x, y: p2.y})
 
 		for _, p := range pts {
 			val := grid.Get(p.x, p.y)
