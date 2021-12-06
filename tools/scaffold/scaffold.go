@@ -73,7 +73,7 @@ func main() {
 
 	createDir(packageName)
 
-	writeFileFromTemplate("days%s.go", dayTmpl, data)
+	writeFileFromTemplate("day%s.go", dayTmpl, data)
 	writeFileFromTemplate("day%s_test.go", dayTestTmpl, data)
 
 	f, err := os.Create(filepath.Join(packageName, "input.txt"))
