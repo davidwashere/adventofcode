@@ -2,7 +2,6 @@ package day07
 
 import (
 	"aoc/util"
-	"fmt"
 )
 
 func gimmieCrabsMinAndMax(inputfile string) (crabs map[int]int, min int, max int) {
@@ -29,34 +28,7 @@ func gimmieCrabsMinAndMax(inputfile string) (crabs map[int]int, min int, max int
 	return
 }
 
-func part1(inputfile string) int {
-	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
-
-	minSumPos := -1
-	minSum := util.MaxInt
-	for i := min; i <= max; i++ {
-		sum := 0
-		for pos, numCrabs := range crabs {
-			left := util.Min(i, pos)
-			right := util.Max(i, pos)
-			sum += (right - left) * numCrabs
-		}
-
-		if sum < minSum {
-			minSum = sum
-			minSumPos = i
-		}
-	}
-
-	fmt.Printf("Pos: %v with sum %v\n", minSumPos, minSum)
-
-	return minSum
-}
-
-func part2(inputfile string) int {
-	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
-
-	minSumPos := -1
+func crawlCrabbiesCrawls(crabs map[int]int, min int, max int, calc func(dist, numCrabs int) int) int {
 	minSum := util.MaxInt
 	for i := min; i <= max; i++ {
 		sum := 0
@@ -65,17 +37,35 @@ func part2(inputfile string) int {
 			right := util.Max(i, pos)
 
 			dist := right - left
-			fuel := (dist * (dist + 1)) / 2
-			sum += fuel * numCrabs
+
+			sum += calc(dist, numCrabs)
 		}
 
 		if sum < minSum {
 			minSum = sum
-			minSumPos = i
 		}
 	}
 
-	fmt.Printf("Pos: %v with sum %v\n", minSumPos, minSum)
+	return minSum
+}
+
+func part1(inputfile string) int {
+	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
+
+	minSum := crawlCrabbiesCrawls(crabs, min, max, func(dist, numCrabs int) int {
+		return dist * numCrabs
+	})
+
+	return minSum
+}
+
+func part2(inputfile string) int {
+	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
+
+	minSum := crawlCrabbiesCrawls(crabs, min, max, func(dist, numCrabs int) int {
+		fuel := (dist * (dist + 1)) / 2
+		return fuel * numCrabs
+	})
 
 	return minSum
 }
