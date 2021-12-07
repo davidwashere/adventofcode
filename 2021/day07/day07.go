@@ -11,7 +11,7 @@ func gimmieCrabsMinAndMax(inputfile string) (crabs map[int]int, min int, max int
 	min = util.MaxInt
 	max = util.MinInt
 
-	// crab pos -> num crabs at pos
+	// pos -> num crabs
 	crabs = map[int]int{}
 
 	for _, i := range ints {
@@ -41,9 +41,7 @@ func crawlCrabbiesCrawls(crabs map[int]int, min int, max int, calc func(dist, nu
 			sum += calc(dist, numCrabs)
 		}
 
-		if sum < minSum {
-			minSum = sum
-		}
+		minSum = util.Min(sum, minSum)
 	}
 
 	return minSum
