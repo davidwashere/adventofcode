@@ -16,6 +16,6 @@ n (a1 + aN)
 
 `2 + 5 + 8 + 11 = 26  (n=4, a1=2, aN=11)` ---> `4(2+11)/2 = 52/2 = 26`
 
-
-
 Ref: https://en.wikipedia.org/wiki/Arithmetic_progression#Sum
+
+Implemented in `util/algo.go` as `util.SumArithmeticProgression(...)` 

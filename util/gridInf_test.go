@@ -99,7 +99,7 @@ func TestInfinityGridHeight(t *testing.T) {
 
 func TestInfinityGridAllDims(t *testing.T) {
 	dimMinMax := []infinityGridMinMax{
-		infinityGridMinMax{-1, 1},
+		{-1, 1},
 	}
 
 	allDims := calcAllDims(dimMinMax)
@@ -110,8 +110,8 @@ func TestInfinityGridAllDims(t *testing.T) {
 	vf(t, allDims[2][0], 1)
 
 	dimMinMax = []infinityGridMinMax{
-		infinityGridMinMax{-1, 1},
-		infinityGridMinMax{-1, 1},
+		{-1, 1},
+		{-1, 1},
 	}
 
 	allDims = calcAllDims(dimMinMax)

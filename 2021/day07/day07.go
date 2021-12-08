@@ -28,7 +28,7 @@ func gimmieCrabsMinAndMax(inputfile string) (crabs map[int]int, min int, max int
 	return
 }
 
-func crawlCrabbiesCrawls(crabs map[int]int, min int, max int, calc func(dist, numCrabs int) int) int {
+func crawlCrabbiesCrawl(crabs map[int]int, min int, max int, calc func(dist, numCrabs int) int) int {
 	minSum := util.MaxInt
 	for i := min; i <= max; i++ {
 		sum := 0
@@ -50,7 +50,7 @@ func crawlCrabbiesCrawls(crabs map[int]int, min int, max int, calc func(dist, nu
 func part1(inputfile string) int {
 	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
 
-	minSum := crawlCrabbiesCrawls(crabs, min, max, func(dist, numCrabs int) int {
+	minSum := crawlCrabbiesCrawl(crabs, min, max, func(dist, numCrabs int) int {
 		return dist * numCrabs
 	})
 
@@ -60,8 +60,8 @@ func part1(inputfile string) int {
 func part2(inputfile string) int {
 	crabs, min, max := gimmieCrabsMinAndMax(inputfile)
 
-	minSum := crawlCrabbiesCrawls(crabs, min, max, func(dist, numCrabs int) int {
-		fuel := (dist * (dist + 1)) / 2
+	minSum := crawlCrabbiesCrawl(crabs, min, max, func(dist, numCrabs int) int {
+		fuel := util.SumArithmeticProgression(dist, 1, dist)
 		return fuel * numCrabs
 	})
 
