@@ -49,6 +49,8 @@ func pullCachedLeaderboard() ([]byte, error) {
 
 	elapsed := time.Since(info.ModTime())
 
+	log.Printf("Cache file last update: %v (%.2f mins ago)", fTime(info.ModTime()), elapsed.Minutes())
+
 	if elapsed.Minutes() > 15 {
 		return nil, fmt.Errorf("cache expired")
 	}
@@ -100,17 +102,6 @@ func pullLeaderboard() []byte {
 }
 
 func main() {
-	err := util.LoadEnv()
-	util.Check(err)
-
-	if os.Getenv(sessionTokenEnvKey) == "" {
-		fmt.Printf("Missing env key: " + sessionTokenEnvKey)
-		os.Exit(1)
-	}
-
-	if os.Getenv(leaderboardURLEnvKey) == "" {
-		fmt.Printf("Missing env key: " + leaderboardURLEnvKey)
-	}
 
 	l := Leaderboard{}
 	// Load Leaderboard data from cache (aoc asked do not pull more than once / 15 mins)
@@ -125,6 +116,19 @@ func main() {
 
 	// Load leaderboard directly from AoC if didn't load from cachie
 	if err != nil {
+		err := util.LoadEnv()
+		util.Check(err)
+
+		if os.Getenv(sessionTokenEnvKey) == "" {
+			fmt.Printf("Missing env key: %v\n", sessionTokenEnvKey)
+			os.Exit(1)
+		}
+
+		if os.Getenv(leaderboardURLEnvKey) == "" {
+			fmt.Printf("Missing env key: %v\n", leaderboardURLEnvKey)
+			os.Exit(1)
+		}
+
 		log.Printf("No cache or invalid, pulling from https://adventofcode.com/")
 		raw = pullLeaderboard()
 		err = json.Unmarshal(raw, &l)
