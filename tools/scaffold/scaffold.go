@@ -65,7 +65,7 @@ func getClient(u string) *http.Client {
 	session := os.Getenv("SESSION_COOKIE")
 
 	if len(session) == 0 {
-		log.Println("Missing SESSION_COOKIE env key")
+		log.Println("missing SESSION_COOKIE env key")
 		os.Exit(1)
 	}
 
@@ -158,7 +158,7 @@ func scaffoldDay() {
 	util.Check(err)
 	f.Close()
 
-	fmt.Printf("pcaffold %v successfully\n", outPath)
+	fmt.Printf("scaffold %v successfully\n", outPath)
 }
 
 func pullDayInput() {
