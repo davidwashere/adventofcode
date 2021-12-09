@@ -34,6 +34,12 @@ func part2(inputfile string) int {
 	for _, line := range data {
 		allwords := util.ParseWords(line)
 
+		// for i, word := range allwords {
+		// 	word := SortString(word)
+		// 	allwords[i] = word
+		// 	fmt.Println(word)
+		// }
+
 		pattern := allwords[:10]
 		signal := allwords[10:]
 
@@ -86,7 +92,6 @@ func part2(inputfile string) int {
 			}
 		}
 
-		// letsToFind := RemoveLetters(digitMap[4], digitMap[1])
 		letsToFind := RemoveLetters(digitMap[1], digitMap[4])
 		// a 9 is only 6 digits word left with letsToFind in it
 		// the remaining 6 digit word is a 0
@@ -108,7 +113,6 @@ func part2(inputfile string) int {
 
 		// a 5 is the remaining 5 digit word containing only chars also in 9
 		// a 2 has a letter that is not found in 9
-
 		if AllLettersIn(rem[0], digitMap[9]) {
 			digitMap[5] = rem[0]
 			digitMap[2] = rem[1]
@@ -133,12 +137,6 @@ func part2(inputfile string) int {
 
 		temp, _ := strconv.Atoi(final)
 		result += temp
-
-		// for _, word := range words {
-		// 	if len(word) == 2 || len(word) == 3 || len(word) == 4 || len(word) == 7 {
-		// 		result++
-		// 	}
-		// }
 	}
 
 	return result

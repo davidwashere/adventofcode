@@ -2,3 +2,5 @@
 __pycache__/
 *.json
 other/
+.env.local
+.cache.leader
