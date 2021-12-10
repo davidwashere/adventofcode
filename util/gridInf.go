@@ -101,6 +101,8 @@ func NewInfinityGridFromSlice(data []string, defaultValue string) *InfinityGrid 
 	return grid
 }
 
+// _createDimKey will create a key based on the provided dimensions that is
+// used to pull the appropriate grid from the backing data store
 func _createDimKey(dims ...int) string {
 	result := ""
 
