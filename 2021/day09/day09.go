@@ -37,7 +37,7 @@ func part1(inputfile string) int {
 			return
 		}
 
-		neighborsRaw := grid.GetNESW(x, y)
+		neighborsRaw := grid.GetOrtho(x, y)
 		neighbors := []int{}
 
 		for _, neighbor := range neighborsRaw {

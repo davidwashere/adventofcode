@@ -91,6 +91,8 @@ func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
 		x = g.xExtents.max - x + g.xExtents.min
 	}
 
+	dimKey := _createInfGridDimKey(dims...)
+
 	if !g.boundsLocked {
 		g.xExtents.min = Min(g.xExtents.min, x)
 		g.xExtents.max = Max(g.xExtents.max, x)
@@ -104,22 +106,33 @@ func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
 			g.dimExtents[i].min = Min(g.dimExtents[i].min, dim)
 			g.dimExtents[i].max = Max(g.dimExtents[i].max, dim)
 		}
+	} else {
+		// bounds are locked, anything that is outside x, y, or dimensional bounds is noop
+		if x > g.xExtents.max || x < g.xExtents.min || y > g.yExtents.max || y < g.yExtents.min {
+			// noop
+			return
+		}
+
+		for i, dim := range dims {
+			if i > len(g.dimExtents)-1 {
+				// dimension doesn't exist, noop when bounds locked
+				return
+			}
+
+			if dim > g.dimExtents[i].max || dim < g.dimExtents[i].min {
+				// dimension outside dimension extents, noop when bounds locked
+				return
+			}
+		}
 	}
 
-	dimKey := _createInfGridDimKey(dims...)
 	data := g.data
 
 	if _, ok := data[dimKey]; !ok {
-		if g.boundsLocked {
-			return // dim doesn't exist, do not create it if bounds locked
-		}
 		data[dimKey] = map[int]map[int]interface{}{}
 	}
 
 	if _, ok := data[dimKey][x]; !ok {
-		if g.boundsLocked {
-			return // x doesn't exist, do not create it if bounds locked
-		}
 		data[dimKey][x] = map[int]interface{}{}
 	}
 
@@ -561,10 +574,9 @@ func (g *InfGrid) GetNW(x, y int, dims ...int) interface{} {
 	return g.Get(x-1, y+1, dims...)
 }
 
-// GetNESW will return the values north, east, south, and west of the given coordinate, if a coordinate is outside
+// GetOrtho will return the values north, east, south, and west of the given coordinate, if a coordinate is outside
 // the extents of the grid it will be set to the default
-// TODO: change to something less poopy, like 'orthagonal'
-func (g *InfGrid) GetNESW(x, y int, dims ...int) []interface{} {
+func (g *InfGrid) GetOrtho(x, y int, dims ...int) []interface{} {
 
 	return []interface{}{
 		g.GetN(x, y, dims...),
@@ -574,10 +586,36 @@ func (g *InfGrid) GetNESW(x, y int, dims ...int) []interface{} {
 	}
 }
 
-// GetNeighbors will return the values north, east, south, west, north-east, south-east, south-west, and north-west
+// VisitOrtho visits the coordinates orthogonal to x and y
+func (g *InfGrid) VisitOrtho(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+
+	var tx, ty int
+
+	// N
+	tx = x
+	ty = y + 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// E
+	tx = x + 1
+	ty = y
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// S
+	tx = x
+	ty = y - 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// W
+	tx = x - 1
+	ty = y
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+}
+
+// GetOrthoAndDiag will return the values north, east, south, west, north-east, south-east, south-west, and north-west
 // of the given coordinate, if a coordinate is outside the extents of the grid it will be set to the default
-// TODO: Change name to build on method above, like GetOrthoAndDiag
-func (g *InfGrid) GetNeighbors(x, y int, dims ...int) []interface{} {
+func (g *InfGrid) GetOrthoAndDiag(x, y int, dims ...int) []interface{} {
 
 	return []interface{}{
 		g.GetN(x, y, dims...),
@@ -591,9 +629,49 @@ func (g *InfGrid) GetNeighbors(x, y int, dims ...int) []interface{} {
 	}
 }
 
-// Delete will delete an item found at coords (set its value to the default), extents are not affected
+// VisitOrthoAndDiag visits the coordinates orthogonal and diagonal to x and y
+func (g *InfGrid) VisitOrthoAndDiag(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+	g.VisitOrtho(x, y, visitFunc, dims...)
+
+	var tx, ty int
+
+	// NE
+	tx = x + 1
+	ty = y + 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// SE
+	tx = x + 1
+	ty = y - 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// SW
+	tx = x - 1
+	ty = y - 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+
+	// NW
+	tx = x - 1
+	ty = y + 1
+	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+}
+
+// Delete will delete an item found at coords, extents are not affected
 func (g *InfGrid) Delete(x, y int, dims ...int) interface{} {
 	v := g.Get(x, y, dims...)
-	g.Set(g.def, x, y, dims...)
+	dimKey := _createInfGridDimKey(dims...)
+
+	delete(g.data[dimKey][x], y)
+
+	// Deleted y coordinate must have been the last
+	if len(g.data[dimKey][x]) == 0 {
+		delete(g.data[dimKey], x)
+	}
+
+	// Deleted x coordinate must have been the last for dimension
+	if len(g.data[dimKey]) == 0 {
+		delete(g.data, dimKey)
+	}
+
 	return v
 }
