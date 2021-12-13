@@ -11,7 +11,10 @@ type fold struct {
 	pos        int
 }
 
-func part1(inputfile string) int {
+// Grid default value
+var Def = "."
+
+func loadData(inputfile string) (*util.InfGrid, []fold) {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
 	folds := []fold{}
@@ -38,34 +41,29 @@ func part1(inputfile string) int {
 	}
 
 	grid.FlipH()
-	// grid.Dump()
+	return grid, folds
+}
+
+func part1(inputfile string) int {
+	grid, folds := loadData(inputfile)
 
 	fold := folds[0]
 	nGrid := util.NewInfGrid()
-	nGrid.WithDefaultValue(".")
+	nGrid.WithDefaultValue(Def)
+
 	grid.VisitAll2D(func(val interface{}, x, y int) {
-		if val.(string) == "." {
+		if val.(string) == Def {
 			return
 		}
 
-		if fold.horizontal {
-			if y < fold.pos {
-				nGrid.Set(val, x, y)
-			} else if y > fold.pos {
-				nGrid.Set(val, x, grid.Height()-1-y)
-			}
-		} else {
-			if x < fold.pos {
-				nGrid.Set(val, x, y)
-			} else if x > fold.pos {
-				nGrid.Set(val, grid.Width()-1-x, y)
-			}
+		if fold.horizontal && y > fold.pos {
+			y = grid.Height() - 1 - y
+		} else if !fold.horizontal && x > fold.pos {
+			x = grid.Width() - 1 - x
 		}
-	})
 
-	// nGrid.FlipH()
-	// fmt.Println("")
-	// nGrid.Dump()
+		nGrid.Set(val, x, y)
+	})
 
 	result := 0
 	nGrid.VisitAll2D(func(val interface{}, x, y int) {
@@ -78,36 +76,11 @@ func part1(inputfile string) int {
 }
 
 func part2(inputfile string) int {
-	data, _ := util.ReadFileToStringSlice(inputfile)
-
-	folds := []fold{}
-	grid := util.NewInfGrid()
-	grid.WithDefaultValue(".")
-
-	for _, line := range data {
-		if len(line) == 0 {
-			continue
-		}
-
-		tokens := util.ParseTokens(line)
-		if strings.Contains(line, "fold") {
-			fold := fold{}
-			fold.pos = tokens.Ints[0]
-			if strings.Contains(line, "y") {
-				fold.horizontal = true
-			}
-			folds = append(folds, fold)
-			continue
-		}
-
-		grid.Set("#", tokens.Ints[0], tokens.Ints[1])
-	}
-
-	grid.FlipH()
+	grid, folds := loadData(inputfile)
 
 	for _, fold := range folds {
 		nGrid := util.NewInfGrid()
-		nGrid.WithDefaultValue(".")
+		nGrid.WithDefaultValue(Def)
 
 		if fold.horizontal {
 			nGrid.SetExtents(0, 0, grid.Width()-1, fold.pos-1)
@@ -116,32 +89,27 @@ func part2(inputfile string) int {
 		}
 
 		grid.VisitAll2D(func(val interface{}, x, y int) {
-			if val.(string) == "." {
+			if val.(string) == Def {
 				return
 			}
 
-			if fold.horizontal {
-				if y < fold.pos {
-					nGrid.Set(val, x, y)
-				} else if y > fold.pos {
-					nGrid.Set(val, x, grid.Height()-1-y)
-				}
-			} else {
-				if x < fold.pos {
-					nGrid.Set(val, x, y)
-				} else if x > fold.pos {
-					nGrid.Set(val, grid.Width()-1-x, y)
-				}
+			if fold.horizontal && y > fold.pos {
+				y = grid.Height() - 1 - y
+			} else if !fold.horizontal && x > fold.pos {
+				x = grid.Width() - 1 - x
 			}
+
+			nGrid.Set(val, x, y)
 		})
 
 		grid = nGrid
 	}
 
-	fmt.Println("")
 	grid.FlipH()
 	grid.WithDefaultValue(" ")
+	fmt.Println()
 	grid.Dump()
+	fmt.Println()
 
 	return 0
 }
