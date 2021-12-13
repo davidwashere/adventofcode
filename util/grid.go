@@ -563,6 +563,7 @@ func (g *InfGrid) GetNW(x, y int, dims ...int) interface{} {
 
 // GetNESW will return the values north, east, south, and west of the given coordinate, if a coordinate is outside
 // the extents of the grid it will be set to the default
+// TODO: change to something less poopy, like 'orthagonal'
 func (g *InfGrid) GetNESW(x, y int, dims ...int) []interface{} {
 
 	return []interface{}{
@@ -575,16 +576,17 @@ func (g *InfGrid) GetNESW(x, y int, dims ...int) []interface{} {
 
 // GetNeighbors will return the values north, east, south, west, north-east, south-east, south-west, and north-west
 // of the given coordinate, if a coordinate is outside the extents of the grid it will be set to the default
+// TODO: Change name to build on method above, like GetOrthoAndDiag
 func (g *InfGrid) GetNeighbors(x, y int, dims ...int) []interface{} {
 
 	return []interface{}{
 		g.GetN(x, y, dims...),
-		g.GetE(x, y, dims...),
-		g.GetS(x, y, dims...),
-		g.GetW(x, y, dims...),
 		g.GetNE(x, y, dims...),
+		g.GetE(x, y, dims...),
 		g.GetSE(x, y, dims...),
+		g.GetS(x, y, dims...),
 		g.GetSW(x, y, dims...),
+		g.GetW(x, y, dims...),
 		g.GetNW(x, y, dims...),
 	}
 }

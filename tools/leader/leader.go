@@ -162,7 +162,7 @@ func main() {
 				ti := time.Unix(tms.StarTms, 0)
 				t := fTime(ti)
 				if i == 0 {
-					fmt.Printf("  Day%2s - %v\n", day, t)
+					fmt.Printf("  Day %2s - %v\n", day, t)
 				} else {
 					fmt.Printf("          %v\n", t)
 				}
