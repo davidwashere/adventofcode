@@ -49,7 +49,7 @@ func popItemFromMap(m map[Coord]bool) (Coord, error) {
 		return c, nil
 	}
 
-	return EMPTY, fmt.Errorf("Map Empty")
+	return EMPTY, fmt.Errorf("map empty")
 }
 
 func part1(inputfile string) int {
@@ -109,7 +109,7 @@ func part1(inputfile string) int {
 		}
 
 		// set all flashed coords to 0
-		for k, _ := range flashed {
+		for k := range flashed {
 			grid.Set(0, k.x, k.y)
 		}
 
@@ -176,7 +176,7 @@ func part2(inputfile string) int {
 		}
 
 		// set all flashed coords to 0
-		for k, _ := range flashed {
+		for k := range flashed {
 			grid.Set(0, k.x, k.y)
 		}
 	}
