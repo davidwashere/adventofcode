@@ -9,13 +9,13 @@ import (
 )
 
 var (
-	defaultEnvFile = ".env.local"
+	DefaultEnvFile = ".env.local"
 )
 
 // LoadEnvForced loads .env.local from current dir into go env, will
 // overwrite any values set in the environment prior to parsing file
 func LoadEnvForced() error {
-	return LoadEnvFileForced(defaultEnvFile)
+	return LoadEnvFileForced(DefaultEnvFile)
 }
 
 // LoadEnvForced loads file at `path` into go env, will
@@ -34,7 +34,7 @@ func LoadEnvFileForced(path string) error {
 // LoadEnv loads .env.local from current dir into go env, does not
 // load a key if it already exists in the env
 func LoadEnv() error {
-	return LoadEnvFile(defaultEnvFile)
+	return LoadEnvFile(DefaultEnvFile)
 }
 
 // LoadEnvFile loads file at `path` into go env, does not

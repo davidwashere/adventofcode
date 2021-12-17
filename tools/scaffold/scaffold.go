@@ -24,18 +24,13 @@ var dayTmpl []byte
 //go:embed dayTest.tmpl
 var dayTestTmpl []byte
 
+var (
+	aocSessionTokenEnvKey = "SESSION_COOKIE"
+)
+
 type tmplfields struct {
 	DayName string
 	OutPath string
-}
-
-func usage() {
-	prog := filepath.Base(os.Args[0])
-	fmt.Println("Usage:")
-	fmt.Printf("  To scaffold full day (no input):\n")
-	fmt.Printf("    %v DAY#\n", prog)
-	fmt.Printf("  To scaffold input:\n")
-	fmt.Printf("    %v DAY# input\n", prog)
 }
 
 func createDir(path string) {
@@ -62,12 +57,7 @@ func writeFileFromTemplate(outFileFormat string, tmpl []byte, fields tmplfields)
 }
 
 func getClient(u string) *http.Client {
-	session := os.Getenv("SESSION_COOKIE")
-
-	if len(session) == 0 {
-		log.Println("missing SESSION_COOKIE env key")
-		os.Exit(1)
-	}
+	session := os.Getenv(aocSessionTokenEnvKey)
 
 	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	util.Check(err)
@@ -176,6 +166,21 @@ func pullDayInput() {
 	log.Printf("input successfully written")
 }
 
+func haveEnvVars() bool {
+	v := os.Getenv(aocSessionTokenEnvKey)
+
+	return v != ""
+}
+
+func usage() {
+	prog := filepath.Base(os.Args[0])
+	fmt.Println("Usage:")
+	fmt.Printf("  To scaffold full day (no input):\n")
+	fmt.Printf("    %v DAY#\n", prog)
+	fmt.Printf("  To scaffold input:\n")
+	fmt.Printf("    %v DAY# input\n", prog)
+}
+
 func main() {
 
 	n := len(os.Args)
@@ -190,8 +195,13 @@ func main() {
 	}
 
 	if n == 3 && os.Args[2] == "input" {
-		err := util.LoadEnv()
-		util.Check(err)
+		util.LoadEnv()
+
+		if !haveEnvVars() {
+			log.Printf("ERROR: missing env var %v, can be set in './%v' in addition to traditional env\n", aocSessionTokenEnvKey, util.DefaultEnvFile)
+			os.Exit(1)
+		}
+
 		pullDayInput()
 		return
 	}
