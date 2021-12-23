@@ -27,7 +27,7 @@ func (s *IntQueue) Dequeue() int {
 }
 
 // Pop removes and returns top element from stack, if stack is empty returns
-// empty string
+// 0
 func (s *IntQueue) Pop() int {
 	if s.IsEmpty() {
 		return 0
@@ -40,14 +40,62 @@ func (s *IntQueue) Pop() int {
 	return ele
 }
 
-// Front .
+// Front alias for Peek
 func (s *IntQueue) Front() int {
-	// index := len(*s) - 1
+	return s.Peek()
+}
+
+// Front Peeks at the front of the queue (oldest enqueued int)
+func (s *IntQueue) Peek() int {
 	return (*s)[0]
 }
 
-// Back .
+// Back Peeks at the back of the queue (most recently enqueued int)
 func (s *IntQueue) Back() int {
 	index := len(*s) - 1
 	return (*s)[index]
+}
+
+// PopLargest will pop the largest int vlaue in the queue - O(n) time, if queue
+// is empty returns 0
+func (s *IntQueue) PopLargest() int {
+	if s.IsEmpty() {
+		return 0
+	}
+
+	index := -1
+	max := MinInt
+	for i, val := range *s {
+		if val > max {
+			index = i
+			max = val
+		}
+	}
+
+	(*s)[index] = 0 // Erase element (memory cleanup)
+	(*s) = RemoveIndexFromIntSlice((*s), index)
+
+	return max
+}
+
+// PopSmallest will pop the smallest int vlaue in the queue - O(n) time, if queue
+// is empty returns 0
+func (s *IntQueue) PopSmallest() int {
+	if s.IsEmpty() {
+		return 0
+	}
+
+	index := -1
+	min := MaxInt
+	for i, val := range *s {
+		if val < min {
+			index = i
+			min = val
+		}
+	}
+
+	(*s)[index] = 0 // Erase element (memory cleanup)
+	(*s) = RemoveIndexFromIntSlice((*s), index)
+
+	return min
 }

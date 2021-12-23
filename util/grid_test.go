@@ -357,3 +357,83 @@ func TestInfGridDirectionalEdges(t *testing.T) {
 	vf(t, conv(g.LeftEdge()), "AB")
 	vf(t, conv(g.RightEdge()), "DC")
 }
+
+func TestVisitOrtho(t *testing.T) {
+	g := NewInfGrid()
+	// BC
+	// AD
+	g.Set("A", 0, 0)
+	g.Set("B", 0, 1)
+	g.Set("C", 1, 1)
+	g.Set("D", 1, 0)
+
+	g.VisitOrtho(0, 0, func(val interface{}, x, y int) {
+		if x == 0 && y == 1 {
+			vf(t, val, "B")
+			return
+		}
+
+		if x == 1 && y == 0 {
+			vf(t, val, "D")
+			return
+		}
+
+		if (x == 0 && y == -1) || (x == -1 && y == 0) {
+			vf(t, val, nil)
+			return
+		}
+
+		t.Errorf("Unexpected visit x=%v y=%v val=%v", x, y, val)
+	})
+
+	g.LockBounds()
+
+	g.VisitOrtho(0, 0, func(val interface{}, x, y int) {
+		if x == 0 && y == 1 {
+			vf(t, val, "B")
+			return
+		}
+
+		if x == 1 && y == 0 {
+			vf(t, val, "D")
+			return
+		}
+
+		t.Errorf("Unexpected visit x=%v y=%v val=%v", x, y, val)
+	})
+}
+
+func TestVisitDiag(t *testing.T) {
+	g := NewInfGrid()
+	// BC
+	// AD
+	g.Set("A", 0, 0)
+	g.Set("B", 0, 1)
+	g.Set("C", 1, 1)
+	g.Set("D", 1, 0)
+
+	g.VisitDiag(0, 0, func(val interface{}, x, y int) {
+		if x == 1 && y == 1 {
+			vf(t, val, "C")
+			return
+		}
+
+		if (x == 1 && y == -1) || (x == -1 && y == -1) || (x == -1 && y == 1) {
+			vf(t, val, nil)
+			return
+		}
+
+		t.Errorf("Unexpected visit x=%v y=%v val=%v", x, y, val)
+	})
+
+	g.LockBounds()
+
+	g.VisitDiag(0, 0, func(val interface{}, x, y int) {
+		if x == 1 && y == 1 {
+			vf(t, val, "C")
+			return
+		}
+
+		t.Errorf("Unexpected visit x=%v y=%v val=%v", x, y, val)
+	})
+}

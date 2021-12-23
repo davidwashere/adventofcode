@@ -106,24 +106,9 @@ func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
 			g.dimExtents[i].min = Min(g.dimExtents[i].min, dim)
 			g.dimExtents[i].max = Max(g.dimExtents[i].max, dim)
 		}
-	} else {
-		// bounds are locked, anything that is outside x, y, or dimensional bounds is noop
-		if x > g.xExtents.max || x < g.xExtents.min || y > g.yExtents.max || y < g.yExtents.min {
-			// noop
-			return
-		}
-
-		for i, dim := range dims {
-			if i > len(g.dimExtents)-1 {
-				// dimension doesn't exist, noop when bounds locked
-				return
-			}
-
-			if dim > g.dimExtents[i].max || dim < g.dimExtents[i].min {
-				// dimension outside dimension extents, noop when bounds locked
-				return
-			}
-		}
+	} else if g.IsOutsideExtents(x, y, dims...) {
+		// when bounds are locked, if outside extents noop
+		return
 	}
 
 	data := g.data
@@ -587,30 +572,41 @@ func (g *InfGrid) GetOrtho(x, y int, dims ...int) []interface{} {
 }
 
 // VisitOrtho visits the coordinates orthogonal to x and y
+// If bounds are locked only visits coords within bounds
 func (g *InfGrid) VisitOrtho(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+	coords := [][]int{
+		{x, y + 1}, // N
+		{x + 1, y}, // E
+		{x, y - 1}, // S
+		{x - 1, y}, // W
+	}
 
-	var tx, ty int
+	for _, coord := range coords {
+		tx := coord[0]
+		ty := coord[1]
+		if !g.boundsLocked || !g.IsOutsideExtents(tx, ty, dims...) {
+			visitFunc(g.Get(tx, ty, dims...), tx, ty)
+		}
+	}
+}
 
-	// N
-	tx = x
-	ty = y + 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+// VisitDiag visits the coordinates diagonal to x and y
+// If bounds are locked only visits coords within bounds
+func (g *InfGrid) VisitDiag(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+	coords := [][]int{
+		{x + 1, y + 1}, // NE
+		{x + 1, y - 1}, // SE
+		{x - 1, y - 1}, // SW
+		{x - 1, y + 1}, // NW
+	}
 
-	// E
-	tx = x + 1
-	ty = y
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
-	// S
-	tx = x
-	ty = y - 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
-	// W
-	tx = x - 1
-	ty = y
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
+	for _, coord := range coords {
+		tx := coord[0]
+		ty := coord[1]
+		if !g.boundsLocked || !g.IsOutsideExtents(tx, ty, dims...) {
+			visitFunc(g.Get(tx, ty, dims...), tx, ty)
+		}
+	}
 }
 
 // GetOrthoAndDiag will return the values north, east, south, west, north-east, south-east, south-west, and north-west
@@ -630,30 +626,10 @@ func (g *InfGrid) GetOrthoAndDiag(x, y int, dims ...int) []interface{} {
 }
 
 // VisitOrthoAndDiag visits the coordinates orthogonal and diagonal to x and y
+// If bounds are locked only visits coords within bounds
 func (g *InfGrid) VisitOrthoAndDiag(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
 	g.VisitOrtho(x, y, visitFunc, dims...)
-
-	var tx, ty int
-
-	// NE
-	tx = x + 1
-	ty = y + 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
-	// SE
-	tx = x + 1
-	ty = y - 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
-	// SW
-	tx = x - 1
-	ty = y - 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
-
-	// NW
-	tx = x - 1
-	ty = y + 1
-	visitFunc(g.Get(tx, ty, dims...), tx, ty)
+	g.VisitDiag(x, y, visitFunc, dims...)
 }
 
 // Delete will delete an item found at coords, extents are not affected
@@ -674,4 +650,27 @@ func (g *InfGrid) Delete(x, y int, dims ...int) interface{} {
 	}
 
 	return v
+}
+
+// IsOutsideExtents returns true of given coords and dimensation are outside the extents
+// of the grid
+func (g *InfGrid) IsOutsideExtents(x, y int, dims ...int) bool {
+	// If the x,y coord is outside current extents
+	if x > g.xExtents.max || x < g.xExtents.min || y > g.yExtents.max || y < g.yExtents.min {
+		return true
+	}
+
+	for i, dim := range dims {
+		if i > len(g.dimExtents)-1 {
+			// dimension doesn't exist
+			return true
+		}
+
+		if dim > g.dimExtents[i].max || dim < g.dimExtents[i].min {
+			// dimension outside dimension extents, noop when bounds locked
+			return true
+		}
+	}
+
+	return false
 }
