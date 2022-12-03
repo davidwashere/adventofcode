@@ -55,3 +55,9 @@ func IsIntIn(slice []int, val int) bool {
 
 	return false
 }
+
+// SuperSlice is a slice that:
+// - works as a normal slice (append, delete, etc.)
+// - provides O(1) lookup if slice contains value (backed by map), so O(2) space
+// -
+type IntSuperSlice []int
