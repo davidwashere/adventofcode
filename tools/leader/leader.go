@@ -23,13 +23,13 @@ var (
 )
 
 type Leaderboard struct {
-	OwnerId string            `json:"owner_id"`
+	OwnerId int               `json:"owner_id"`
 	Event   string            `json:"event"`
 	Members map[string]Member `json:"members"`
 }
 
 type Member struct {
-	ID                 string                              `json:"id"`
+	ID                 int                                 `json:"id"`
 	Name               string                              `json:"name"`
 	Stars              int                                 `json:"stars"`
 	LocalScore         int                                 `json:"local_score"`
@@ -114,7 +114,7 @@ func main() {
 		}
 	}
 
-	// Load leaderboard directly from AoC if didn't load from cachie
+	// Load leaderboard directly from AoC if didn't load from cache
 	if err != nil {
 		err := util.LoadEnv()
 		util.Check(err)
@@ -157,14 +157,22 @@ func main() {
 		for _, day := range dayKeys {
 			stars := m.CompletionDayLevel[day]
 
-			for i, k := range util.SortMapKeys(stars) {
+			sortedStarsKeys := util.SortMapKeys(stars)
+			for i, k := range sortedStarsKeys {
 				tms := stars[k]
 				ti := time.Unix(tms.StarTms, 0)
 				t := fTime(ti)
 				if i == 0 {
 					fmt.Printf("  Day %2s - %v\n", day, t)
 				} else {
-					fmt.Printf("          %v\n", t)
+					// grab first star details again
+					tms1 := stars[sortedStarsKeys[0]]
+					ti1 := time.Unix(tms1.StarTms, 0)
+					dur := ti.Sub(ti1)
+
+					// second star
+					fmt.Printf("           %v - %v\n", t, dur)
+
 				}
 			}
 		}
@@ -172,6 +180,7 @@ func main() {
 	}
 }
 
+// fTime formats time
 func fTime(t time.Time) string {
 	return t.Format("2006-01-02 03:04 PM")
 }
