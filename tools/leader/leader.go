@@ -101,21 +101,33 @@ func pullLeaderboard() []byte {
 
 }
 
+var force bool
+
 func main() {
+	if len(os.Args) > 1 {
+		if os.Args[1] == "force" {
+			force = true
+		}
+	}
 
 	l := Leaderboard{}
-	// Load Leaderboard data from cache (aoc asked do not pull more than once / 15 mins)
-	raw, err := pullCachedLeaderboard()
-	if err == nil {
-		log.Printf("%v found", leaderboardCacheFile)
-		err = json.Unmarshal(raw, &l)
+	var err error
+	var raw []byte
+
+	if !force {
+		// Load Leaderboard data from cache (aoc asked do not pull more than once / 15 mins)
+		raw, err := pullCachedLeaderboard()
 		if err == nil {
-			log.Printf("%v parsed successfully", leaderboardCacheFile)
+			log.Printf("%v found", leaderboardCacheFile)
+			err = json.Unmarshal(raw, &l)
+			if err == nil {
+				log.Printf("%v parsed successfully", leaderboardCacheFile)
+			}
 		}
 	}
 
 	// Load leaderboard directly from AoC if didn't load from cache
-	if err != nil {
+	if err != nil || len(raw) == 0 {
 		err := util.LoadEnv()
 		util.Check(err)
 

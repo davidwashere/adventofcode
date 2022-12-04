@@ -175,9 +175,11 @@ func haveEnvVars() bool {
 func usage() {
 	prog := filepath.Base(os.Args[0])
 	fmt.Println("Usage:")
-	fmt.Printf("  To scaffold full day (no input):\n")
+	fmt.Printf("  To scaffold full day with input):\n")
 	fmt.Printf("    %v DAY#\n", prog)
-	fmt.Printf("  To scaffold input:\n")
+	fmt.Printf("  To scaffold full day without input:\n")
+	fmt.Printf("    %v DAY# day\n", prog)
+	fmt.Printf("  To scaffold only input:\n")
 	fmt.Printf("    %v DAY# input\n", prog)
 }
 
@@ -191,19 +193,31 @@ func main() {
 
 	if n == 2 {
 		scaffoldDay()
-		return
-	}
-
-	if n == 3 && os.Args[2] == "input" {
-		util.LoadEnv()
-
-		if !haveEnvVars() {
-			log.Printf("ERROR: missing env var %v, can be set in './%v' in addition to traditional env\n", aocSessionTokenEnvKey, util.DefaultEnvFile)
-			os.Exit(1)
-		}
-
+		prepEnv()
 		pullDayInput()
 		return
 	}
 
+	if n == 3 {
+		if os.Args[2] == "day" {
+			scaffoldDay()
+			return
+		} else if os.Args[2] == "input" {
+			prepEnv()
+			pullDayInput()
+			return
+		} else {
+			log.Printf("Unknown subcommand")
+			usage()
+		}
+	}
+
+}
+
+func prepEnv() {
+	util.LoadEnv()
+	if !haveEnvVars() {
+		log.Printf("ERROR: missing env var %v, can be set in './%v' in addition to traditional env\n", aocSessionTokenEnvKey, util.DefaultEnvFile)
+		os.Exit(1)
+	}
 }
