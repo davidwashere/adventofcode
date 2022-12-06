@@ -26,7 +26,9 @@ jobs:
     #   run: go run ./tools/leader
 
     - name: Run script
-      run: ./.github/diff.sh
+      run: | 
+        chmod 700 ./.github/diff.sh
+        ./.github/diff.sh
       shell: bash
 
     - name: Archive diff
