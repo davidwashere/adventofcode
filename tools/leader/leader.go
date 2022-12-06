@@ -11,6 +11,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 
 	"golang.org/x/net/publicsuffix"
@@ -19,6 +20,7 @@ import (
 var (
 	sessionTokenEnvKey   = "SESSION_COOKIE"
 	leaderboardURLEnvKey = "LEADER_URL"
+	discordURLEnvKey     = "DISCORD_URL"
 	leaderboardCacheFile = ".cache.leader"
 )
 
@@ -159,6 +161,8 @@ func main() {
 
 	}
 
+	results := new(strings.Builder)
+
 	// Print the users, days, stars, and timestamps
 	for _, m := range l.Members {
 
@@ -167,7 +171,7 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("%+v\n", m.Name)
+		fmt.Fprintf(results, "%+v\n", m.Name)
 		for _, day := range dayKeys {
 			stars := m.CompletionDayLevel[day]
 
@@ -177,7 +181,7 @@ func main() {
 				ti := time.Unix(tms.StarTms, 0)
 				t := fTime(ti)
 				if i == 0 {
-					fmt.Printf("  Day %2s - %v\n", day, t)
+					fmt.Fprintf(results, "  Day %2s - %v\n", day, t)
 				} else {
 					// grab first star details again
 					tms1 := stars[sortedStarsKeys[0]]
@@ -185,12 +189,32 @@ func main() {
 					dur := ti.Sub(ti1)
 
 					// second star
-					fmt.Printf("           %v - %v\n", t, dur)
+					fmt.Fprintf(results, "           %v - %v\n", t, dur)
 
 				}
 			}
 		}
-		fmt.Println()
+		fmt.Fprintln(results)
+	}
+
+	fmt.Print(results.String())
+
+	discordURL := os.Getenv(discordURLEnvKey)
+	if len(discordURL) > 0 {
+		data := struct {
+			Content string `json:"content"`
+		}{
+			"```\n" + results.String() + "\n```",
+		}
+
+		dataB, err := json.Marshal(data)
+		util.Check(err)
+
+		reader := bytes.NewReader(dataB)
+		// reader := strings.NewReader(results.String())
+
+		_, err = http.Post(discordURL, "application/json", reader)
+		util.Check(err)
 	}
 }
 
