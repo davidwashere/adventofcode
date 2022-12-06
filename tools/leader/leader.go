@@ -206,6 +206,7 @@ func main() {
 
 	discordURL := os.Getenv(discordURLEnvKey)
 	if len(discordURL) > 0 {
+		// GITHUB_EVENT_NAME=schedule for cron workflows
 		data := struct {
 			Content string `json:"content"`
 		}{

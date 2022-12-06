@@ -10,8 +10,6 @@ on:
     - cron: '0 15 * * *'
     # 9pm (UTC = 3am)
     - cron: '0 3 * * *'
-    # testing ever 5 mins
-    - cron: '*/5 * * * *'
 
 jobs:
 
