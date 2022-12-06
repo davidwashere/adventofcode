@@ -25,6 +25,11 @@ jobs:
     #     DISCORD_URL: ${{ secrets.DISCORD_URL }}
     #   run: go run ./tools/leader
 
+    - uses: actions/download-artifact@v3
+      with:
+        name: diff.out
+        path: diff.out
+  
     - name: Run script
       run: | 
         chmod 700 ./.github/diff.sh
