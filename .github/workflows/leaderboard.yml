@@ -5,9 +5,12 @@ name: Leaderboard
 
 on:
   workflow_dispatch:
-#   schedule:
-#     - cron: '*/20 * * * *'
-  
+  schedule:
+    # 9am
+    - cron: '0 9 * * *'
+    # 9pm
+    - cron: '0 21 * * *'
+
 jobs:
 
   build:
