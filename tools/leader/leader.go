@@ -116,7 +116,7 @@ func main() {
 
 	if !force {
 		// Load Leaderboard data from cache (aoc asked do not pull more than once / 15 mins)
-		raw, err := pullCachedLeaderboard()
+		raw, err = pullCachedLeaderboard()
 		if err == nil {
 			log.Printf("%v found", leaderboardCacheFile)
 			err = json.Unmarshal(raw, &l)
@@ -141,7 +141,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		log.Printf("No cache or invalid, pulling from https://adventofcode.com/")
+		log.Printf("No cache, cache invalid, or forced - pulling from https://adventofcode.com/")
 		raw = pullLeaderboard()
 		err = json.Unmarshal(raw, &l)
 		util.Check(err)

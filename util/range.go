@@ -20,7 +20,7 @@ func RangeOverlaps(r1, r2 []int) bool {
 // assumes len(r1) == len(r2) == 2
 func RangeFullyContains(r1, r2 []int) bool {
 	if r1[0] == r2[0] || r1[1] == r2[1] {
-		// if they start or end on the same number, one most fully contain the other
+		// if they start or end on the same number, one must fully contain the other
 		return true
 	} else if r1[0] <= r2[0] {
 		return r1[1] >= r2[1]
