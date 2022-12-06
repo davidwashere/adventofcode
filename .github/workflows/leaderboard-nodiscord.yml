@@ -1,12 +1,7 @@
-name: Leaderboard
+name: Leaderboard Without Discord
 
 on:
   workflow_dispatch:
-  schedule:
-    # 9am (UTC = 3pm or 15 hundred o'clock)
-    - cron: '0 15 * * *'
-    # 9pm (UTC = 3am)
-    - cron: '0 3 * * *'
 
 jobs:
 
@@ -24,5 +19,4 @@ jobs:
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-        DISCORD_URL: ${{ secrets.DISCORD_URL }}
       run: go run ./tools/leader

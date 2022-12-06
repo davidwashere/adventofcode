@@ -106,10 +106,10 @@ func pullLeaderboard() []byte {
 var force bool
 
 func main() {
-	for _, e := range os.Environ() {
-		pair := strings.SplitN(e, "=", 2)
-		fmt.Println(pair)
-	}
+	// for _, e := range os.Environ() {
+	// 	pair := strings.SplitN(e, "=", 2)
+	// 	fmt.Println(pair)
+	// }
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "force" {
@@ -226,5 +226,6 @@ func main() {
 
 // fTime formats time
 func fTime(t time.Time) string {
-	return t.Format("2006-01-02 03:04 PM")
+	loc, _ := time.LoadLocation("America/Chicago")
+	return t.In(loc).Format("2006-01-02 03:04 PM")
 }
