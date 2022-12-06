@@ -21,4 +21,7 @@ jobs:
         go-version: 1.18
 
     - name: Build
+      env:
+        LEADER_URL: ${{ secrets.LEADER_URL }}
+        SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
       run: go run ./tools/leader
