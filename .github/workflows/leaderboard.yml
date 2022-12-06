@@ -24,4 +24,5 @@ jobs:
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
+        DISCORD_URL: ${{ secrets.DISCORD_URL }}
       run: go run ./tools/leader
