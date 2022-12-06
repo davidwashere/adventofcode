@@ -106,6 +106,8 @@ func pullLeaderboard() []byte {
 var force bool
 
 func main() {
+	fmt.Println("Dumping Env:", os.Environ())
+
 	if len(os.Args) > 1 {
 		if os.Args[1] == "force" {
 			force = true
