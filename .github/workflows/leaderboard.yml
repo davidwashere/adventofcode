@@ -6,10 +6,12 @@ name: Leaderboard
 on:
   workflow_dispatch:
   schedule:
-    # 9am
-    - cron: '0 9 * * *'
-    # 9pm
-    - cron: '0 21 * * *'
+    # 9am (UTC = 3pm or 15 hundred o'clock)
+    - cron: '0 15 * * *'
+    # 9pm (UTC = 3am)
+    - cron: '0 3 * * *'
+    # testing ever 5 mins
+    - cron: '*/5 * * * *'
 
 jobs:
 
