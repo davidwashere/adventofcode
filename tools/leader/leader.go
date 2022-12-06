@@ -129,7 +129,9 @@ func main() {
 	// Load leaderboard directly from AoC if didn't load from cache
 	if err != nil || len(raw) == 0 {
 		err := util.LoadEnv()
-		util.Check(err)
+		if err != nil {
+			log.Printf(".env.local not found or no worky, checking raw env: %v", err)
+		}
 
 		if os.Getenv(sessionTokenEnvKey) == "" {
 			fmt.Printf("Missing env key: %v\n", sessionTokenEnvKey)
