@@ -20,3 +20,6 @@ echo ${dt} >> .cache/diff.out
 
 echo "list cache"
 ls -la .cache
+
+echo "dumping cache contents"
+cat ./cache/diff.out
