@@ -17,27 +17,15 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.18
-
-    # - name: Build
-    #   env:
-    #     LEADER_URL: ${{ secrets.LEADER_URL }}
-    #     SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-    #     DISCORD_URL: ${{ secrets.DISCORD_URL }}
-    #   run: go run ./tools/leader
-
-    - uses: actions/download-artifact@v3
+    
+    - uses: actions/cache@v3
+      id: cache
       with:
-        name: diff.out
-        path: diff.out
+        path: ./.github/.cache
+        key: diff-cache
   
     - name: Run script
       run: | 
         chmod 700 ./.github/diff.sh
         ./.github/diff.sh
       shell: bash
-
-    - name: Archive diff
-      uses: actions/upload-artifact@v3
-      with:
-        name: diff.out
-        path: diff.out
