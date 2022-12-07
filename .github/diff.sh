@@ -15,6 +15,9 @@ mkdir -p .cache
 echo "list dir"
 ls -la 
 
+echo "dumping cache contents"
+cat .cache/diff.out
+
 echo "Appending to diff.out"
 echo ${dt} >> .cache/diff.out
 
