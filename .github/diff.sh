@@ -22,4 +22,4 @@ echo "list cache"
 ls -la .cache
 
 echo "dumping cache contents"
-cat ./cache/diff.out
+cat .cache/diff.out
