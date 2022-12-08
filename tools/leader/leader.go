@@ -222,8 +222,13 @@ func main() {
 		reader := bytes.NewReader(dataB)
 		// reader := strings.NewReader(results.String())
 
-		_, err = http.Post(discordURL, "application/json", reader)
+		resp, err := http.Post(discordURL, "application/json", reader)
 		util.Check(err)
+
+		dataB, err = ioutil.ReadAll(resp.Body)
+		util.Check(err)
+
+		log.Printf("Discord POST StatusCode [%v], Body: %v", resp.StatusCode, string(dataB))
 	}
 }
 
