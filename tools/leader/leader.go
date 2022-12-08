@@ -177,7 +177,13 @@ func main() {
 		}
 
 		fmt.Fprintf(results, "%+v\n", m.Name)
-		for _, day := range dayKeys {
+
+		daysToUse := dayKeys
+		if len(daysToUse) > 2 {
+			daysToUse = daysToUse[len(daysToUse)-2:]
+		}
+
+		for _, day := range daysToUse {
 			stars := m.CompletionDayLevel[day]
 
 			sortedStarsKeys := util.SortMapKeys(stars)
@@ -224,6 +230,7 @@ func main() {
 
 		resp, err := http.Post(discordURL, "application/json", reader)
 		util.Check(err)
+		defer resp.Body.Close()
 
 		dataB, err = ioutil.ReadAll(resp.Body)
 		util.Check(err)
