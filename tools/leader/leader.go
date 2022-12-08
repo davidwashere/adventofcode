@@ -90,7 +90,7 @@ func pullLeaderboard() []byte {
 	util.Check(err)
 
 	if resp.StatusCode != 200 {
-		fmt.Printf("Error, status code != 200: [%v]:%v\n", resp.StatusCode, resp.Status)
+		log.Printf("Error, status code != 200: [%v]:%v\n", resp.StatusCode, resp.Status)
 		os.Exit(1)
 	}
 
@@ -141,12 +141,12 @@ func main() {
 		}
 
 		if os.Getenv(sessionTokenEnvKey) == "" {
-			fmt.Printf("Missing env key: %v\n", sessionTokenEnvKey)
+			log.Printf("Missing env key: %v\n", sessionTokenEnvKey)
 			os.Exit(1)
 		}
 
 		if os.Getenv(leaderboardURLEnvKey) == "" {
-			fmt.Printf("Missing env key: %v\n", leaderboardURLEnvKey)
+			log.Printf("Missing env key: %v\n", leaderboardURLEnvKey)
 			os.Exit(1)
 		}
 
@@ -202,9 +202,12 @@ func main() {
 		fmt.Fprintln(results)
 	}
 
+	fmt.Println("---")
 	fmt.Print(results.String())
+	fmt.Println("---")
 
 	discordURL := os.Getenv(discordURLEnvKey)
+	log.Printf("%v length: %v", discordURLEnvKey, len(discordURL))
 	if len(discordURL) > 0 {
 		// GITHUB_EVENT_NAME=schedule for cron workflows
 		data := struct {
