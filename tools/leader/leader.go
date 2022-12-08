@@ -11,6 +11,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -21,6 +22,7 @@ var (
 	sessionTokenEnvKey   = "SESSION_COOKIE"
 	leaderboardURLEnvKey = "LEADER_URL"
 	discordURLEnvKey     = "DISCORD_URL"
+	numStarsEnvKey       = "NUM_STARS_TO_PRINT"
 	leaderboardCacheFile = ".cache.leader"
 )
 
@@ -168,6 +170,15 @@ func main() {
 
 	results := new(strings.Builder)
 
+	numStars := util.MaxInt
+	numStarsStr := os.Getenv(numStarsEnvKey)
+	if len(numStarsStr) > 0 {
+		t, err := strconv.Atoi(numStarsStr)
+		if err == nil {
+			numStars = t
+		}
+	}
+
 	// Print the users, days, stars, and timestamps
 	for _, m := range l.Members {
 
@@ -179,8 +190,8 @@ func main() {
 		fmt.Fprintf(results, "%+v\n", m.Name)
 
 		daysToUse := dayKeys
-		if len(daysToUse) > 2 {
-			daysToUse = daysToUse[len(daysToUse)-2:]
+		if len(daysToUse) > numStars {
+			daysToUse = daysToUse[len(daysToUse)-numStars:]
 		}
 
 		for _, day := range daysToUse {

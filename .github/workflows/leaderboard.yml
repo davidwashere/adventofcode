@@ -25,4 +25,5 @@ jobs:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
         DISCORD_URL: ${{ secrets.DISCORD_URL }}
+        NUM_STARS_TO_PRINT: 2
       run: go run ./tools/leader
