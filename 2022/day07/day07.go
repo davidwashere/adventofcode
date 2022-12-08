@@ -2,8 +2,6 @@ package day07
 
 import (
 	"aoc/util"
-	"fmt"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -20,7 +18,7 @@ type file struct {
 	size int
 }
 
-func part1(inputfile string) int {
+func buildFS(inputfile string) map[string]*dir {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
 	dirs := map[string]*dir{}
@@ -76,41 +74,25 @@ func part1(inputfile string) int {
 		}
 	}
 
-	result := DFS(dirs["/"], 100000)
-
-	return result
-}
-
-func DFS(root *dir, maxSize int) int {
-
-	total := 0
-
-	var dfsR func(cur *dir) int
-	dfsR = func(cur *dir) int {
+	var populateAggSizes func(cur *dir)
+	populateAggSizes = func(cur *dir) {
 		if len(cur.dirs) == 0 {
-			return cur.totalSize
+			return
 		}
 
 		totalSubSize := 0
 		for _, d := range cur.dirs {
-			r := dfsR(d)
-			if r < maxSize {
-				total += r
-				fmt.Printf("adding %v of size %v\n", d.name, r)
-			}
-
-			totalSubSize += r
+			populateAggSizes(d)
+			totalSubSize += d.totalSize
 		}
 
-		return totalSubSize + cur.totalSize
+		cur.totalSize += totalSubSize
 	}
 
-	r := dfsR(root)
-	if r < maxSize {
-		total += r
-	}
+	root := dirs["/"]
+	populateAggSizes(root)
 
-	return total
+	return dirs
 }
 
 func pathKey(path util.StringStack) string {
@@ -135,120 +117,34 @@ func parentKey(path util.StringStack) string {
 	return pathKey(pPath)
 }
 
-func part2(inputfile string) int {
-	data, _ := util.ReadFileToStringSlice(inputfile)
+func part1(inputfile string) int {
+	dirs := buildFS(inputfile)
 
-	dirs := map[string]*dir{}
-	path := util.NewStringStack()
-	for _, line := range data {
-		parts := strings.Split(line, " ")
-
-		if parts[0] == "$" {
-			if parts[1] == "cd" {
-				if parts[2] == ".." {
-					path.Pop()
-				} else {
-					// changed to dir
-					name := parts[2]
-					path.Push(name)
-
-					key := pathKey(path)
-
-					d := new(dir)
-					d.name = name
-
-					_, ok := dirs[key]
-					if ok {
-						panic("Visited dir twice - needs handling")
-					}
-					dirs[key] = d
-
-					if len(key) > 1 {
-						// not root dir, so lets add this dir to parent
-						pKey := parentKey(path)
-						pDir := dirs[pKey]
-						pDir.dirs = append(pDir.dirs, d)
-					}
-				}
-			}
-			// ls is ignored
-		} else if parts[0] == "dir" {
-		} else {
-			// is file
-			name := parts[1]
-
-			sizeStr := parts[0]
-			size, _ := strconv.Atoi(sizeStr)
-
-			f := &file{name, size}
-
-			d := dirs[pathKey(path)]
-			d.files = append(d.files, f)
-			d.totalSize += f.size
+	result := 0
+	for _, d := range dirs {
+		if d.totalSize < 100000 {
+			result += d.totalSize
 		}
 	}
+
+	return result
+}
+
+func part2(inputfile string) int {
+	dirs := buildFS(inputfile)
 
 	root := dirs["/"]
 
-	totalSize := totalSize(root)
-	unused := 70000000 - totalSize
+	unused := 70000000 - root.totalSize
 
-	// delete a directory that can free up at least needed amt
-	needed := 30000000 - unused
+	needToDeleteThisMuch := 30000000 - unused
 
-	candidates := dirsWithSizeGreaterThan(root, needed)
-	sort.Ints(candidates)
-
-	return candidates[0]
-}
-
-func totalSize(root *dir) int {
-	var dfsR func(cur *dir) int
-	dfsR = func(cur *dir) int {
-		if len(cur.dirs) == 0 {
-			return cur.totalSize
+	low := util.MaxInt
+	for _, d := range dirs {
+		if d.totalSize >= needToDeleteThisMuch {
+			low = util.Min(low, d.totalSize)
 		}
-
-		totalSubSize := 0
-		for _, d := range cur.dirs {
-			r := dfsR(d)
-			totalSubSize += r
-		}
-
-		return totalSubSize + cur.totalSize
 	}
 
-	r := dfsR(root)
-
-	return r
-}
-
-func dirsWithSizeGreaterThan(root *dir, minSize int) []int {
-	candidates := []int{}
-
-	var dfsR func(cur *dir) int
-	dfsR = func(cur *dir) int {
-		if len(cur.dirs) == 0 {
-			return cur.totalSize
-		}
-
-		totalSubSize := 0
-		for _, d := range cur.dirs {
-			r := dfsR(d)
-			if r > minSize {
-				candidates = append(candidates, r)
-			}
-
-			totalSubSize += r
-		}
-
-		return totalSubSize + cur.totalSize
-	}
-
-	r := dfsR(root)
-	if r > minSize {
-		candidates = append(candidates, r)
-	}
-
-	return candidates
+	return low
 }
