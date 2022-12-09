@@ -13,7 +13,6 @@ import (
 // - only consumes memory for values that have been set
 // - x,y can be negative, positive, and to infinity (Max Int)
 // - coordinates can be set in any dimension (2d, 4d, 100d)
-//
 type InfGrid struct {
 	// Grid data, the first `string` key represents the dimension
 	//  i.e. "1" is z=1, "1,2" is z=1, w=2, and so on
@@ -256,10 +255,11 @@ func (g *InfGrid) Height() int {
 // getAllDims will produce a list of all combinations (permutations) of all dimensions so that they
 // be interated through - for example, if valid dimensional coordinates are z=1, z=2, w=1, y=2, the
 // output would be the following to represent all the different dimenions
-//   z=1, w=1
-//   z=1, w=2
-//   z=2, w=1
-//   z=2, w=2
+//
+//	z=1, w=1
+//	z=1, w=2
+//	z=2, w=1
+//	z=2, w=2
 func getAllDims(dimExtents []extents) [][]int {
 	allDims := &[][]int{}
 
@@ -362,6 +362,50 @@ func (g *InfGrid) VisitAll4D(visitFunc func(val interface{}, x int, y int, z int
 					visitFunc(g.Get(x, y, z, w), x, y, z, w)
 				}
 			}
+		}
+	}
+}
+
+// VisitN2D will visit every coord north of the provided coordinate, moving outward, stopping when it
+// hits a min/max coord. Return false from visitFunc to stop visiting
+func (g *InfGrid) VisitN2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+	for i := y + 1; i <= g.GetMaxY(); i++ {
+		v := g.Get(x, i)
+		if !visitFunc(v, x, i) {
+			break
+		}
+	}
+}
+
+// VisitS2D will visit every coord south of the provided coordinate, moving outward, stopping when it
+// hits a min/max coord. Return false from visitFunc to stop visiting
+func (g *InfGrid) VisitS2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+	for i := y - 1; i >= g.GetMinY(); i-- {
+		v := g.Get(x, i)
+		if !visitFunc(v, x, i) {
+			break
+		}
+	}
+}
+
+// VisitE2D will visit every coord east of the provided coordinate, moving outward, stopping when it
+// hits a min/max coord. Return false from visitFunc to stop visiting
+func (g *InfGrid) VisitE2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+	for i := x + 1; i <= g.GetMaxX(); i++ {
+		v := g.Get(i, y)
+		if !visitFunc(v, i, y) {
+			break
+		}
+	}
+}
+
+// VisitW2D will visit every coord west of the provided coordinate, moving outward, stopping when it
+// hits a min/max coord. Return false from visitFunc to stop visiting
+func (g *InfGrid) VisitW2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+	for i := x - 1; i >= g.GetMinX(); i-- {
+		v := g.Get(i, y)
+		if !visitFunc(v, i, y) {
+			break
 		}
 	}
 }
