@@ -11,6 +11,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -179,8 +180,11 @@ func main() {
 		}
 	}
 
+	memberKeys := sortMapKeysByMembersName(l.Members)
+
 	// Print the users, days, stars, and timestamps
-	for _, m := range l.Members {
+	for _, mKey := range memberKeys {
+		m := l.Members[mKey]
 
 		dayKeys := util.SortMapKeysInt(m.CompletionDayLevel)
 		if len(dayKeys) == 0 {
@@ -254,4 +258,21 @@ func main() {
 func fTime(t time.Time) string {
 	loc, _ := time.LoadLocation("America/Chicago")
 	return t.In(loc).Format("2006-01-02 03:04 PM")
+}
+
+func sortMapKeysByMembersName(m map[string]Member) []string {
+	keys := []string{}
+
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		a := strings.ToLower(m[keys[i]].Name)
+		b := strings.ToLower(m[keys[j]].Name)
+
+		return a < b
+	})
+
+	return keys
 }
