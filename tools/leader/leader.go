@@ -11,6 +11,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -21,6 +22,7 @@ var (
 	sessionTokenEnvKey   = "SESSION_COOKIE"
 	leaderboardURLEnvKey = "LEADER_URL"
 	discordURLEnvKey     = "DISCORD_URL"
+	numStarsEnvKey       = "NUM_STARS_TO_PRINT"
 	leaderboardCacheFile = ".cache.leader"
 )
 
@@ -90,7 +92,7 @@ func pullLeaderboard() []byte {
 	util.Check(err)
 
 	if resp.StatusCode != 200 {
-		fmt.Printf("Error, status code != 200: [%v]:%v\n", resp.StatusCode, resp.Status)
+		log.Printf("Error, status code != 200: [%v]:%v\n", resp.StatusCode, resp.Status)
 		os.Exit(1)
 	}
 
@@ -141,12 +143,12 @@ func main() {
 		}
 
 		if os.Getenv(sessionTokenEnvKey) == "" {
-			fmt.Printf("Missing env key: %v\n", sessionTokenEnvKey)
+			log.Printf("Missing env key: %v\n", sessionTokenEnvKey)
 			os.Exit(1)
 		}
 
 		if os.Getenv(leaderboardURLEnvKey) == "" {
-			fmt.Printf("Missing env key: %v\n", leaderboardURLEnvKey)
+			log.Printf("Missing env key: %v\n", leaderboardURLEnvKey)
 			os.Exit(1)
 		}
 
@@ -168,6 +170,15 @@ func main() {
 
 	results := new(strings.Builder)
 
+	numStars := util.MaxInt
+	numStarsStr := os.Getenv(numStarsEnvKey)
+	if len(numStarsStr) > 0 {
+		t, err := strconv.Atoi(numStarsStr)
+		if err == nil {
+			numStars = t
+		}
+	}
+
 	// Print the users, days, stars, and timestamps
 	for _, m := range l.Members {
 
@@ -177,7 +188,13 @@ func main() {
 		}
 
 		fmt.Fprintf(results, "%+v\n", m.Name)
-		for _, day := range dayKeys {
+
+		daysToUse := dayKeys
+		if len(daysToUse) > numStars {
+			daysToUse = daysToUse[len(daysToUse)-numStars:]
+		}
+
+		for _, day := range daysToUse {
 			stars := m.CompletionDayLevel[day]
 
 			sortedStarsKeys := util.SortMapKeys(stars)
@@ -202,9 +219,12 @@ func main() {
 		fmt.Fprintln(results)
 	}
 
+	fmt.Println("---")
 	fmt.Print(results.String())
+	fmt.Println("---")
 
 	discordURL := os.Getenv(discordURLEnvKey)
+	log.Printf("%v length: %v", discordURLEnvKey, len(discordURL))
 	if len(discordURL) > 0 {
 		// GITHUB_EVENT_NAME=schedule for cron workflows
 		data := struct {
@@ -219,8 +239,14 @@ func main() {
 		reader := bytes.NewReader(dataB)
 		// reader := strings.NewReader(results.String())
 
-		_, err = http.Post(discordURL, "application/json", reader)
+		resp, err := http.Post(discordURL, "application/json", reader)
 		util.Check(err)
+		defer resp.Body.Close()
+
+		dataB, err = ioutil.ReadAll(resp.Body)
+		util.Check(err)
+
+		log.Printf("Discord POST StatusCode [%v], Body: %v", resp.StatusCode, string(dataB))
 	}
 }
 

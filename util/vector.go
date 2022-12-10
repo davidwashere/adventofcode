@@ -4,6 +4,18 @@ import (
 	"math"
 )
 
+var (
+	VectorNorth = NewNormalizedVector(0, 1)
+	VectorSouth = NewNormalizedVector(0, -1)
+	VectorEast  = NewNormalizedVector(1, 0)
+	VectorWest  = NewNormalizedVector(-1, 0)
+
+	VectorNorthEast = NewNormalizedVector(1, 1)
+	VectorSouthEast = NewNormalizedVector(1, -1)
+	VectorSouthWest = NewNormalizedVector(-1, -1)
+	VectorNorthWest = NewNormalizedVector(-1, 1)
+)
+
 // Vector holds direction and magnitude
 type Vector struct {
 	X int
