@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+// https://github.com/DanielChappuis/opengl-framework/blob/master/src/maths/Vector2.h
+
 // InfGrid represents an Infinity Grid
 //
 // An infinity grid allows for coordinates to be set in any
@@ -696,7 +698,7 @@ func (g *InfGrid) Delete(x, y int, dims ...int) interface{} {
 	return v
 }
 
-// IsOutsideExtents returns true of given coords and dimensation are outside the extents
+// IsOutsideExtents returns true of given coords and dimension are outside the extents
 // of the grid
 func (g *InfGrid) IsOutsideExtents(x, y int, dims ...int) bool {
 	// If the x,y coord is outside current extents
@@ -717,4 +719,31 @@ func (g *InfGrid) IsOutsideExtents(x, y int, dims ...int) bool {
 	}
 
 	return false
+}
+
+// Len will return the number of set data points for the given dimension
+// For example, if grid was initialized like:
+//
+//	grid.Set("A", 0, 0)
+//	grid.set("B", 10,10)
+//
+// Then
+//
+//	grid.Len() // -> 2
+//
+// Because two points had been set, irregardless of the grid width/height of 10
+//
+// Note: to ensure a previously set point will not be included in Len, it needs
+// to be deleted with [Delete]
+func (g *InfGrid) Len(dims ...int) int {
+	data := g.data
+	dimKey := _createInfGridDimKey(dims...)
+
+	plane := data[dimKey]
+
+	count := 0
+	for x := range plane {
+		count += len(plane[x])
+	}
+	return count
 }

@@ -437,3 +437,46 @@ func TestVisitDiag(t *testing.T) {
 		t.Errorf("Unexpected visit x=%v y=%v val=%v", x, y, val)
 	})
 }
+
+func TestLen(t *testing.T) {
+	g := NewInfGrid()
+	g.Set("A", 0, 0)
+	g.Set("B", 5, 5)
+	g.Set("C", 0, 5)
+
+	// g.WithDefaultValue(".")
+	// g.Dump()
+	want := 3
+
+	got := g.Len()
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	// overwrite a value, len should not change
+	g.Set("D", 0, 5)
+
+	got = g.Len()
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	// delete a value and len should be reduced
+	want = 2
+	g.Delete(0, 5)
+	got = g.Len()
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	// try another dimension
+	g.Set("Z", 5, 5, 1)
+	// there should only be one coordinate in this dimension
+	want = 1
+	got = g.Len(1) // use z=1
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+}
