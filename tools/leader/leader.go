@@ -171,7 +171,7 @@ func main() {
 	// Print the users, days, stars, and timestamps
 	for _, m := range l.Members {
 
-		dayKeys := util.SortMapKeys(m.CompletionDayLevel)
+		dayKeys := util.SortMapKeysInt(m.CompletionDayLevel)
 		if len(dayKeys) == 0 {
 			continue
 		}
