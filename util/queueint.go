@@ -1,5 +1,29 @@
 package util
 
+import "math/big"
+
+type BigIntQueue []*big.Int
+
+func NewBigIntQueue() BigIntQueue {
+	return []*big.Int{}
+}
+
+func (s *BigIntQueue) IsEmpty() bool {
+	return len(*s) == 0
+}
+
+func (s *BigIntQueue) Enqueue(ele *big.Int) {
+	*s = append(*s, ele)
+}
+
+// Dequeue .
+func (s *BigIntQueue) Dequeue() *big.Int {
+	result := (*s)[0]
+	// (*s)[0] = 0
+	(*s) = (*s)[1:]
+	return result
+}
+
 // IntQueue holds ints
 type IntQueue []int
 
