@@ -183,6 +183,8 @@ func part2(inputfile string, rounds int) int {
 
 	// part2 hack
 	// "find another way to keep your worry levels manageable"
+	// find a divisor to reduce the worry level by that will not throw the math off but
+	// keep the numbers from getting too high
 	lcm := big.NewInt(1)
 	for _, monkey := range monkeys {
 		lcm.Mul(lcm, monkey.test)
