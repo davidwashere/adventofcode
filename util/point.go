@@ -15,14 +15,19 @@ func NewPoint(x, y int) Point {
 	return Point{x, y}
 }
 
+// DistOrthoDiag calculates the number of 'steps' between two points
+// where horizontal, vertical, and diagonal moves are allowed
 func (p Point) DistOrtho(p2 Point) int {
 	return DistOrtho(p.X, p.Y, p2.X, p2.Y)
 }
 
+// DistOrthoDiag calculates the number of 'steps' between two points
+// where horizontal, vertical, and diagonal moves are allowed
 func (p Point) DistOrthoDiag(p2 Point) int {
 	return DistOrthoDiag(p.X, p.Y, p2.X, p2.Y)
 }
 
+// Dist calculates the distance between two points 'as the bird flys'
 func (p Point) Dist(p2 Point) float64 {
 	return Dist(p.X, p.Y, p2.X, p2.Y)
 }
@@ -66,8 +71,8 @@ func DistOrthoDiag(x1, y1, x2, y2 int) int {
 	return Max(Abs(x1-x2), Abs(y1-y2))
 }
 
-// DistOrtho calculates the number of 'steps' between two points
-// where horizontal and vertical (not diagonal) moves are allowed
+// DistOrthoDiag calculates the number of 'steps' between two points
+// where horizontal, vertical, and diagonal moves are allowed
 func DistOrtho(x1, y1, x2, y2 int) int {
 	h := Abs(x1 - x2)
 	v := Abs(y1 - y2)
