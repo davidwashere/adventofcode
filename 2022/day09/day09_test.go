@@ -1,7 +1,6 @@
 package day09
 
 import (
-	"aoc/util"
 	"fmt"
 	"testing"
 )
@@ -22,18 +21,6 @@ func TestP1_Actual(t *testing.T) {
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}
-}
-
-func TestTowardVec(t *testing.T) {
-	p1 := util.NewPoint(-3, 6)
-	p2 := util.NewPoint(-2, 8)
-
-	v := p1.TowardVector(p2)
-
-	if v.X != -1 || v.Y != -1 {
-		t.Errorf("ya nope %+v", v)
-	}
-
 }
 
 func TestP2(t *testing.T) {

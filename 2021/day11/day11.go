@@ -6,10 +6,10 @@ import (
 	"strconv"
 )
 
-func loadGrid(inputfile string) *util.InfGrid {
+func loadGrid(inputfile string) *util.InfGrid[int] {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
-	grid := util.NewInfGrid()
+	grid := util.NewInfGrid[int]()
 
 	y := 0
 	for _, line := range data {
@@ -54,6 +54,7 @@ func popItemFromMap(m map[Coord]bool) (Coord, error) {
 
 func part1(inputfile string) int {
 	grid := loadGrid(inputfile)
+	grid.WithDefaultValue(util.MinInt)
 
 	numFlashes := 0
 	steps := 100
@@ -62,8 +63,8 @@ func part1(inputfile string) int {
 		pending := map[Coord]bool{}
 
 		// increase all by 1
-		grid.VisitAll2D(func(val interface{}, x, y int) {
-			n := val.(int)
+		grid.VisitAll2D(func(val int, x, y int) {
+			n := val
 
 			n++
 			if n > 9 {
@@ -78,9 +79,9 @@ func part1(inputfile string) int {
 		for len(pending) > 0 {
 			c, _ := popItemFromMap(pending)
 
-			grid.VisitOrthoAndDiag(c.x, c.y, func(val interface{}, x, y int) {
+			grid.VisitOrthoAndDiag(c.x, c.y, func(val int, x, y int) {
 				// if val == nil, that means is outside bounds of grid
-				if val == nil {
+				if val == util.MinInt {
 					return
 				}
 
@@ -95,7 +96,7 @@ func part1(inputfile string) int {
 					return
 				}
 
-				n := val.(int)
+				n := val
 				n++
 				if n > 9 {
 					pending[curC] = true
@@ -120,6 +121,7 @@ func part1(inputfile string) int {
 
 func part2(inputfile string) int {
 	grid := loadGrid(inputfile)
+	grid.WithDefaultValue(util.MinInt)
 
 	target := grid.Width() * grid.Height()
 
@@ -130,8 +132,8 @@ func part2(inputfile string) int {
 		pending := map[Coord]bool{}
 
 		// increase all by 1
-		grid.VisitAll2D(func(val interface{}, x, y int) {
-			n := val.(int)
+		grid.VisitAll2D(func(val int, x, y int) {
+			n := val
 
 			n++
 			if n > 9 {
@@ -146,9 +148,9 @@ func part2(inputfile string) int {
 		for len(pending) > 0 {
 			c, _ := popItemFromMap(pending)
 
-			grid.VisitOrthoAndDiag(c.x, c.y, func(val interface{}, x, y int) {
+			grid.VisitOrthoAndDiag(c.x, c.y, func(val int, x, y int) {
 				// if val == nil, that means is outside bounds of grid
-				if val == nil {
+				if val == util.MinInt {
 					return
 				}
 
@@ -163,7 +165,7 @@ func part2(inputfile string) int {
 					return
 				}
 
-				n := val.(int)
+				n := val
 				n++
 				if n > 9 {
 					pending[curC] = true

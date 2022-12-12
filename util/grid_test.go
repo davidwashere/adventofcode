@@ -16,7 +16,7 @@ func TestInfGridDimKey(t *testing.T) {
 }
 
 func TestInfGridSetGet(t *testing.T) {
-	grid := NewInfGrid()
+	grid := NewInfGrid[string]()
 	// 2D
 	grid.Set("a", 0, 0)
 	grid.Set("b", 1, 1)
@@ -40,7 +40,7 @@ func TestInfGridSetGet(t *testing.T) {
 }
 
 func TestInfGridWidth(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	vf(t, g.Width(), 0)
 
 	g.Set("A", 0, 0)
@@ -49,19 +49,19 @@ func TestInfGridWidth(t *testing.T) {
 	g.Set("D", -1, 1)
 	vf(t, g.Width(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", 2, 0)
 	g.Set("B", 3, 0)
 	g.Set("C", 4, 0)
 	vf(t, g.Width(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", -2, 0)
 	g.Set("B", -3, 0)
 	g.Set("C", -4, 0)
 	vf(t, g.Width(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", -2, 0, -1)
 	g.Set("B", -3, 0, 1)
 	g.Set("C", -4, 0, 20)
@@ -69,7 +69,7 @@ func TestInfGridWidth(t *testing.T) {
 }
 
 func TestInfGridHeight(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	vf(t, g.Height(), 0)
 
 	g.Set("A", 0, 0)
@@ -77,19 +77,19 @@ func TestInfGridHeight(t *testing.T) {
 	g.Set("B", 0, -1)
 	vf(t, g.Height(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", 0, 2)
 	g.Set("B", 0, 3)
 	g.Set("C", 0, 4)
 	vf(t, g.Height(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", 0, -2)
 	g.Set("B", 0, -3)
 	g.Set("C", 0, -4)
 	vf(t, g.Height(), 3)
 
-	g = NewInfGrid()
+	g = NewInfGrid[string]()
 	g.Set("A", 0, -2, -1)
 	g.Set("B", 0, -3, 1)
 	g.Set("C", 0, -4, 20)
@@ -132,14 +132,14 @@ func TestInfGridAllDims(t *testing.T) {
 }
 
 func TestInfGridLockBounds(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	g.Set("A", 0, 0)
 	g.LockBounds()
 	g.Set("C", 1, 1)
 	g.Set("B", -1, -1)
 
-	g.VisitAll2D(func(val interface{}, x, y int) {
-		v := val.(string)
+	g.VisitAll2D(func(val string, x, y int) {
+		v := val
 		vf(t, v, "A")
 	})
 
@@ -155,7 +155,7 @@ func TestInfGridLockBounds(t *testing.T) {
 }
 
 func TestInfGridSet2DExtents(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	g.Set("A", 0, 0)
 	g.Set("B", 3, 3)
 	g.SetExtents(-5, -5, 5, 5)
@@ -163,13 +163,13 @@ func TestInfGridSet2DExtents(t *testing.T) {
 	vf(t, g.Width(), 11)
 
 	g.SetExtents(0, 0, 2, 2)
-	vf(t, g.Get(3, 3), nil)
+	vf(t, g.Get(3, 3), "")
 	g.SetExtents(0, 0, 4, 4)
 	vf(t, g.Get(3, 3), "B")
 }
 
 func TestInfGridFlips(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	// B    C
 	//
 	//
@@ -235,7 +235,7 @@ func TestInfGridFlips(t *testing.T) {
 }
 
 func TestInfGridRotate(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	// B    C
 	//
 	//
@@ -296,18 +296,18 @@ func TestInfGridRotate(t *testing.T) {
 	vf(t, g.Get(5, 0), "B")
 }
 
-func conv(in []interface{}) string {
+func conv(in []string) string {
 	out := ""
 
 	for _, v := range in {
-		out += v.(string)
+		out += v
 	}
 
 	return out
 }
 
 func TestInfGridDirectionalEdges(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	// BC
 	// AD
 	g.Set("A", 0, 0)
@@ -359,7 +359,7 @@ func TestInfGridDirectionalEdges(t *testing.T) {
 }
 
 func TestVisitOrtho(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	// BC
 	// AD
 	g.Set("A", 0, 0)
@@ -367,7 +367,7 @@ func TestVisitOrtho(t *testing.T) {
 	g.Set("C", 1, 1)
 	g.Set("D", 1, 0)
 
-	g.VisitOrtho(0, 0, func(val interface{}, x, y int) {
+	g.VisitOrtho(0, 0, func(val string, x, y int) {
 		if x == 0 && y == 1 {
 			vf(t, val, "B")
 			return
@@ -379,7 +379,7 @@ func TestVisitOrtho(t *testing.T) {
 		}
 
 		if (x == 0 && y == -1) || (x == -1 && y == 0) {
-			vf(t, val, nil)
+			vf(t, val, "")
 			return
 		}
 
@@ -388,7 +388,7 @@ func TestVisitOrtho(t *testing.T) {
 
 	g.LockBounds()
 
-	g.VisitOrtho(0, 0, func(val interface{}, x, y int) {
+	g.VisitOrtho(0, 0, func(val string, x, y int) {
 		if x == 0 && y == 1 {
 			vf(t, val, "B")
 			return
@@ -404,7 +404,7 @@ func TestVisitOrtho(t *testing.T) {
 }
 
 func TestVisitDiag(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	// BC
 	// AD
 	g.Set("A", 0, 0)
@@ -412,14 +412,14 @@ func TestVisitDiag(t *testing.T) {
 	g.Set("C", 1, 1)
 	g.Set("D", 1, 0)
 
-	g.VisitDiag(0, 0, func(val interface{}, x, y int) {
+	g.VisitDiag(0, 0, func(val string, x, y int) {
 		if x == 1 && y == 1 {
 			vf(t, val, "C")
 			return
 		}
 
 		if (x == 1 && y == -1) || (x == -1 && y == -1) || (x == -1 && y == 1) {
-			vf(t, val, nil)
+			vf(t, val, "")
 			return
 		}
 
@@ -428,7 +428,7 @@ func TestVisitDiag(t *testing.T) {
 
 	g.LockBounds()
 
-	g.VisitDiag(0, 0, func(val interface{}, x, y int) {
+	g.VisitDiag(0, 0, func(val string, x, y int) {
 		if x == 1 && y == 1 {
 			vf(t, val, "C")
 			return
@@ -439,7 +439,7 @@ func TestVisitDiag(t *testing.T) {
 }
 
 func TestLen(t *testing.T) {
-	g := NewInfGrid()
+	g := NewInfGrid[string]()
 	g.Set("A", 0, 0)
 	g.Set("B", 5, 5)
 	g.Set("C", 0, 5)

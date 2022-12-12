@@ -14,11 +14,11 @@ type fold struct {
 // Grid default value
 var Def = "."
 
-func loadData(inputfile string) (*util.InfGrid, []fold) {
+func loadData(inputfile string) (*util.InfGrid[string], []fold) {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
 	folds := []fold{}
-	grid := util.NewInfGrid()
+	grid := util.NewInfGrid[string]()
 	grid.WithDefaultValue(".")
 
 	for _, line := range data {
@@ -48,11 +48,11 @@ func part1(inputfile string) int {
 	grid, folds := loadData(inputfile)
 
 	fold := folds[0]
-	nGrid := util.NewInfGrid()
+	nGrid := util.NewInfGrid[string]()
 	nGrid.WithDefaultValue(Def)
 
-	grid.VisitAll2D(func(val interface{}, x, y int) {
-		if val.(string) == Def {
+	grid.VisitAll2D(func(val string, x, y int) {
+		if val == Def {
 			return
 		}
 
@@ -66,8 +66,8 @@ func part1(inputfile string) int {
 	})
 
 	result := 0
-	nGrid.VisitAll2D(func(val interface{}, x, y int) {
-		if val.(string) == "#" {
+	nGrid.VisitAll2D(func(val string, x, y int) {
+		if val == "#" {
 			result++
 		}
 	})
@@ -79,7 +79,7 @@ func part2(inputfile string) int {
 	grid, folds := loadData(inputfile)
 
 	for _, fold := range folds {
-		nGrid := util.NewInfGrid()
+		nGrid := util.NewInfGrid[string]()
 		nGrid.WithDefaultValue(Def)
 
 		if fold.horizontal {
@@ -88,8 +88,8 @@ func part2(inputfile string) int {
 			nGrid.SetExtents(0, 0, fold.pos-1, grid.Height()-1)
 		}
 
-		grid.VisitAll2D(func(val interface{}, x, y int) {
-			if val.(string) == Def {
+		grid.VisitAll2D(func(val string, x, y int) {
+			if val == Def {
 				return
 			}
 

@@ -35,7 +35,7 @@ func TestP2(t *testing.T) {
 func TestP2_Actual(t *testing.T) {
 	got := part2("input.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := 0
+	want := 332640
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}

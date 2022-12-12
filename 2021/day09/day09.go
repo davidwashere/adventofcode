@@ -8,10 +8,11 @@ import (
 	"strings"
 )
 
-func loadGrid(inputfile string) *util.InfGrid {
+func loadGrid(inputfile string) *util.InfGrid[int] {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
-	grid := util.NewInfGrid()
+	grid := util.NewInfGrid[int]()
+	grid.WithDefaultValue(util.MinInt)
 
 	y := 0
 	for _, line := range data {
@@ -32,8 +33,8 @@ func part1(inputfile string) int {
 	grid := loadGrid(inputfile)
 
 	lowPoints := []int{}
-	grid.VisitAll2D(func(val interface{}, x, y int) {
-		if val == nil {
+	grid.VisitAll2D(func(val int, x, y int) {
+		if val == util.MinInt {
 			return
 		}
 
@@ -41,14 +42,14 @@ func part1(inputfile string) int {
 		neighbors := []int{}
 
 		for _, neighbor := range neighborsRaw {
-			if neighbor == nil {
+			if neighbor == util.MinInt {
 				continue
 			}
 
-			neighbors = append(neighbors, neighbor.(int))
+			neighbors = append(neighbors, neighbor)
 		}
 
-		v := val.(int)
+		v := val
 		for _, n := range neighbors {
 			if n <= v {
 				return
@@ -123,8 +124,8 @@ func part2(inputfile string) int {
 	basins := [][]int{}
 	// basins = append(basins, []int{})
 
-	grid.VisitAll2D(func(val interface{}, x, y int) {
-		v := val.(int)
+	grid.VisitAll2D(func(val int, x, y int) {
+		v := val
 		if v != 9 {
 			addToMap(unvisited, x, y, v)
 		} else {
@@ -153,11 +154,11 @@ func part2(inputfile string) int {
 	return result
 }
 
-func spread(grid *util.InfGrid, unvisited, visited map[string]int, basin []int, x, y int) []int {
+func spread(grid *util.InfGrid[int], unvisited, visited map[string]int, basin []int, x, y int) []int {
 	if isIn(unvisited, x, y) {
 		removeFromMap(unvisited, x, y)
 
-		v := grid.Get(x, y).(int)
+		v := grid.Get(x, y)
 		addToMap(visited, x, y, v)
 		basin = append(basin, v)
 		basin = spread(grid, unvisited, visited, basin, x, y+1)

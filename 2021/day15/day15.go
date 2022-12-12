@@ -11,11 +11,11 @@ type pt struct {
 }
 
 // smallestDistPt returns pt with the smallest distance in map
-func smallestDistPt(grid *util.InfGrid, q map[pt]bool) pt {
+func smallestDistPt(grid *util.InfGrid[int], q map[pt]bool) pt {
 	var lp pt
 	min := util.MaxInt
 	for k := range q {
-		v := grid.Get(k.x, k.y).(int)
+		v := grid.Get(k.x, k.y)
 
 		if v < min {
 			lp = k
@@ -26,10 +26,10 @@ func smallestDistPt(grid *util.InfGrid, q map[pt]bool) pt {
 	return lp
 }
 
-func loadFile(inputfile string) *util.InfGrid {
+func loadFile(inputfile string) *util.InfGrid[int] {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
-	weightGrid := util.NewInfGrid()
+	weightGrid := util.NewInfGrid[int]()
 
 	for y, line := range data {
 		for x, char := range line {
@@ -41,11 +41,11 @@ func loadFile(inputfile string) *util.InfGrid {
 	return weightGrid
 }
 
-func calc(weightGrid *util.InfGrid) int {
+func calc(weightGrid *util.InfGrid[int]) int {
 	// pending := []pt{}
 	pending := map[pt]bool{}
 	processed := map[pt]bool{}
-	distGrid := util.NewInfGrid()
+	distGrid := util.NewInfGrid[int]()
 	distGrid.WithDefaultValue(util.MaxInt)
 	distGrid.SetExtents(0, 0, weightGrid.Width()-1, weightGrid.Height()-1)
 	distGrid.LockBounds()
@@ -58,9 +58,9 @@ func calc(weightGrid *util.InfGrid) int {
 		delete(pending, cur)
 		processed[cur] = true
 
-		baseDist := distGrid.Get(cur.x, cur.y).(int)
+		baseDist := distGrid.Get(cur.x, cur.y)
 
-		distGrid.VisitOrtho(cur.x, cur.y, func(val interface{}, x, y int) {
+		distGrid.VisitOrtho(cur.x, cur.y, func(val int, x, y int) {
 			p := pt{x: x, y: y}
 			if processed[p] {
 				return
@@ -70,8 +70,8 @@ func calc(weightGrid *util.InfGrid) int {
 				pending[p] = true
 			}
 
-			dist := val.(int)
-			weight := weightGrid.Get(x, y).(int)
+			dist := val
+			weight := weightGrid.Get(x, y)
 
 			dist = util.Min(dist, baseDist+weight)
 
@@ -79,7 +79,7 @@ func calc(weightGrid *util.InfGrid) int {
 		})
 	}
 
-	return distGrid.Get(distGrid.Width()-1, distGrid.Height()-1).(int)
+	return distGrid.Get(distGrid.Width()-1, distGrid.Height()-1)
 }
 
 func part1(inputfile string) int {
@@ -115,7 +115,7 @@ func part2(inputfile string) int {
 
 					inc := bumps[dx][dy]
 
-					val := weightGrid.Get(x, y).(int)
+					val := weightGrid.Get(x, y)
 					val += inc
 					val = (val-1)%9 + 1
 

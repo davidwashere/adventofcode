@@ -15,15 +15,15 @@ import (
 // - only consumes memory for values that have been set
 // - x,y can be negative, positive, and to infinity (Max Int)
 // - coordinates can be set in any dimension (2d, 4d, 100d)
-type InfGrid struct {
+type InfGrid[T any] struct {
 	// Grid data, the first `string` key represents the dimension
 	//  i.e. "1" is z=1, "1,2" is z=1, w=2, and so on
 	//
 	// The two `int` keys represent the `x` and `y` positions in the 2d grid
-	data map[string]map[int]map[int]interface{}
+	data map[string]map[int]map[int]T
 
 	// Default value for positions that are not set, by default will be <nil>
-	def interface{}
+	def T
 
 	// Max and min x and y coordinate positions, applies to every x,y / 2d grid
 	xExtents extents
@@ -59,9 +59,9 @@ type extents struct {
 	max int
 }
 
-func NewInfGrid() *InfGrid {
-	grid := InfGrid{
-		data:     map[string]map[int]map[int]interface{}{},
+func NewInfGrid[T any]() *InfGrid[T] {
+	grid := InfGrid[T]{
+		data:     map[string]map[int]map[int]T{},
 		yExtents: newExtents(),
 		xExtents: newExtents(),
 	}
@@ -75,13 +75,13 @@ func newExtents() extents {
 	}
 }
 
-func (g *InfGrid) WithDefaultValue(defaultValue interface{}) *InfGrid {
+func (g *InfGrid[T]) WithDefaultValue(defaultValue T) *InfGrid[T] {
 	g.def = defaultValue
 	return g
 }
 
 // Set a value to the grid at the provided coordinates and dimensions
-func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
+func (g *InfGrid[T]) Set(val T, x, y int, dims ...int) {
 	x, y = g.applyRotateToCoords(x, y)
 
 	if g.flipH {
@@ -115,11 +115,11 @@ func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
 	data := g.data
 
 	if _, ok := data[dimKey]; !ok {
-		data[dimKey] = map[int]map[int]interface{}{}
+		data[dimKey] = map[int]map[int]T{}
 	}
 
 	if _, ok := data[dimKey][x]; !ok {
-		data[dimKey][x] = map[int]interface{}{}
+		data[dimKey][x] = map[int]T{}
 	}
 
 	data[dimKey][x][y] = val
@@ -128,7 +128,7 @@ func (g *InfGrid) Set(val interface{}, x, y int, dims ...int) {
 
 // applyRotateToCoords will manipulate x, y coords based on current rotation
 // will only manipulate coords of rotation is increment of 90
-func (g *InfGrid) applyRotateToCoords(x, y int) (int, int) {
+func (g *InfGrid[T]) applyRotateToCoords(x, y int) (int, int) {
 	// rad := float64(g.deg) * (math.Pi / 180.0)
 
 	// ca := math.Cos(rad)
@@ -158,13 +158,13 @@ func (g *InfGrid) applyRotateToCoords(x, y int) (int, int) {
 
 // NumDimensions Returns the number of explicity defined dimensions on top of x and y
 // ie: for a 3d grid will return 1, 4d grid will return 2
-func (g *InfGrid) NumDimensions() int {
+func (g *InfGrid[T]) NumDimensions() int {
 	return len(g.dimExtents)
 }
 
 // AddDimension will add another 'dimension' to the Grid
 // This can also be done by setting a value with a coordinate in the desired dimension
-func (g *InfGrid) AddDimension() {
+func (g *InfGrid[T]) AddDimension() {
 	extents := newExtents()
 	// TODO: Why did i mark these as 0 - 1?
 	extents.min = 0
@@ -174,7 +174,7 @@ func (g *InfGrid) AddDimension() {
 
 // Get a value from the grid at the provided coordinates and dimensions, returns the 'default'
 // value if the coordinate is outside the extents of the grid
-func (g *InfGrid) Get(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) Get(x, y int, dims ...int) T {
 	if !g.initialized {
 		return g.def
 	}
@@ -213,8 +213,8 @@ func (g *InfGrid) Get(x, y int, dims ...int) interface{} {
 }
 
 // GetRow returns the grid 'row' represented by the y cooirdinate and dimensions
-func (g *InfGrid) GetRow(y int, dims ...int) []interface{} {
-	var row []interface{}
+func (g *InfGrid[T]) GetRow(y int, dims ...int) []T {
+	var row []T
 	for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 		row = append(row, g.Get(x, y, dims...))
 	}
@@ -223,8 +223,8 @@ func (g *InfGrid) GetRow(y int, dims ...int) []interface{} {
 }
 
 // GetCol returns the grid 'col' represented by the x cooirdinate and dimensions
-func (g *InfGrid) GetCol(x int, dims ...int) []interface{} {
-	var col []interface{}
+func (g *InfGrid[T]) GetCol(x int, dims ...int) []T {
+	var col []T
 	for y := g.yExtents.min; y <= g.yExtents.max; y++ {
 		col = append(col, g.Get(x, y, dims...))
 	}
@@ -235,7 +235,7 @@ func (g *InfGrid) GetCol(x int, dims ...int) []interface{} {
 // Width returns the width of the grid, negative extents are taken into consideration
 // for example if there are positions set in the grid at -2,0 and 2,0, the width returned
 // would be 4
-func (g *InfGrid) Width() int {
+func (g *InfGrid[T]) Width() int {
 	if !g.initialized {
 		return 0
 	}
@@ -246,7 +246,7 @@ func (g *InfGrid) Width() int {
 // Height returns the height of the grid, negative extents are taken into consideration
 // for example if there are positions set in the grid at -2,0 and 2,0, the width returned
 // would be 4
-func (g *InfGrid) Height() int {
+func (g *InfGrid[T]) Height() int {
 	if !g.initialized {
 		return 0
 	}
@@ -315,7 +315,7 @@ func _createInfGridDimKey(dims ...int) string {
 
 // VisitAll will visit every grid coordinate with extents based on
 // the grids current width & height
-func (g *InfGrid) VisitAll(visitFunc func(val interface{}, x int, y int, dims ...int)) {
+func (g *InfGrid[T]) VisitAll(visitFunc func(val T, x int, y int, dims ...int)) {
 	allDims := getAllDims(g.dimExtents)
 
 	for _, dims := range allDims {
@@ -328,7 +328,7 @@ func (g *InfGrid) VisitAll(visitFunc func(val interface{}, x int, y int, dims ..
 }
 
 // VisitAll2D is the same as VisitAll but with all dimensions behind x, y set to 0
-func (g *InfGrid) VisitAll2D(visitFunc func(val interface{}, x int, y int)) {
+func (g *InfGrid[T]) VisitAll2D(visitFunc func(val T, x int, y int)) {
 	for y := g.yExtents.min; y <= g.yExtents.max; y++ {
 		for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 			visitFunc(g.Get(x, y), x, y)
@@ -337,7 +337,7 @@ func (g *InfGrid) VisitAll2D(visitFunc func(val interface{}, x int, y int)) {
 }
 
 // VisitAll3D is the same as VisitAll but with all dimensions behind x, y, and z set to 0
-func (g *InfGrid) VisitAll3D(visitFunc func(val interface{}, x int, y int, z int)) {
+func (g *InfGrid[T]) VisitAll3D(visitFunc func(val T, x int, y int, z int)) {
 	if g.NumDimensions() <= 0 {
 		return
 	}
@@ -352,7 +352,7 @@ func (g *InfGrid) VisitAll3D(visitFunc func(val interface{}, x int, y int, z int
 }
 
 // VisitAll4D is the same as VisitAll but with all dimensions behind x, y, z, and w set to 0
-func (g *InfGrid) VisitAll4D(visitFunc func(val interface{}, x int, y int, z int, w int)) {
+func (g *InfGrid[T]) VisitAll4D(visitFunc func(val T, x int, y int, z int, w int)) {
 	if g.NumDimensions() <= 1 {
 		return
 	}
@@ -370,7 +370,7 @@ func (g *InfGrid) VisitAll4D(visitFunc func(val interface{}, x int, y int, z int
 
 // VisitN2D will visit every coord north of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
-func (g *InfGrid) VisitN2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+func (g *InfGrid[T]) VisitN2D(x, y int, visitFunc func(val T, x int, y int) bool) {
 	for i := y + 1; i <= g.GetMaxY(); i++ {
 		v := g.Get(x, i)
 		if !visitFunc(v, x, i) {
@@ -381,7 +381,7 @@ func (g *InfGrid) VisitN2D(x, y int, visitFunc func(val interface{}, x int, y in
 
 // VisitS2D will visit every coord south of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
-func (g *InfGrid) VisitS2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+func (g *InfGrid[T]) VisitS2D(x, y int, visitFunc func(val T, x int, y int) bool) {
 	for i := y - 1; i >= g.GetMinY(); i-- {
 		v := g.Get(x, i)
 		if !visitFunc(v, x, i) {
@@ -392,7 +392,7 @@ func (g *InfGrid) VisitS2D(x, y int, visitFunc func(val interface{}, x int, y in
 
 // VisitE2D will visit every coord east of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
-func (g *InfGrid) VisitE2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+func (g *InfGrid[T]) VisitE2D(x, y int, visitFunc func(val T, x int, y int) bool) {
 	for i := x + 1; i <= g.GetMaxX(); i++ {
 		v := g.Get(i, y)
 		if !visitFunc(v, i, y) {
@@ -403,7 +403,7 @@ func (g *InfGrid) VisitE2D(x, y int, visitFunc func(val interface{}, x int, y in
 
 // VisitW2D will visit every coord west of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
-func (g *InfGrid) VisitW2D(x, y int, visitFunc func(val interface{}, x int, y int) bool) {
+func (g *InfGrid[T]) VisitW2D(x, y int, visitFunc func(val T, x int, y int) bool) {
 	for i := x - 1; i >= g.GetMinX(); i-- {
 		v := g.Get(i, y)
 		if !visitFunc(v, i, y) {
@@ -414,7 +414,7 @@ func (g *InfGrid) VisitW2D(x, y int, visitFunc func(val interface{}, x int, y in
 
 // Grow Will extend the min, max of every grid and dimension by amt
 // Useful for expanding the extents when using VisitAll
-func (g *InfGrid) Grow(amt int) {
+func (g *InfGrid[T]) Grow(amt int) {
 	g.xExtents.min -= amt
 	g.xExtents.max += amt
 	g.yExtents.min -= amt
@@ -429,7 +429,7 @@ func (g *InfGrid) Grow(amt int) {
 // Shrink will reduce the min, max of every grid and dimension by amt
 // Data previously set will remain in-tact such that if the grid is later
 // expanded the out of bounds data can be retrieved
-func (g *InfGrid) Shrink(amt int) {
+func (g *InfGrid[T]) Shrink(amt int) {
 	g.xExtents.min += amt
 	g.xExtents.max -= amt
 	g.yExtents.min += amt
@@ -442,38 +442,38 @@ func (g *InfGrid) Shrink(amt int) {
 }
 
 // GetMinX .
-func (g *InfGrid) GetMinX() int {
+func (g *InfGrid[T]) GetMinX() int {
 	return g.xExtents.min
 }
 
 // GetMinY .
-func (g *InfGrid) GetMinY() int {
+func (g *InfGrid[T]) GetMinY() int {
 	return g.yExtents.min
 }
 
 // GetMaxX .
-func (g *InfGrid) GetMaxX() int {
+func (g *InfGrid[T]) GetMaxX() int {
 	return g.xExtents.max
 }
 
 // GetMaxY .
-func (g *InfGrid) GetMaxY() int {
+func (g *InfGrid[T]) GetMaxY() int {
 	return g.yExtents.max
 }
 
 // LockBounds locks the bounds of the grid
-func (g *InfGrid) LockBounds() {
+func (g *InfGrid[T]) LockBounds() {
 	g.boundsLocked = true
 }
 
 // UnlockBounds unlocks the bounds of the grid
-func (g *InfGrid) UnlockBounds() {
+func (g *InfGrid[T]) UnlockBounds() {
 	g.boundsLocked = false
 }
 
 // SetExtents Sets the max extents for a 2d grid to the specified values
 // extents are also increased automatically when using Set
-func (g *InfGrid) SetExtents(minX, minY, maxX, maxY int) {
+func (g *InfGrid[T]) SetExtents(minX, minY, maxX, maxY int) {
 	g.xExtents.min = minX
 	g.xExtents.max = maxX
 	g.yExtents.min = minY
@@ -481,7 +481,7 @@ func (g *InfGrid) SetExtents(minX, minY, maxX, maxY int) {
 }
 
 // Dump Prints out text representation of grid, assumes each values is a single character
-func (g *InfGrid) Dump(dims ...int) {
+func (g *InfGrid[T]) Dump(dims ...int) {
 	if !g.initialized {
 		fmt.Println("Grid Not Initialized")
 	}
@@ -489,9 +489,6 @@ func (g *InfGrid) Dump(dims ...int) {
 	for y := g.yExtents.max; y >= g.yExtents.min; y-- {
 		for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 			val := g.Get(x, y, dims...)
-			if val == "" {
-				val = " "
-			}
 			fmt.Print(val)
 		}
 		fmt.Println()
@@ -499,35 +496,35 @@ func (g *InfGrid) Dump(dims ...int) {
 }
 
 // TopEdge returns the top 'row' of the grid at dimensions specified
-func (g *InfGrid) TopEdge(dims ...int) []interface{} {
+func (g *InfGrid[T]) TopEdge(dims ...int) []T {
 	return g.GetRow(g.yExtents.max, dims...)
 }
 
 // BottomEdge returns the bottom 'row' of the grid at dimensions specified
-func (g *InfGrid) BottomEdge(dims ...int) []interface{} {
+func (g *InfGrid[T]) BottomEdge(dims ...int) []T {
 	return g.GetRow(g.yExtents.min, dims...)
 }
 
 // LeftEdge returns the left 'col' of the grid at dimensions specified
-func (g *InfGrid) LeftEdge(dims ...int) []interface{} {
+func (g *InfGrid[T]) LeftEdge(dims ...int) []T {
 	return g.GetCol(g.xExtents.min, dims...)
 }
 
 // RightEdge returns the right 'col' of the grid at dimensions specified
-func (g *InfGrid) RightEdge(dims ...int) []interface{} {
+func (g *InfGrid[T]) RightEdge(dims ...int) []T {
 	return g.GetCol(g.xExtents.max, dims...)
 }
 
 // Edges returns all grid edges at the dimensions specified
-func (g *InfGrid) Edges(dims ...int) [][]interface{} {
-	var edges [][]interface{}
+func (g *InfGrid[T]) Edges(dims ...int) [][]T {
+	var edges [][]T
 	return append(edges, g.LeftEdge(), g.RightEdge(), g.TopEdge(), g.BottomEdge())
 }
 
 // EdgesFlipped returns all grid edges at the dimensions specified in reverse
 // that is edges after the grid has been flipped horizontally and vertically
-func (g *InfGrid) EdgesFlipped(dims ...int) [][]interface{} {
-	var edges [][]interface{}
+func (g *InfGrid[T]) EdgesFlipped(dims ...int) [][]T {
+	var edges [][]T
 	g.FlipH()
 	g.FlipV()
 	edges = append(edges, g.LeftEdge(), g.RightEdge(), g.TopEdge(), g.BottomEdge())
@@ -538,18 +535,18 @@ func (g *InfGrid) EdgesFlipped(dims ...int) [][]interface{} {
 }
 
 // FlipH will flip all grids horizontally (top row becomes bottom row and so on)
-func (g *InfGrid) FlipH() {
+func (g *InfGrid[T]) FlipH() {
 	g.flipH = !g.flipH
 }
 
 // FlipV will flip all grids vertically (left col becomes right col and so on)
-func (g *InfGrid) FlipV() {
+func (g *InfGrid[T]) FlipV() {
 	g.flipV = !g.flipV
 }
 
 // Rotate will rotate the grid by a certain number of degrees, if the deg's provided
 // are not an increment of 90 the function will be a noop
-func (g *InfGrid) Rotate(deg int) {
+func (g *InfGrid[T]) Rotate(deg int) {
 	if deg%90 != 0 {
 		return
 	}
@@ -559,57 +556,57 @@ func (g *InfGrid) Rotate(deg int) {
 
 // GetN will return the value north of the given coordinate (y+1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetN(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetN(x, y int, dims ...int) T {
 	return g.Get(x, y+1, dims...)
 }
 
 // GetE will return the value east of the given coordinate (x+1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetE(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetE(x, y int, dims ...int) T {
 	return g.Get(x+1, y, dims...)
 }
 
 // GetS will return the value south of the given coordinate (y-1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetS(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetS(x, y int, dims ...int) T {
 	return g.Get(x, y-1, dims...)
 }
 
 // GetW will return the value west of the given coordinate (x-1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetW(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetW(x, y int, dims ...int) T {
 	return g.Get(x-1, y, dims...)
 }
 
 // GetNE will return the value north-east of the given coordinate (x+1, y+1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetNE(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetNE(x, y int, dims ...int) T {
 	return g.Get(x+1, y+1, dims...)
 }
 
 // GetSE will return the value south-east of the given coordinate (x+1, y-1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetSE(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetSE(x, y int, dims ...int) T {
 	return g.Get(x+1, y-1, dims...)
 }
 
 // GetSW will return the value south-west of the given coordinate (x-1, y-1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetSW(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetSW(x, y int, dims ...int) T {
 	return g.Get(x-1, y-1, dims...)
 }
 
 // GetNW will return the value north-west of the given coordinate (x-1, y+1), if the coordinate is outside the extents
 // of the grid returns the default value
-func (g *InfGrid) GetNW(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) GetNW(x, y int, dims ...int) T {
 	return g.Get(x-1, y+1, dims...)
 }
 
 // GetOrtho will return the values north, east, south, and west of the given coordinate, if a coordinate is outside
 // the extents of the grid it will be set to the default
-func (g *InfGrid) GetOrtho(x, y int, dims ...int) []interface{} {
+func (g *InfGrid[T]) GetOrtho(x, y int, dims ...int) []T {
 
-	return []interface{}{
+	return []T{
 		g.GetN(x, y, dims...),
 		g.GetE(x, y, dims...),
 		g.GetS(x, y, dims...),
@@ -619,7 +616,7 @@ func (g *InfGrid) GetOrtho(x, y int, dims ...int) []interface{} {
 
 // VisitOrtho visits the coordinates orthogonal to x and y
 // If bounds are locked only visits coords within bounds
-func (g *InfGrid) VisitOrtho(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+func (g *InfGrid[T]) VisitOrtho(x, y int, visitFunc func(val T, x int, y int), dims ...int) {
 	coords := [][]int{
 		{x, y + 1}, // N
 		{x + 1, y}, // E
@@ -638,7 +635,7 @@ func (g *InfGrid) VisitOrtho(x, y int, visitFunc func(val interface{}, x int, y 
 
 // VisitDiag visits the coordinates diagonal to x and y
 // If bounds are locked only visits coords within bounds
-func (g *InfGrid) VisitDiag(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+func (g *InfGrid[T]) VisitDiag(x, y int, visitFunc func(val T, x int, y int), dims ...int) {
 	coords := [][]int{
 		{x + 1, y + 1}, // NE
 		{x + 1, y - 1}, // SE
@@ -657,9 +654,9 @@ func (g *InfGrid) VisitDiag(x, y int, visitFunc func(val interface{}, x int, y i
 
 // GetOrthoAndDiag will return the values north, east, south, west, north-east, south-east, south-west, and north-west
 // of the given coordinate, if a coordinate is outside the extents of the grid it will be set to the default
-func (g *InfGrid) GetOrthoAndDiag(x, y int, dims ...int) []interface{} {
+func (g *InfGrid[T]) GetOrthoAndDiag(x, y int, dims ...int) []T {
 
-	return []interface{}{
+	return []T{
 		g.GetN(x, y, dims...),
 		g.GetNE(x, y, dims...),
 		g.GetE(x, y, dims...),
@@ -673,13 +670,13 @@ func (g *InfGrid) GetOrthoAndDiag(x, y int, dims ...int) []interface{} {
 
 // VisitOrthoAndDiag visits the coordinates orthogonal and diagonal to x and y
 // If bounds are locked only visits coords within bounds
-func (g *InfGrid) VisitOrthoAndDiag(x, y int, visitFunc func(val interface{}, x int, y int), dims ...int) {
+func (g *InfGrid[T]) VisitOrthoAndDiag(x, y int, visitFunc func(val T, x int, y int), dims ...int) {
 	g.VisitOrtho(x, y, visitFunc, dims...)
 	g.VisitDiag(x, y, visitFunc, dims...)
 }
 
 // Delete will delete an item found at coords, extents are not affected
-func (g *InfGrid) Delete(x, y int, dims ...int) interface{} {
+func (g *InfGrid[T]) Delete(x, y int, dims ...int) T {
 	v := g.Get(x, y, dims...)
 	dimKey := _createInfGridDimKey(dims...)
 
@@ -700,7 +697,7 @@ func (g *InfGrid) Delete(x, y int, dims ...int) interface{} {
 
 // IsOutsideExtents returns true of given coords and dimension are outside the extents
 // of the grid
-func (g *InfGrid) IsOutsideExtents(x, y int, dims ...int) bool {
+func (g *InfGrid[T]) IsOutsideExtents(x, y int, dims ...int) bool {
 	// If the x,y coord is outside current extents
 	if x > g.xExtents.max || x < g.xExtents.min || y > g.yExtents.max || y < g.yExtents.min {
 		return true
@@ -735,7 +732,7 @@ func (g *InfGrid) IsOutsideExtents(x, y int, dims ...int) bool {
 //
 // Note: to ensure a previously set point will not be included in Len, it needs
 // to be deleted with [Delete]
-func (g *InfGrid) Len(dims ...int) int {
+func (g *InfGrid[T]) Len(dims ...int) int {
 	data := g.data
 	dimKey := _createInfGridDimKey(dims...)
 

@@ -21,7 +21,7 @@ func part1(inputfile string) int {
 	head := util.NewPoint(0, 0)
 	tail := util.NewPoint(0, 0)
 
-	grid := util.NewInfGrid()
+	grid := util.NewInfGrid[bool]()
 	for _, line := range data {
 		strs := util.ParseStrs(line)
 
@@ -52,7 +52,7 @@ func part2(inputfile string) int {
 	rope := make([]util.Point, 10)
 	last := len(rope) - 1
 
-	grid := util.NewInfGrid()
+	grid := util.NewInfGrid[string]()
 	grid.WithDefaultValue(".")
 	for _, line := range data {
 		strs := util.ParseStrs(line)
