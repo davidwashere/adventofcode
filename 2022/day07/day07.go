@@ -22,7 +22,7 @@ func buildFS(inputfile string) map[string]*dir {
 	data, _ := util.ReadFileToStringSlice(inputfile)
 
 	dirs := map[string]*dir{}
-	path := util.NewStringStack()
+	path := util.NewStack[string]()
 	for _, line := range data {
 		parts := strings.Split(line, " ")
 
@@ -95,7 +95,7 @@ func buildFS(inputfile string) map[string]*dir {
 	return dirs
 }
 
-func pathKey(path util.StringStack) string {
+func pathKey(path util.Stack[string]) string {
 	key := ""
 	started := false
 	for _, e := range path {
@@ -109,8 +109,8 @@ func pathKey(path util.StringStack) string {
 	return key
 }
 
-func parentKey(path util.StringStack) string {
-	pPath := make(util.StringStack, len(path))
+func parentKey(path util.Stack[string]) string {
+	pPath := make(util.Stack[string], len(path))
 	copy(pPath, path)
 	pPath.Pop()
 

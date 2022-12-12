@@ -15,7 +15,7 @@ func part1(inputfile string) int {
 
 	counts := map[string]int{")": 0, "]": 0, "}": 0, ">": 0}
 	for _, line := range data {
-		s := util.StringStack{}
+		s := util.NewStack[string]()
 
 		for _, cr := range line {
 			c := string(cr)
@@ -53,7 +53,7 @@ func part2(inputfile string) int {
 	pts := map[string]int{"(": 1, "[": 2, "{": 3, "<": 4}
 	scores := []int{}
 	for _, line := range data {
-		s := util.StringStack{}
+		s := util.NewStack[string]()
 
 		corrupt := false
 		for _, cr := range line {
