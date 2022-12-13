@@ -10,12 +10,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      path: 'main'
-      ref: 'master'
+      with: 
+        ref: 'master'
+        path: 'main'
 
     - uses: actions/checkout@v3
-      path: '.state'
-      ref: 'state'
+      with: 
+        ref: 'state'
+        path: '.state'
 
     - name: Set up Go
       uses: actions/setup-go@v3
