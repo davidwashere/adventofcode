@@ -1,4 +1,4 @@
-name: Leaderboard Without Discord
+name: Leaderboard Private Discord
 
 on:
   workflow_dispatch:
@@ -29,6 +29,8 @@ jobs:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
         LEADER_STATE_DIR: ${{ github.workspace }}
+        DISCORD_URL: ${{ secrets.DISCORD_URL_CACHIE_SERVER }}
+
       run: |
         cd main
         go run ./tools/leader
