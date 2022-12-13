@@ -14,7 +14,7 @@ jobs:
       ref: 'master'
 
     - uses: actions/checkout@v3
-      path: 'state'
+      path: '.state'
       ref: 'state'
 
     - name: Set up Go
@@ -22,12 +22,13 @@ jobs:
       with:
         go-version: 1.18
     
-    - name: Prep State
-      run: |
-        git switch --orphan state
-
     - name: Build
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
       run: go run ./tools/leader
+
+    - name: Persist State
+      run: |
+        cd .state
+        git add . && git commit -m "state update" && git push -u origin state
