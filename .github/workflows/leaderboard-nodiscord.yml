@@ -36,4 +36,6 @@ jobs:
     - name: Persist State
       run: |
         cd .state
+        git config --global user.name 'davidwashere'
+        git config --global user.email 'davidwashere@users.noreply.github.com'
         git add . && git commit -m "state update" && git push -u origin state
