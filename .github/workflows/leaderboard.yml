@@ -35,7 +35,9 @@ jobs:
         DISCORD_URL: ${{ secrets.DISCORD_URL }}
         NUM_STARS_TO_PRINT: 2
         LEADER_STATE_DIR: ${{ github.workspace }}
-      run: go run ./tools/leader
+      run: |
+        cd main
+        go run ./tools/leader
 
     - name: Persist State
       run: |
