@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/http/cookiejar"
@@ -142,14 +142,14 @@ func fTime(t time.Time) string {
 	return t.In(timeLocation).Format("2006-01-02 03:04 PM")
 }
 
-func dayOfMonth() int {
-	return time.Now().In(timeLocation).Day()
-}
+// func dayOfMonth() int {
+// 	return time.Now().In(timeLocation).Day()
+// }
 
 func sortMemberKeysByName(m map[string]Member) []string {
 	keys := []string{}
 
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 
@@ -184,7 +184,7 @@ func publishToDiscord(results *strings.Builder) {
 		util.Check(err)
 		defer resp.Body.Close()
 
-		dataB, err = ioutil.ReadAll(resp.Body)
+		dataB, err = io.ReadAll(resp.Body)
 		util.Check(err)
 
 		log.Printf("Discord POST StatusCode [%v], Body: %v", resp.StatusCode, string(dataB))
@@ -240,9 +240,9 @@ func pullAndCacheLeaderboard() Leaderboard {
 		var prettyJSON bytes.Buffer
 		err = json.Indent(&prettyJSON, raw, "", "\t")
 		if err != nil {
-			ioutil.WriteFile(leaderboardCacheFile, raw, 0644)
+			os.WriteFile(leaderboardCacheFile, raw, 0644)
 		} else {
-			ioutil.WriteFile(leaderboardCacheFile, prettyJSON.Bytes(), 0644)
+			os.WriteFile(leaderboardCacheFile, prettyJSON.Bytes(), 0644)
 		}
 	}
 
@@ -263,7 +263,7 @@ func pullCachedLeaderboard() ([]byte, error) {
 		return nil, fmt.Errorf("cache expired")
 	}
 
-	data, err := ioutil.ReadFile(leaderboardCacheFile)
+	data, err := os.ReadFile(leaderboardCacheFile)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func pullLeaderboard() []byte {
 
 	defer resp.Body.Close()
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	util.Check(err)
 
 	return data

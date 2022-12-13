@@ -3,19 +3,19 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
 func TestLeaderStateDiff(t *testing.T) {
-	dataB, _ := ioutil.ReadFile("testdata/leader_state.json")
+	dataB, _ := os.ReadFile("testdata/leader_state.json")
 
 	var lOld Leaderboard
 	var lNew Leaderboard
 
 	json.Unmarshal(dataB, &lOld)
 
-	dataB, _ = ioutil.ReadFile("testdata/leader_state_update.json")
+	dataB, _ = os.ReadFile("testdata/leader_state_update.json")
 
 	json.Unmarshal(dataB, &lNew)
 
