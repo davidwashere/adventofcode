@@ -7,13 +7,24 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
+      path: 'main'
+      ref: 'main'
+
+    - uses: actions/checkout@v3
+      path: 'state'
+      ref: 'state'
 
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
         go-version: 1.18
+    
+    - name: Prep State
+      run: |
+        git switch --orphan state
 
     - name: Build
       env:

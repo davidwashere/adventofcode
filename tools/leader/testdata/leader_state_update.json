@@ -1,0 +1,613 @@
+{
+	"members": {
+		"264332": {
+			"global_score": 0,
+			"completion_day_level": {
+				"11": {
+					"1": {
+						"star_index": 2525999,
+						"get_star_ts": 1670790417
+					},
+					"2": {
+						"get_star_ts": 1670794685,
+						"star_index": 2535695
+					}
+				},
+				"10": {
+					"2": {
+						"get_star_ts": 1670782451,
+						"star_index": 2508014
+					},
+					"1": {
+						"star_index": 2506224,
+						"get_star_ts": 1670781662
+					}
+				},
+				"6": {
+					"1": {
+						"get_star_ts": 1670376278,
+						"star_index": 1596616
+					},
+					"2": {
+						"star_index": 1596661,
+						"get_star_ts": 1670376308
+					}
+				},
+				"1": {
+					"2": {
+						"star_index": 124549,
+						"get_star_ts": 1669943794
+					},
+					"1": {
+						"get_star_ts": 1669943548,
+						"star_index": 124187
+					}
+				},
+				"8": {
+					"2": {
+						"star_index": 2039623,
+						"get_star_ts": 1670555302
+					},
+					"1": {
+						"get_star_ts": 1670555126,
+						"star_index": 2039439
+					}
+				},
+				"2": {
+					"2": {
+						"star_index": 594526,
+						"get_star_ts": 1670077426
+					},
+					"1": {
+						"get_star_ts": 1670076846,
+						"star_index": 592437
+					}
+				},
+				"7": {
+					"1": {
+						"get_star_ts": 1670472934,
+						"star_index": 1826729
+					},
+					"2": {
+						"star_index": 1827402,
+						"get_star_ts": 1670473550
+					}
+				},
+				"9": {
+					"1": {
+						"star_index": 2340452,
+						"get_star_ts": 1670693010
+					},
+					"2": {
+						"star_index": 2350741,
+						"get_star_ts": 1670697907
+					}
+				},
+				"5": {
+					"1": {
+						"get_star_ts": 1670291222,
+						"star_index": 1296118
+					},
+					"2": {
+						"get_star_ts": 1670291850,
+						"star_index": 1296980
+					}
+				},
+				"3": {
+					"1": {
+						"get_star_ts": 1670078887,
+						"star_index": 599892
+					},
+					"2": {
+						"star_index": 602533,
+						"get_star_ts": 1670079626
+					}
+				},
+				"4": {
+					"2": {
+						"star_index": 909743,
+						"get_star_ts": 1670172220
+					},
+					"1": {
+						"get_star_ts": 1670171844,
+						"star_index": 908422
+					}
+				}
+			},
+			"last_star_ts": 1670794685,
+			"stars": 22,
+			"id": 264332,
+			"name": "davidwashere",
+			"local_score": 346
+		},
+		"779371": {
+			"id": 779371,
+			"stars": 20,
+			"local_score": 329,
+			"name": "bubzor888",
+			"completion_day_level": {
+				"3": {
+					"1": {
+						"get_star_ts": 1670069616,
+						"star_index": 565530
+					},
+					"2": {
+						"star_index": 631282,
+						"get_star_ts": 1670087904
+					}
+				},
+				"4": {
+					"2": {
+						"star_index": 876337,
+						"get_star_ts": 1670163235
+					},
+					"1": {
+						"get_star_ts": 1670161615,
+						"star_index": 869712
+					}
+				},
+				"5": {
+					"1": {
+						"star_index": 1175359,
+						"get_star_ts": 1670253955
+					},
+					"2": {
+						"get_star_ts": 1670254269,
+						"star_index": 1176635
+					}
+				},
+				"9": {
+					"1": {
+						"get_star_ts": 1670676197,
+						"star_index": 2301052
+					},
+					"2": {
+						"star_index": 2468812,
+						"get_star_ts": 1670765422
+					}
+				},
+				"8": {
+					"2": {
+						"get_star_ts": 1670634072,
+						"star_index": 2213026
+					},
+					"1": {
+						"star_index": 2204797,
+						"get_star_ts": 1670627742
+					}
+				},
+				"7": {
+					"2": {
+						"star_index": 1758901,
+						"get_star_ts": 1670439387
+					},
+					"1": {
+						"star_index": 1757248,
+						"get_star_ts": 1670438785
+					}
+				},
+				"2": {
+					"1": {
+						"star_index": 299020,
+						"get_star_ts": 1669986877
+					},
+					"2": {
+						"star_index": 301271,
+						"get_star_ts": 1669987432
+					}
+				},
+				"10": {
+					"2": {
+						"get_star_ts": 1670772710,
+						"star_index": 2485589
+					},
+					"1": {
+						"star_index": 2483326,
+						"get_star_ts": 1670771763
+					}
+				},
+				"1": {
+					"1": {
+						"get_star_ts": 1669905556,
+						"star_index": 9498
+					},
+					"2": {
+						"star_index": 12512,
+						"get_star_ts": 1669906322
+					}
+				},
+				"6": {
+					"2": {
+						"get_star_ts": 1670340241,
+						"star_index": 1496926
+					},
+					"1": {
+						"star_index": 1496523,
+						"get_star_ts": 1670340131
+					}
+				}
+			},
+			"last_star_ts": 1670772710,
+			"global_score": 0
+		},
+		"1062856": {
+			"name": "Zach Gordon",
+			"local_score": 0,
+			"id": 1062856,
+			"stars": 0,
+			"last_star_ts": 0,
+			"completion_day_level": {},
+			"global_score": 0
+		},
+		"1125846": {
+			"global_score": 0,
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"name": "mfgill",
+			"local_score": 0,
+			"stars": 0,
+			"id": 1125846
+		},
+		"759608": {
+			"global_score": 0,
+			"last_star_ts": 0,
+			"completion_day_level": {
+                "4": {
+					"2": {
+						"star_index": 909743,
+						"get_star_ts": 1670172220
+					},
+					"1": {
+						"get_star_ts": 1670171844,
+						"star_index": 908422
+					}
+				}
+            },
+			"name": "Steven Goff",
+			"local_score": 0,
+			"stars": 0,
+			"id": 759608
+		},
+		"676994": {
+			"global_score": 0,
+			"completion_day_level": {
+				"4": {
+					"2": {
+						"star_index": 756827,
+						"get_star_ts": 1670134604
+					},
+					"1": {
+						"get_star_ts": 1670134572,
+						"star_index": 756715
+					}
+				},
+				"3": {
+					"1": {
+						"star_index": 610161,
+						"get_star_ts": 1670081781
+					},
+					"2": {
+						"get_star_ts": 1670082363,
+						"star_index": 612246
+					}
+				},
+				"9": {
+					"1": {
+						"star_index": 2184444,
+						"get_star_ts": 1670617090
+					},
+					"2": {
+						"get_star_ts": 1670625912,
+						"star_index": 2201601
+					}
+				},
+				"5": {
+					"1": {
+						"get_star_ts": 1670251388,
+						"star_index": 1164833
+					},
+					"2": {
+						"get_star_ts": 1670252336,
+						"star_index": 1168832
+					}
+				},
+				"2": {
+					"1": {
+						"get_star_ts": 1669990358,
+						"star_index": 313505
+					},
+					"2": {
+						"star_index": 317742,
+						"get_star_ts": 1669991320
+					}
+				},
+				"7": {
+					"1": {
+						"get_star_ts": 1670424251,
+						"star_index": 1715915
+					},
+					"2": {
+						"get_star_ts": 1670426202,
+						"star_index": 1721678
+					}
+				},
+				"8": {
+					"1": {
+						"get_star_ts": 1670509599,
+						"star_index": 1940473
+					},
+					"2": {
+						"get_star_ts": 1670512885,
+						"star_index": 1949983
+					}
+				},
+				"6": {
+					"1": {
+						"get_star_ts": 1670333507,
+						"star_index": 1470725
+					},
+					"2": {
+						"star_index": 1471099,
+						"get_star_ts": 1670333601
+					}
+				},
+				"1": {
+					"1": {
+						"get_star_ts": 1669902990,
+						"star_index": 0
+					},
+					"2": {
+						"get_star_ts": 1669903482,
+						"star_index": 1747
+					}
+				},
+				"11": {
+					"1": {
+						"star_index": 2534529,
+						"get_star_ts": 1670794135
+					}
+				},
+				"10": {
+					"2": {
+						"get_star_ts": 1670690376,
+						"star_index": 2334558
+					},
+					"1": {
+						"star_index": 2329898,
+						"get_star_ts": 1670688366
+					}
+				}
+			},
+			"last_star_ts": 1670794135,
+			"local_score": 365,
+			"name": "Kris Heyden",
+			"stars": 21,
+			"id": 676994
+		},
+		"1039001": {
+			"name": "pvacey",
+			"local_score": 0,
+			"id": 1039001,
+			"stars": 0,
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"global_score": 0
+		},
+		"987808": {
+			"completion_day_level": {
+				"2": {
+					"1": {
+						"get_star_ts": 1670009038,
+						"star_index": 385878
+					}
+				},
+				"1": {
+					"2": {
+						"star_index": 22748,
+						"get_star_ts": 1669909008
+					},
+					"1": {
+						"get_star_ts": 1669908939,
+						"star_index": 22467
+					}
+				}
+			},
+			"last_star_ts": 1670009038,
+			"global_score": 0,
+			"id": 987808,
+			"stars": 3,
+			"name": "drc",
+			"local_score": 46
+		},
+		"1624011": {
+			"global_score": 0,
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"local_score": 0,
+			"name": "Emily Brewer",
+			"stars": 0,
+			"id": 1624011
+		},
+		"766543": {
+			"local_score": 0,
+			"name": "maxcoinage",
+			"id": 766543,
+			"stars": 0,
+			"last_star_ts": 0,
+			"completion_day_level": {},
+			"global_score": 0
+		},
+		"991386": {
+			"id": 991386,
+			"stars": 0,
+			"name": "gigawatts",
+			"local_score": 0,
+			"last_star_ts": 0,
+			"completion_day_level": {},
+			"global_score": 0
+		},
+		"957001": {
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"global_score": 0,
+			"id": 957001,
+			"stars": 0,
+			"local_score": 0,
+			"name": "George Lamperis"
+		},
+		"1129015": {
+			"last_star_ts": 0,
+			"completion_day_level": {},
+			"global_score": 0,
+			"local_score": 0,
+			"name": "Greg Oberfield",
+			"id": 1129015,
+			"stars": 0
+		},
+		"256058": {
+			"id": 256058,
+			"stars": 16,
+			"name": "cmeinco",
+			"local_score": 264,
+			"last_star_ts": 1670632715,
+			"completion_day_level": {
+				"1": {
+					"2": {
+						"get_star_ts": 1669916930,
+						"star_index": 51127
+					},
+					"1": {
+						"star_index": 49495,
+						"get_star_ts": 1669916464
+					}
+				},
+				"6": {
+					"1": {
+						"get_star_ts": 1670304037,
+						"star_index": 1333484
+					},
+					"2": {
+						"get_star_ts": 1670308173,
+						"star_index": 1359726
+					}
+				},
+				"2": {
+					"1": {
+						"get_star_ts": 1670005643,
+						"star_index": 375180
+					},
+					"2": {
+						"star_index": 379699,
+						"get_star_ts": 1670007034
+					}
+				},
+				"7": {
+					"2": {
+						"star_index": 2043130,
+						"get_star_ts": 1670559156
+					},
+					"1": {
+						"get_star_ts": 1670557058,
+						"star_index": 2041313
+					}
+				},
+				"8": {
+					"2": {
+						"get_star_ts": 1670632715,
+						"star_index": 2211598
+					},
+					"1": {
+						"star_index": 2209967,
+						"get_star_ts": 1670631300
+					}
+				},
+				"5": {
+					"2": {
+						"star_index": 1056637,
+						"get_star_ts": 1670225190
+					},
+					"1": {
+						"star_index": 1055152,
+						"get_star_ts": 1670224796
+					}
+				},
+				"4": {
+					"2": {
+						"star_index": 761412,
+						"get_star_ts": 1670135941
+					},
+					"1": {
+						"get_star_ts": 1670135268,
+						"star_index": 759137
+					}
+				},
+				"3": {
+					"2": {
+						"get_star_ts": 1670076653,
+						"star_index": 591727
+					},
+					"1": {
+						"star_index": 499900,
+						"get_star_ts": 1670052955
+					}
+				}
+			},
+			"global_score": 0
+		},
+		"803232": {
+			"id": 803232,
+			"stars": 0,
+			"name": "VyNgo97",
+			"local_score": 0,
+			"last_star_ts": 0,
+			"completion_day_level": {},
+			"global_score": 0
+		},
+		"362761": {
+			"completion_day_level": {
+				"1": {
+					"1": {
+						"get_star_ts": 1669955009,
+						"star_index": 137896
+					},
+					"2": {
+						"star_index": 155687,
+						"get_star_ts": 1669958517
+					}
+				},
+				"2": {
+					"1": {
+						"get_star_ts": 1669964633,
+						"star_index": 191384
+					}
+				}
+			},
+			"last_star_ts": 1669964633,
+			"global_score": 0,
+			"id": 362761,
+			"stars": 3,
+			"local_score": 44,
+			"name": "Bill Guedel"
+		},
+		"847890": {
+			"global_score": 0,
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"stars": 0,
+			"id": 847890,
+			"name": "mgeist",
+			"local_score": 0
+		},
+		"1065464": {
+			"completion_day_level": {},
+			"last_star_ts": 0,
+			"global_score": 0,
+			"local_score": 0,
+			"name": "John R. Kelly III",
+			"id": 1065464,
+			"stars": 0
+		}
+	},
+	"event": "2022",
+	"owner_id": 264332
+}

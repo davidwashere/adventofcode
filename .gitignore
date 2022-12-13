@@ -4,3 +4,4 @@ other/
 .env.local
 .cache.leader
 state.yml
+.state/

@@ -51,12 +51,32 @@ var force bool
 
 func main() {
 	l := pullAndCacheLeaderboard()
-	results := buildResultsContent(l)
+
+	diff := loadAndSaveDiff(l)
+
+	results := buildResultsContent(diff)
 
 	fmt.Println()
 	fmt.Print(results.String())
 
-	publishToDiscord(results)
+	if len(results.String()) > 0 {
+		publishToDiscord(results)
+	}
+}
+
+func loadAndSaveDiff(l Leaderboard) Leaderboard {
+	state := LeaderState{}
+	if err := state.LoadState(); err != nil {
+		log.Fatal(err)
+	}
+
+	diff := state.GenerateDiff(l)
+	if err := state.SaveState(l); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("state updated: %v", state.GetStateFile())
+	return diff
 }
 
 func buildResultsContent(l Leaderboard) *strings.Builder {
