@@ -28,7 +28,8 @@ jobs:
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-      run: go run ./tools/leader
+      run: |
+        go run main/tools/leader
 
     - name: Persist State
       run: |
