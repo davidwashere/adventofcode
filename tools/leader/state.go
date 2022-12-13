@@ -11,6 +11,7 @@ import (
 // state represents what was last alerted on
 
 const (
+	StatePathEnvKey  = "LEADER_STATE_DIR"
 	DefaultStateFile = ".state/leader_state.json"
 )
 
@@ -22,12 +23,14 @@ type LeaderState struct {
 }
 
 func (l *LeaderState) GetStateFile() string {
+	path := os.Getenv(StatePathEnvKey)
+
 	file := DefaultStateFile
 	if len(l.stateFile) > 0 {
 		file = l.stateFile
 	}
 
-	return file
+	return filepath.Join(path, file)
 }
 
 func (l *LeaderState) SetStateFile(file string) {
