@@ -171,7 +171,7 @@ func publishToDiscord(results *strings.Builder) {
 		data := struct {
 			Content string `json:"content"`
 		}{
-			"```\nNew Stars Found:\n---\n\n" + results.String() + "\n```",
+			"```\nNew Stars:\n\n" + results.String() + "\n```",
 		}
 
 		dataB, err := json.Marshal(data)
