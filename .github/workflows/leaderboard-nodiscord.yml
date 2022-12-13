@@ -28,7 +28,7 @@ jobs:
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-        LEADER_STATE_DIR: ${{ GITHUB_WORKSPACE }}
+        LEADER_STATE_DIR: ${{ github.workspace }}
       run: |
         cd main
         go run ./tools/leader
