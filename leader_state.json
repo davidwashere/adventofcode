@@ -1,0 +1,528 @@
+{
+  "owner_id": 264332,
+  "event": "2022",
+  "members": {
+    "1039001": {
+      "id": 1039001,
+      "name": "pvacey",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "1062856": {
+      "id": 1062856,
+      "name": "Zach Gordon",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "1065464": {
+      "id": 1065464,
+      "name": "John R. Kelly III",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "1125846": {
+      "id": 1125846,
+      "name": "mfgill",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "1129015": {
+      "id": 1129015,
+      "name": "Greg Oberfield",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "1624011": {
+      "id": 1624011,
+      "name": "Emily Brewer",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "256058": {
+      "id": 256058,
+      "name": "cmeinco",
+      "stars": 19,
+      "local_score": 309,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669916464
+          },
+          "2": {
+            "get_star_ts": 1669916930
+          }
+        },
+        "10": {
+          "1": {
+            "get_star_ts": 1670824357
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1670005643
+          },
+          "2": {
+            "get_star_ts": 1670007034
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1670052955
+          },
+          "2": {
+            "get_star_ts": 1670076653
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1670135268
+          },
+          "2": {
+            "get_star_ts": 1670135941
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1670224796
+          },
+          "2": {
+            "get_star_ts": 1670225190
+          }
+        },
+        "6": {
+          "1": {
+            "get_star_ts": 1670304037
+          },
+          "2": {
+            "get_star_ts": 1670308173
+          }
+        },
+        "7": {
+          "1": {
+            "get_star_ts": 1670557058
+          },
+          "2": {
+            "get_star_ts": 1670559156
+          }
+        },
+        "8": {
+          "1": {
+            "get_star_ts": 1670631300
+          },
+          "2": {
+            "get_star_ts": 1670632715
+          }
+        },
+        "9": {
+          "1": {
+            "get_star_ts": 1670805928
+          },
+          "2": {
+            "get_star_ts": 1670807982
+          }
+        }
+      }
+    },
+    "264332": {
+      "id": 264332,
+      "name": "davidwashere",
+      "stars": 24,
+      "local_score": 382,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669943548
+          },
+          "2": {
+            "get_star_ts": 1669943794
+          }
+        },
+        "10": {
+          "1": {
+            "get_star_ts": 1670781662
+          },
+          "2": {
+            "get_star_ts": 1670782451
+          }
+        },
+        "11": {
+          "1": {
+            "get_star_ts": 1670790417
+          },
+          "2": {
+            "get_star_ts": 1670794685
+          }
+        },
+        "12": {
+          "1": {
+            "get_star_ts": 1670898033
+          },
+          "2": {
+            "get_star_ts": 1670898553
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1670076846
+          },
+          "2": {
+            "get_star_ts": 1670077426
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1670078887
+          },
+          "2": {
+            "get_star_ts": 1670079626
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1670171844
+          },
+          "2": {
+            "get_star_ts": 1670172220
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1670291222
+          },
+          "2": {
+            "get_star_ts": 1670291850
+          }
+        },
+        "6": {
+          "1": {
+            "get_star_ts": 1670376278
+          },
+          "2": {
+            "get_star_ts": 1670376308
+          }
+        },
+        "7": {
+          "1": {
+            "get_star_ts": 1670472934
+          },
+          "2": {
+            "get_star_ts": 1670473550
+          }
+        },
+        "8": {
+          "1": {
+            "get_star_ts": 1670555126
+          },
+          "2": {
+            "get_star_ts": 1670555302
+          }
+        },
+        "9": {
+          "1": {
+            "get_star_ts": 1670693010
+          },
+          "2": {
+            "get_star_ts": 1670697907
+          }
+        }
+      }
+    },
+    "362761": {
+      "id": 362761,
+      "name": "Bill Guedel",
+      "stars": 3,
+      "local_score": 44,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669955009
+          },
+          "2": {
+            "get_star_ts": 1669958517
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1669964633
+          }
+        }
+      }
+    },
+    "676994": {
+      "id": 676994,
+      "name": "Kris Heyden",
+      "stars": 22,
+      "local_score": 382,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669902990
+          },
+          "2": {
+            "get_star_ts": 1669903482
+          }
+        },
+        "10": {
+          "1": {
+            "get_star_ts": 1670688366
+          },
+          "2": {
+            "get_star_ts": 1670690376
+          }
+        },
+        "11": {
+          "1": {
+            "get_star_ts": 1670794135
+          },
+          "2": {
+            "get_star_ts": 1670800306
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1669990358
+          },
+          "2": {
+            "get_star_ts": 1669991320
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1670081781
+          },
+          "2": {
+            "get_star_ts": 1670082363
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1670134572
+          },
+          "2": {
+            "get_star_ts": 1670134604
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1670251388
+          },
+          "2": {
+            "get_star_ts": 1670252336
+          }
+        },
+        "6": {
+          "1": {
+            "get_star_ts": 1670333507
+          },
+          "2": {
+            "get_star_ts": 1670333601
+          }
+        },
+        "7": {
+          "1": {
+            "get_star_ts": 1670424251
+          },
+          "2": {
+            "get_star_ts": 1670426202
+          }
+        },
+        "8": {
+          "1": {
+            "get_star_ts": 1670509599
+          },
+          "2": {
+            "get_star_ts": 1670512885
+          }
+        },
+        "9": {
+          "1": {
+            "get_star_ts": 1670617090
+          },
+          "2": {
+            "get_star_ts": 1670625912
+          }
+        }
+      }
+    },
+    "759608": {
+      "id": 759608,
+      "name": "Steven Goff",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "766543": {
+      "id": 766543,
+      "name": "maxcoinage",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "779371": {
+      "id": 779371,
+      "name": "bubzor888",
+      "stars": 21,
+      "local_score": 345,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669905556
+          },
+          "2": {
+            "get_star_ts": 1669906322
+          }
+        },
+        "10": {
+          "1": {
+            "get_star_ts": 1670771763
+          },
+          "2": {
+            "get_star_ts": 1670772710
+          }
+        },
+        "11": {
+          "1": {
+            "get_star_ts": 1670798827
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1669986877
+          },
+          "2": {
+            "get_star_ts": 1669987432
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1670069616
+          },
+          "2": {
+            "get_star_ts": 1670087904
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1670161615
+          },
+          "2": {
+            "get_star_ts": 1670163235
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1670253955
+          },
+          "2": {
+            "get_star_ts": 1670254269
+          }
+        },
+        "6": {
+          "1": {
+            "get_star_ts": 1670340131
+          },
+          "2": {
+            "get_star_ts": 1670340241
+          }
+        },
+        "7": {
+          "1": {
+            "get_star_ts": 1670438785
+          },
+          "2": {
+            "get_star_ts": 1670439387
+          }
+        },
+        "8": {
+          "1": {
+            "get_star_ts": 1670627742
+          },
+          "2": {
+            "get_star_ts": 1670634072
+          }
+        },
+        "9": {
+          "1": {
+            "get_star_ts": 1670676197
+          },
+          "2": {
+            "get_star_ts": 1670765422
+          }
+        }
+      }
+    },
+    "803232": {
+      "id": 803232,
+      "name": "VyNgo97",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "847890": {
+      "id": 847890,
+      "name": "mgeist",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "957001": {
+      "id": 957001,
+      "name": "George Lamperis",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    },
+    "987808": {
+      "id": 987808,
+      "name": "drc",
+      "stars": 3,
+      "local_score": 46,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1669908939
+          },
+          "2": {
+            "get_star_ts": 1669909008
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1670009038
+          }
+        }
+      }
+    },
+    "991386": {
+      "id": 991386,
+      "name": "gigawatts",
+      "stars": 0,
+      "local_score": 0,
+      "global_score": 0,
+      "completion_day_level": {}
+    }
+  }
+}
