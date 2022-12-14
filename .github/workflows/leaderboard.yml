@@ -35,7 +35,7 @@ jobs:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
         DISCORD_URL: ${{ secrets.DISCORD_URL }}
-        NUM_STARS_TO_PRINT: 2
+        # NUM_STARS_TO_PRINT: 2
         LEADER_STATE_DIR: ${{ github.workspace }}
       run: |
         cd main
