@@ -4,9 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     # 9am (UTC = 3pm or 15 hundred o'clock)
-    - cron: '0 15 * * *'
+    # - cron: '0 15 * * *'
     # 9pm (UTC = 3am)
-    - cron: '0 3 * * *'
+    # - cron: '0 3 * * *'
+    # every hour from 9am CST to 11pm CST
+    - cron: '0 3-17 * * *'
 
 jobs:
 
