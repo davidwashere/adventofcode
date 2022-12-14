@@ -277,8 +277,8 @@
     "676994": {
       "id": 676994,
       "name": "Kris Heyden",
-      "stars": 23,
-      "local_score": 399,
+      "stars": 24,
+      "local_score": 416,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -308,6 +308,9 @@
         "13": {
           "1": {
             "get_star_ts": 1671028329
+          },
+          "2": {
+            "get_star_ts": 1671031250
           }
         },
         "2": {
