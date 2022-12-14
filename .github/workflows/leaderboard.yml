@@ -8,7 +8,7 @@ on:
     # 9pm (UTC = 3am)
     # - cron: '0 3 * * *'
     # every hour from 9am CST to 11pm CST
-    - cron: '0 3-17 * * *'
+    - cron: '*/20 3-17 * * *'
 
 jobs:
 
