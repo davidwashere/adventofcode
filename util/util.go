@@ -94,3 +94,11 @@ func IsHex(val string) bool {
 	}
 	return true
 }
+
+func IsInt(val string) bool {
+	_, err := strconv.ParseInt(val, 10, 64)
+	if err != nil {
+		return false
+	}
+	return true
+}
