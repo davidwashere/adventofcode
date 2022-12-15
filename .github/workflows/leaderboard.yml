@@ -2,13 +2,13 @@ name: Leaderboard
 
 on:
   workflow_dispatch:
-  schedule:
+  #schedule:
     # 9am (UTC = 3pm or 15 hundred o'clock)
     # - cron: '0 15 * * *'
     # 9pm (UTC = 3am)
     # - cron: '0 3 * * *'
-    # every hour from 9am CST to 11pm CST
-    - cron: '*/20 3-17 * * *'
+    # every 20 mins from 9am CST to 11pm CST
+    # - cron: '*/20 3-17 * * *'
 
 jobs:
 
