@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -94,7 +94,7 @@ func runForever() {
 	done <- true
 }
 
-// panciOnEmpty will trigger panic if the env variable is missing
+// panicOnEmpty will trigger panic if the env variable is missing
 func panicOnEmpty(envKey string) string {
 	v := os.Getenv(envKey)
 	if len(v) == 0 {
@@ -117,7 +117,7 @@ func doImportantThing() error {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
