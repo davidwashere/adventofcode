@@ -277,8 +277,8 @@
     "676994": {
       "id": 676994,
       "name": "Kris Heyden",
-      "stars": 24,
-      "local_score": 416,
+      "stars": 26,
+      "local_score": 450,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -311,6 +311,14 @@
           },
           "2": {
             "get_star_ts": 1671031250
+          }
+        },
+        "14": {
+          "1": {
+            "get_star_ts": 1671069555
+          },
+          "2": {
+            "get_star_ts": 1671070652
           }
         },
         "2": {
@@ -398,8 +406,8 @@
     "779371": {
       "id": 779371,
       "name": "bubzor888",
-      "stars": 23,
-      "local_score": 379,
+      "stars": 27,
+      "local_score": 447,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -429,6 +437,22 @@
           },
           "2": {
             "get_star_ts": 1670953009
+          }
+        },
+        "13": {
+          "1": {
+            "get_star_ts": 1671052003
+          },
+          "2": {
+            "get_star_ts": 1671054376
+          }
+        },
+        "14": {
+          "1": {
+            "get_star_ts": 1671040214
+          },
+          "2": {
+            "get_star_ts": 1671041550
           }
         },
         "2": {
