@@ -32,7 +32,7 @@ var (
 	GHRepo       = ""
 	GHActionFile = ""
 	GHRef        = ""
-	Interval     = 30
+	Interval     = 1800
 	StartHour    = 9
 	EndHour      = 23
 	Debug        = false
