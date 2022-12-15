@@ -5,3 +5,6 @@ other/
 .cache.leader
 state.yml
 .state/
+triggerer
+triggerer.exe
+!triggerer/
