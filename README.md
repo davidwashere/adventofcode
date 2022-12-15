@@ -1,5 +1,8 @@
 # blah
 
+## TODO
+- modify triggerer to start/end at certain hours of the day
+
 ## AoC Discord Bot Ideas
 - TODO: purge state branch history
 - calc time from puzzle launch to first star

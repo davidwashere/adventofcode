@@ -1,5 +1,5 @@
 # Triggerer
-GitHub actions cron schedule was not / is not triggering consistantly during the time frames specified
+GitHub actions cron schedule was not / is not triggering consistently during the time frames specified
 
 Triggerer will execute somewhere (super secret server somewhere) and trigger a GH action via `workflow_dispatch` on a schedule
 
@@ -21,8 +21,4 @@ _ref: https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#cr
 For Linux:
 ```
 GOOS=linux GOARCH=amd64 go build -o triggerer ./tools/triggerer
-```
-
-## Other
-```
 ```
