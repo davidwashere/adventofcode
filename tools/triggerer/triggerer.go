@@ -160,9 +160,8 @@ func doImportantThing() error {
 	if Debug {
 		log.Printf("triggered - in debug mode - doing nothing")
 		return nil
-	} else {
-
 	}
+
 	req, err := createHttpReq()
 	if err != nil {
 		return err
