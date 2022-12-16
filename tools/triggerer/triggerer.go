@@ -41,54 +41,27 @@ var (
 )
 
 func main() {
-	log.Printf("loading env")
 	dumpEnv()
 	loadAndValidateEnv()
 
-	// log.Printf("doing thing - initial")
-	// err := doImportantThing()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	log.Printf("running forever every %v sec(s)", Interval)
 	runForever()
 
 	log.Printf("done")
 }
 
 func dumpEnv() {
-	log.Printf("%v = %v", GHOwnerEnvKey, os.Getenv(GHOwnerEnvKey))
-	log.Printf("%v = %v", GHRepoEnvKey, os.Getenv(GHRepoEnvKey))
-	log.Printf("%v = %v", GHActionFileEnvKey, os.Getenv(GHActionFileEnvKey))
-	log.Printf("%v = %v", GHRefEnvKey, os.Getenv(GHRefEnvKey))
-	log.Printf("%v = %v", IntervalEnvKey, os.Getenv(IntervalEnvKey))
-	log.Printf("%v = %v", StartHourEnvKey, os.Getenv(StartHourEnvKey))
-	log.Printf("%v = %v", EndHourEnvKey, os.Getenv(EndHourEnvKey))
-	log.Printf("%v = %v", DebugEnvKey, os.Getenv(DebugEnvKey))
-}
+	max := len(GHActionFileEnvKey)
+	f := fmt.Sprintf("  %%-%vv = %%v", max)
 
-// untilNextEvent will return the 'duration' until the next event should trigger
-func untilNextEvent() time.Duration {
-	now := time.Now().In(loc).Round(0)
-
-	nowPlusInterval := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second()+Interval, now.Nanosecond(), loc)
-	startToday := time.Date(now.Year(), now.Month(), now.Day(), StartHour, 0, 0, 0, loc)
-	endToday := time.Date(now.Year(), now.Month(), now.Day(), EndHour, 0, 0, 0, loc)
-	startTomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, StartHour, 0, 0, 0, loc)
-
-	if now.After(startToday) && nowPlusInterval.Before(endToday) {
-		// we're within start/end window for today, return a duration representing interval
-		return time.Duration(Interval) * time.Second
-	}
-
-	if now.After(endToday) {
-		// next event would be tomorrow because 'now' represents 'today'
-		return time.Until(startTomorrow)
-	}
-
-	// now is before startHour for today
-	return time.Until(startToday)
+	log.Printf("Env:")
+	log.Printf(f, GHOwnerEnvKey, os.Getenv(GHOwnerEnvKey))
+	log.Printf(f, GHRepoEnvKey, os.Getenv(GHRepoEnvKey))
+	log.Printf(f, GHActionFileEnvKey, os.Getenv(GHActionFileEnvKey))
+	log.Printf(f, GHRefEnvKey, os.Getenv(GHRefEnvKey))
+	log.Printf(f, IntervalEnvKey, os.Getenv(IntervalEnvKey))
+	log.Printf(f, StartHourEnvKey, os.Getenv(StartHourEnvKey))
+	log.Printf(f, EndHourEnvKey, os.Getenv(EndHourEnvKey))
+	log.Printf(f, DebugEnvKey, os.Getenv(DebugEnvKey))
 }
 
 func loadAndValidateEnv() {
@@ -107,8 +80,8 @@ func loadAndValidateEnv() {
 			panic(fmt.Sprintf("%v is not a valid integer: %v", IntervalEnvKey, intervalStr))
 		}
 
-		if Interval < 5 {
-			panic(fmt.Sprintf("%v must be 5 greater", IntervalEnvKey))
+		if Interval < 1 {
+			panic(fmt.Sprintf("%v must be greater than 0", IntervalEnvKey))
 		}
 	}
 
@@ -131,13 +104,9 @@ func loadAndValidateEnv() {
 			panic(fmt.Sprintf("%v is not a valid integer: %v", EndHourEnvKey, endHourStr))
 		}
 
-		if EndHour < 1 || EndHour > 24 {
+		if EndHour < 0 || EndHour > 23 {
 			panic(fmt.Sprintf("%v must be between 0 and 23", EndHourEnvKey))
 		}
-	}
-
-	if StartHour >= EndHour {
-		panic(fmt.Sprintf("%v [%v] must be before %v [%v] be between 0 and 23", StartHourEnvKey, StartHour, EndHourEnvKey, EndHour))
 	}
 
 	debugStr := os.Getenv(DebugEnvKey)
@@ -230,6 +199,53 @@ func createHttpReq() (*http.Request, error) {
 	return req, nil
 }
 
-// func fTime(t time.Time) string {
-// 	return t.In(loc).Format("2006-01-02 03:04:05 PM")
-// }
+// untilNextEvent will calculate the duration until the next event should occur
+func untilNextEvent() time.Duration {
+	durInterval := time.Duration(Interval) * time.Second
+	if StartHour == EndHour {
+		// Start and End are the same = running constant for 24 hours
+		return durInterval
+	}
+
+	now := time.Now().In(loc).Round(0)
+	nowPlusInterval := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second()+Interval, now.Nanosecond(), loc)
+
+	// Example: StartHour = 9 (9am), EndHour = 21 (9pm)
+	//
+	//            11111111112222           11111111112222
+	//  012345678901234567890123 012345678901234567890123
+	// │         S───────────E  │         S───────────E  │
+	//
+	if StartHour < EndHour {
+		start := time.Date(now.Year(), now.Month(), now.Day(), StartHour, 0, 0, 0, loc)
+		end := time.Date(now.Year(), now.Month(), now.Day(), EndHour, 0, 0, 0, loc)
+
+		startTomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, StartHour, 0, 0, 0, loc)
+
+		if now.After(start) && nowPlusInterval.Before(end) {
+			return durInterval
+		}
+
+		if nowPlusInterval.After(end) {
+			// next event would be tomorrow because 'now' represents 'today'
+			return time.Until(startTomorrow)
+		}
+
+		return time.Until(start)
+	}
+
+	// Example: StartHour = 21 (9pm), EndHour = 9 (9am)
+	//
+	//            11111111112222           11111111112222
+	//  012345678901234567890123 012345678901234567890123
+	// ├─────────E           S──┼─────────E           S──┤
+	//
+	start := time.Date(now.Year(), now.Month(), now.Day(), StartHour, 0, 0, 0, loc)
+	end := time.Date(now.Year(), now.Month(), now.Day(), EndHour, 0, 0, 0, loc)
+
+	if nowPlusInterval.After(end) && now.Before(start) {
+		return time.Until(start)
+	}
+
+	return durInterval
+}

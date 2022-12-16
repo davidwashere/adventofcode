@@ -134,7 +134,6 @@ func part2(inputfile string, max int) int {
 		}
 		ranges = consolidateRanges(ranges)
 
-		// beacon on left end of this row
 		if len(ranges) > 1 {
 			if ranges[1].low-ranges[0].hi > 1 {
 				x := ranges[0].hi + 1
@@ -145,8 +144,10 @@ func part2(inputfile string, max int) int {
 			low := ranges[0].low
 			hi := ranges[0].hi
 			if low > 0 {
+				// beacon on left end of this row
 				return doit(low-1, y)
 			} else if hi < max {
+				// beacon on right
 				return doit(hi+1, y)
 			}
 		}
