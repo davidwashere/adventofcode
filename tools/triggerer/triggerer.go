@@ -92,7 +92,7 @@ func loadAndValidateEnv() {
 			panic(fmt.Sprintf("%v is not a valid integer: %v", StartHourEnvKey, startHourStr))
 		}
 
-		if StartHour < 0 || StartHour > 23 {
+		if StartHour < 0 || StartHour > 24 {
 			panic(fmt.Sprintf("%v must be between 0 and 23", StartHourEnvKey))
 		}
 	}
@@ -104,7 +104,7 @@ func loadAndValidateEnv() {
 			panic(fmt.Sprintf("%v is not a valid integer: %v", EndHourEnvKey, endHourStr))
 		}
 
-		if EndHour < 0 || EndHour > 23 {
+		if EndHour < 0 || EndHour > 24 {
 			panic(fmt.Sprintf("%v must be between 0 and 23", EndHourEnvKey))
 		}
 	}
