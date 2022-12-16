@@ -67,3 +67,16 @@ func ParseInts(input string) []int {
 
 	return res
 }
+
+// ParseIntsNeg will extract numbers from the input including negative numbers
+func ParseIntsNeg(input string) []int {
+	intRe := regexp.MustCompile("[0-9-]+")
+	res := []int{}
+	for _, valS := range intRe.FindAllString(input, -1) {
+		val, _ := strconv.Atoi(valS)
+
+		res = append(res, val)
+	}
+
+	return res
+}
