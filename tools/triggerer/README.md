@@ -25,6 +25,10 @@ _ref: https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#cr
 - allow timezone to be specified
 - log values of env / config if defaults are used - currently only logs env
 - move triggerer to own repo
+- add days of week to schedule
+- add event handlers for on schedule start and on schedule end
+- consider using cron style scheduling (are packages for that already)
+- move execution outside GH actions - running into API limits
 
 ## Building
 
