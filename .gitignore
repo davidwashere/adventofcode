@@ -8,3 +8,4 @@ state.yml
 triggerer
 triggerer.exe
 !triggerer/
+*.log

@@ -38,11 +38,18 @@ var (
 	Debug        = false
 
 	loc, _ = time.LoadLocation("America/Chicago")
+
+	timeNow   = time.Now
+	timeUntil = func(t time.Time) time.Duration { return t.Sub(timeNow()) }
 )
 
 func main() {
+	time.Local = loc
 	dumpEnv()
 	loadAndValidateEnv()
+
+	log.Printf("current time %v", fTime(timeNow()))
+	log.Printf("current time %v", timeNow())
 
 	runForever()
 
@@ -117,7 +124,8 @@ func loadAndValidateEnv() {
 
 func runForever() {
 	done := make(chan bool)
-	dur := untilNextEvent()
+	dur := untilNextEventSafe()
+	// durInterval := time.Duration(Interval) * time.Second
 	log.Printf("next trigger in: %v", dur)
 	timer := time.NewTimer(dur)
 
@@ -131,7 +139,11 @@ func runForever() {
 				if err != nil {
 					log.Print(err)
 				}
-				dur := untilNextEvent()
+				dur := untilNextEventSafe()
+				if dur < time.Duration(0) {
+					panic(fmt.Sprintf("%v is less than zero", dur))
+
+				}
 				log.Printf("next trigger in: %v", dur)
 				timer.Reset(dur)
 			}
@@ -198,6 +210,17 @@ func createHttpReq() (*http.Request, error) {
 	return req, nil
 }
 
+func untilNextEventSafe() time.Duration {
+	dur := untilNextEvent()
+	if dur < 0 {
+		now := timeNow()
+		log.Printf("error, duration less than zero - now: %v startHour: %v endHour %v", now, StartHour, EndHour)
+		panic("duration less than zero")
+	}
+
+	return dur
+}
+
 // untilNextEvent will calculate the duration until the next event should occur
 func untilNextEvent() time.Duration {
 	durInterval := time.Duration(Interval) * time.Second
@@ -206,7 +229,7 @@ func untilNextEvent() time.Duration {
 		return durInterval
 	}
 
-	now := time.Now().In(loc).Round(0)
+	now := timeNow().Round(0)
 	nowPlusInterval := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second()+Interval, now.Nanosecond(), loc)
 
 	// Example: StartHour = 9 (9am), EndHour = 21 (9pm)
@@ -225,12 +248,13 @@ func untilNextEvent() time.Duration {
 			return durInterval
 		}
 
+		// if now.After(end) {
 		if nowPlusInterval.After(end) {
 			// next event would be tomorrow because 'now' represents 'today'
-			return time.Until(startTomorrow)
+			return timeUntil(startTomorrow)
 		}
 
-		return time.Until(start)
+		return timeUntil(start)
 	}
 
 	// Example: StartHour = 21 (9pm), EndHour = 9 (9am)
@@ -243,8 +267,12 @@ func untilNextEvent() time.Duration {
 	end := time.Date(now.Year(), now.Month(), now.Day(), EndHour, 0, 0, 0, loc)
 
 	if nowPlusInterval.After(end) && now.Before(start) {
-		return time.Until(start)
+		return timeUntil(start)
 	}
 
 	return durInterval
+}
+
+func fTime(t time.Time) string {
+	return t.Format("2006-01-02 03:04 PM")
 }
