@@ -6,7 +6,7 @@ import (
 )
 
 func TestP1(t *testing.T) {
-	got := part1("sample.txt")
+	got := part1("sample2.txt")
 	fmt.Printf("Got: %v\n", got)
 	want := 0
 	if got != want {
