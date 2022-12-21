@@ -147,8 +147,8 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 30,
-      "local_score": 485,
+      "stars": 31,
+      "local_score": 503,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -213,6 +213,11 @@
           },
           "2": {
             "get_star_ts": 1670077426
+          }
+        },
+        "21": {
+          "1": {
+            "get_star_ts": 1671602561
           }
         },
         "3": {
@@ -427,8 +432,8 @@
     "779371": {
       "id": 779371,
       "name": "bubzor888",
-      "stars": 33,
-      "local_score": 552,
+      "stars": 34,
+      "local_score": 570,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -498,6 +503,11 @@
           },
           "2": {
             "get_star_ts": 1671337425
+          }
+        },
+        "18": {
+          "1": {
+            "get_star_ts": 1671632039
           }
         },
         "2": {
