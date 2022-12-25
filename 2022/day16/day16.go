@@ -8,6 +8,7 @@ import (
 )
 
 type Valve struct {
+	Index    int
 	ID       string
 	FlowRate int
 	Tunnels  []string
@@ -27,6 +28,7 @@ func loadFile(inputfile string) (string, map[string]*Valve) {
 		vals := re.FindAllString(line, -1)
 		rate, _ := strconv.Atoi(vals[1])
 		v := Valve{
+			Index:    i,
 			ID:       vals[0],
 			FlowRate: rate,
 			Tunnels:  vals[2:],
@@ -37,7 +39,6 @@ func loadFile(inputfile string) (string, map[string]*Valve) {
 		}
 
 		valves[v.ID] = &v
-		fmt.Printf("%+v\n", v)
 	}
 
 	return first, valves
@@ -46,63 +47,54 @@ func loadFile(inputfile string) (string, map[string]*Valve) {
 func part1(inputfile string) int {
 	start, valves := loadFile(inputfile)
 
-	minsMax := 2
-	// openValves := map[string]bool{}
+	// valvesSlice := make([]bool, len(valves))
 
-	// sum := 0
-	// cur := start
-	// for mins := minsMax; mins > 0; mins-- {
-	// 	sum += sumOpen(valves, openValves)
+	minsMax := 30
+	openValves := map[string]bool{}
+	// meno := map[string]int{}
 
-	// 	v := valves[cur]
-	// 	if v.FlowRate != 0 && !openValves[cur] {
-	// 		openValves[cur] = true
-	// 		continue
-	// 	}
-	// }
-
-	//  1  2  3
-	// AA DD CC
-	// AA DD AA
-	// AA DD EE
-	// AA DD CC 20
-	// AA DD AA 20
-	// AA DD EE 20
-	// AA II AA
-	// AA II JJ
-	// AA II AA
-	// AA II JJ
-
-	open := map[string]bool{}
-
-	path := []string{}
-
-	var recur func(cur string, mins int) int
-	recur = func(cur string, mins int) int {
-		sum := sumOpen(valves, open)
+	var recur func(curID string, mins int, open map[string]bool) int
+	recur = func(curID string, mins int, open map[string]bool) int {
 		if mins <= 0 {
-			return sum
+			return 0
 		}
 
-		v := valves[cur]
-		max := 0
-		for _, next := range v.Tunnels {
-			max = util.Max(max, recur(next, mins-1))
+		// key := fmt.Sprintf("%v-%v", mins, open)
+		// if v, ok := meno[key]; ok {
+		// 	return v
+		// }
+
+		cur := valves[curID]
+		var max int
+		// if this valve isn't open, and has flow rate > 0, calc what it would be like if it was open
+		if !open[curID] && cur.FlowRate > 0 {
+			openValvesClone := cloneMap(open)
+			openValvesClone[curID] = true
+			max = recur(curID, mins-1, openValvesClone) + ((mins - 1) * cur.FlowRate)
 		}
 
-		if !open[cur] {
-			open[cur] = true
-			for _, next := range v.Tunnels {
-				max = util.Max(max, recur(next, mins-2))
-			}
+		for _, tun := range cur.Tunnels {
+			t := recur(tun, mins-1, open)
+			max = util.Max(t, max)
 		}
 
-		return sum + max
+		// meno[key] = max
+		// fmt.Printf("min %v max %v\n", (minsMax - (minsMax - mins)), max)
+		return max
 	}
 
-	path = append(path, start)
-	result := recur(start, minsMax)
+	result := recur(start, minsMax, openValves)
+
 	return result
+}
+
+func cloneMap(in map[string]bool) map[string]bool {
+	m := make(map[string]bool)
+	for k, v := range in {
+		m[k] = v
+	}
+
+	return m
 }
 
 func sumOpen(valves map[string]*Valve, openValves map[string]bool) int {

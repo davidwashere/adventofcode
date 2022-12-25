@@ -5,10 +5,10 @@ import (
 	"fmt"
 )
 
-func part1(inputfile string) int {
-	data, _ := util.ReadFileToStringSlice(inputfile)
-	// data, _ := util.ReadFileToIntSlice(inputfile)
-	// data, _ := util.ReadFileToStringSliceWithDelim(inputfile, "\n\n")
+func load(inputFile string) {
+	data, _ := util.ReadFileToStringSlice(inputFile)
+	// data, _ := util.ReadFileToIntSlice(inputFile)
+	// data, _ := util.ReadFileToStringSliceWithDelim(inputFile, "\n\n")
 	// grid := util.NewInfinityGridFromFile(inputfile, ".")
 
 	for _, line := range data {
@@ -19,12 +19,16 @@ func part1(inputfile string) int {
 
 		fmt.Println(tokens)
 	}
-
-	result := 0
-
-	return result
 }
 
-func part2(inputfile string) int {
+func part1(inputFile string) int {
+	load(inputFile)
+
+	return 0
+}
+
+func part2(inputFile string) int {
+	load(inputFile)
+
 	return 0
 }

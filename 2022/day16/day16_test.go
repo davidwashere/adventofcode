@@ -8,11 +8,22 @@ import (
 func TestP1(t *testing.T) {
 	got := part1("sample2.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := 0
+	want := 1651
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}
 }
+
+// func BenchmarkP1(b *testing.B) {
+// 	for n := 0; n < b.N; n++ {
+// 		part1("sample2.txt")
+// 		// fmt.Printf("Got: %v\n", got)
+// 		// want := 1651
+// 		// if got != want {
+// 		// 	b.Errorf("Got %v but want %v", got, want)
+// 		// }
+// 	}
+// }
 
 func TestP1_Actual(t *testing.T) {
 	got := part1("input.txt")
@@ -23,20 +34,20 @@ func TestP1_Actual(t *testing.T) {
 	}
 }
 
-func TestP2(t *testing.T) {
-	got := part2("sample.txt")
-	fmt.Printf("Got: %v\n", got)
-	want := 0
-	if got != want {
-		t.Errorf("Got %v but want %v", got, want)
-	}
-}
+// func TestP2(t *testing.T) {
+// 	got := part2("sample.txt")
+// 	fmt.Printf("Got: %v\n", got)
+// 	want := 0
+// 	if got != want {
+// 		t.Errorf("Got %v but want %v", got, want)
+// 	}
+// }
 
-func TestP2_Actual(t *testing.T) {
-	got := part2("input.txt")
-	fmt.Printf("Got: %v\n", got)
-	want := 0
-	if got != want {
-		t.Errorf("Got %v but want %v", got, want)
-	}
-}
+// func TestP2_Actual(t *testing.T) {
+// 	got := part2("input.txt")
+// 	fmt.Printf("Got: %v\n", got)
+// 	want := 0
+// 	if got != want {
+// 		t.Errorf("Got %v but want %v", got, want)
+// 	}
+// }
