@@ -27,18 +27,6 @@ func load(inputFile string) []int {
 	return nums
 }
 
-func buildNumMap(nums []int) map[int]*Num {
-	nMap := map[int]*Num{}
-
-	for _, n := range nums {
-		newNum := new(Num)
-		newNum.val = n
-		nMap[n] = newNum
-	}
-
-	return nMap
-}
-
 func buildLLNoMap(nums []int) (*Num, []*Num) {
 	numL := []*Num{}
 
@@ -66,35 +54,6 @@ func buildLLNoMap(nums []int) (*Num, []*Num) {
 	numL[last].next = numL[0]
 
 	return zero, numL
-}
-
-func buildLL(nums []int, nMap map[int]*Num) *Num {
-	var zeroPt *Num
-	for i := 0; i < len(nums)-1; i++ {
-		cur := nums[i]
-		next := nums[i+1]
-		curPt := nMap[cur]
-		nextPt := nMap[next]
-
-		curPt.next = nextPt
-		nextPt.prev = curPt
-
-		if i == len(nums)-2 {
-			headPt := nMap[nums[0]]
-			headPt.prev = nextPt
-			nextPt.next = headPt
-
-			if zeroPt == nil {
-				zeroPt = nextPt
-			}
-		}
-
-		if curPt.val == 0 {
-			zeroPt = curPt
-		}
-	}
-
-	return zeroPt
 }
 
 func part1(inputFile string) int {
