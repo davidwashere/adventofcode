@@ -448,8 +448,8 @@
     "779371": {
       "id": 779371,
       "name": "bubzor888",
-      "stars": 39,
-      "local_score": 658,
+      "stars": 41,
+      "local_score": 694,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -553,6 +553,14 @@
         "22": {
           "1": {
             "get_star_ts": 1672024824
+          }
+        },
+        "23": {
+          "1": {
+            "get_star_ts": 1672082141
+          },
+          "2": {
+            "get_star_ts": 1672082378
           }
         },
         "3": {
