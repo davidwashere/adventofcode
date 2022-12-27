@@ -15,6 +15,16 @@ func NewPoint(x, y int) Point {
 	return Point{x, y}
 }
 
+type Point3 struct {
+	X int
+	Y int
+	Z int
+}
+
+func NewPoint3(x, y, z int) Point3 {
+	return Point3{x, y, z}
+}
+
 // DistOrtho calculates the number of 'steps' between two points
 // where horizontal, vertical, and diagonal moves are allowed
 //

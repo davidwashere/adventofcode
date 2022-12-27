@@ -652,6 +652,28 @@ func (g *InfGrid[T]) VisitOrtho(x, y int, visitFunc func(val T, x int, y int), d
 	}
 }
 
+// VisitOrtho3D visits the coordinates orthogonal to x and y and z
+// If bounds are locked only visits coords within bounds
+func (g *InfGrid[T]) VisitOrtho3D(x, y, z int, visitFunc func(val T, x int, y int, z int)) {
+	coords := [][]int{
+		{x, y + 1, z}, // N
+		{x + 1, y, z}, // E
+		{x, y - 1, z}, // S
+		{x - 1, y, z}, // W
+		{x, y, z + 1}, // Towards
+		{x, y, z - 1}, // Away
+	}
+
+	for _, coord := range coords {
+		tx := coord[0]
+		ty := coord[1]
+		tz := coord[2]
+		if !g.boundsLocked || !g.IsOutsideExtents(tx, ty, tz) {
+			visitFunc(g.Get(tx, ty, tz), tx, ty, tz)
+		}
+	}
+}
+
 // VisitDiag visits the coordinates diagonal to x and y
 // If bounds are locked only visits coords within bounds
 func (g *InfGrid[T]) VisitDiag(x, y int, visitFunc func(val T, x int, y int), dims ...int) {
