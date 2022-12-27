@@ -52,6 +52,9 @@ type InfGrid[T any] struct {
 
 	// degress by which to rotate grid access operations
 	deg int
+
+	// function used when dump is called
+	dumpFunc func(T, bool)
 }
 
 type extents struct {
@@ -64,8 +67,18 @@ func NewInfGrid[T any]() *InfGrid[T] {
 		data:     map[string]map[int]map[int]T{},
 		yExtents: newExtents(),
 		xExtents: newExtents(),
+		dumpFunc: defaultDumpFunc[T],
 	}
 	return &grid
+}
+
+func defaultDumpFunc[T any](val T, freshRow bool) {
+	if !freshRow {
+		fmt.Print(val)
+
+	}
+
+	fmt.Println()
 }
 
 func newExtents() extents {
@@ -77,6 +90,11 @@ func newExtents() extents {
 
 func (g *InfGrid[T]) WithDefaultValue(defaultValue T) *InfGrid[T] {
 	g.def = defaultValue
+	return g
+}
+
+func (g *InfGrid[T]) WithDumpFunc(f func(val T, freshRow bool)) *InfGrid[T] {
+	g.dumpFunc = f
 	return g
 }
 
@@ -489,9 +507,10 @@ func (g *InfGrid[T]) Dump(dims ...int) {
 	for y := g.yExtents.max; y >= g.yExtents.min; y-- {
 		for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 			val := g.Get(x, y, dims...)
-			fmt.Print(val)
+			g.dumpFunc(val, false)
 		}
-		fmt.Println()
+		var noop T
+		g.dumpFunc(noop, true)
 	}
 }
 
