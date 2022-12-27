@@ -64,12 +64,7 @@ func decToSnafu(dec int) string {
 		dig := snafMap[rem]
 		snafu = fmt.Sprintf("%v%v", dig, snafu)
 		dec = quo
-
-		if rem >= 3 {
-			carry = true
-		} else {
-			carry = false
-		}
+		carry = rem >= 3
 
 		if dec == 0 && !carry {
 			break

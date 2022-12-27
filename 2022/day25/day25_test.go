@@ -79,7 +79,7 @@ func TestP1(t *testing.T) {
 func TestP1_Actual(t *testing.T) {
 	got := part1("input.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := ""
+	want := "20-1-0=-2=-2220=0011"
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}
