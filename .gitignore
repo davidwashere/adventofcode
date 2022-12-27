@@ -9,3 +9,4 @@ triggerer
 triggerer.exe
 !triggerer/
 *.log
+delme/
