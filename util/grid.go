@@ -75,10 +75,9 @@ func NewInfGrid[T any]() *InfGrid[T] {
 func defaultDumpFunc[T any](val T, freshRow bool) {
 	if !freshRow {
 		fmt.Print(val)
-
+	} else {
+		fmt.Println()
 	}
-
-	fmt.Println()
 }
 
 func newExtents() extents {
