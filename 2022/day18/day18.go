@@ -67,7 +67,10 @@ func part1(inputFile string) int {
 func part2(inputFile string) int {
 	load(inputFile)
 
-	// start outside the extents, and crawl the full space removing any cubes found
+	// plan: start outside the extents, and crawl the full space removing any empty space found, stopping
+	// when hitting an actual cube, the remaining cubes will be the truely 'empty' space
+
+	// find all cubes
 	innerCubes := map[Cube]bool{}
 	for z := minZ - 1; z <= maxZ+1; z++ {
 		for y := minY - 1; y <= maxY+1; y++ {
@@ -102,7 +105,6 @@ func part2(inputFile string) int {
 			continue
 		}
 
-		// fmt.Println("calc adjacent", cur)
 		// added other empty cubes to test / purge
 		Grid.VisitOrtho3D(cur.X, cur.Y, cur.Z, func(isCube bool, x, y, z int) {
 			// if space holds cube, ignore it
@@ -131,10 +133,9 @@ func part2(inputFile string) int {
 		})
 	}
 
-	// for the cubes that 'actually' inner cubes
+	// for the cubes that are 'actually' inner cubes
 	// reduce side count
 	for c := range innerCubes {
-
 		Grid.VisitOrtho3D(c.X, c.Y, c.Z, func(isCube bool, x, y, z int) {
 			if isCube {
 				sides--

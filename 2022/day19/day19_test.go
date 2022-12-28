@@ -8,7 +8,7 @@ import (
 func TestP1(t *testing.T) {
 	got := part1("sample.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := 0
+	want := 33
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}
@@ -17,7 +17,7 @@ func TestP1(t *testing.T) {
 func TestP1_Actual(t *testing.T) {
 	got := part1("input.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := 0
+	want := 1958
 	if got != want {
 		t.Errorf("Got %v but want %v", got, want)
 	}
