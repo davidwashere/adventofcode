@@ -345,43 +345,29 @@ func part2(inputFile string) int {
 	for _, step := range steps {
 		if step == "R" {
 			curDir.Rotate(90)
-			continue
-		}
-
-		if step == "L" {
+		} else if step == "L" {
 			curDir.Rotate(-90)
-			continue
-		}
+		} else {
+			moves, _ := strconv.Atoi(step)
+			for i := 0; i < moves; i++ {
+				p := curPos.Apply(curDir)
+				nextDir := curDir
 
-		moves, _ := strconv.Atoi(step)
-		for i := 0; i < moves; i++ {
-			p := curPos.Apply(curDir)
+				if grid.Get(p.X, p.Y) == Void {
+					p, nextDir = getNextPointDir(p, curDir)
+				}
 
-			if grid.Get(p.X, p.Y) == Void {
-				p, curDir = getNextPointDir(p, curDir)
-				// if curDir.X > 0 {
-				// 	// right
-				// 	p.X = rowsMinMax[curPos.Y].min
-				// } else if curDir.X < 0 {
-				// 	// left
-				// 	p.X = rowsMinMax[curPos.Y].max
-				// } else if curDir.Y > 0 {
-				// 	// south
-				// 	p.Y = colsMinMax[curPos.X].min
-				// } else if curDir.Y < 0 {
-				// 	// North
-				// 	p.Y = colsMinMax[curPos.X].max
-				// }
+				if grid.Get(p.X, p.Y) == Wall {
+					break
+				}
+
+				if grid.Get(p.X, p.Y) == Open {
+					curDir = nextDir
+					curPos = p
+					continue
+				}
 			}
 
-			if grid.Get(p.X, p.Y) == Wall {
-				break
-			}
-
-			if grid.Get(p.X, p.Y) == Open {
-				curPos = p
-				continue
-			}
 		}
 	}
 

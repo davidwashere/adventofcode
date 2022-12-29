@@ -26,7 +26,7 @@ func TestP1_Actual(t *testing.T) {
 func TestP2(t *testing.T) {
 	got := part2("sample.txt")
 	fmt.Printf("Got: %v\n", got)
-	want := 0
+	want := 5031
 	if got != want {
 		t.Errorf("got %v but want %v", got, want)
 	}
