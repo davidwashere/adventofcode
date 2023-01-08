@@ -5,109 +5,214 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type Valve struct {
 	Index    int
 	ID       string
 	FlowRate int
-	Tunnels  []string
+	Tunnels  map[string]bool
 }
 
 func (v Valve) String() string {
 	return fmt.Sprintf("%v %v %v", v.ID, v.FlowRate, v.Tunnels)
 }
 
-func loadFile(inputfile string) (string, map[string]*Valve) {
-	data, _ := util.ReadFileToStringSlice(inputfile)
+func load(inputFile string) map[string]*Valve {
+	data, _ := util.ReadFileToStringSlice(inputFile)
 	valves := map[string]*Valve{}
-	var first string
 
 	re := regexp.MustCompile(`[A-Z]{2,2}|[0-9]+`) // find '[', ']', or number
 	for i, line := range data {
 		vals := re.FindAllString(line, -1)
+		tuns := map[string]bool{}
+		for _, tun := range vals[2:] {
+			tuns[tun] = true
+		}
 		rate, _ := strconv.Atoi(vals[1])
 		v := Valve{
 			Index:    i,
 			ID:       vals[0],
 			FlowRate: rate,
-			Tunnels:  vals[2:],
-		}
-
-		if i == 0 {
-			first = v.ID
+			Tunnels:  tuns,
 		}
 
 		valves[v.ID] = &v
 	}
 
-	return first, valves
+	return valves
 }
 
-func part1(inputfile string) int {
-	start, valves := loadFile(inputfile)
+func copyMap(in map[string]bool) map[string]bool {
+	newMap := map[string]bool{}
 
-	// valvesSlice := make([]bool, len(valves))
-
-	minsMax := 30
-	openValves := map[string]bool{}
-	// meno := map[string]int{}
-
-	var recur func(curID string, mins int, open map[string]bool) int
-	recur = func(curID string, mins int, open map[string]bool) int {
-		if mins <= 0 {
-			return 0
-		}
-
-		// key := fmt.Sprintf("%v-%v", mins, open)
-		// if v, ok := meno[key]; ok {
-		// 	return v
-		// }
-
-		cur := valves[curID]
-		var max int
-		// if this valve isn't open, and has flow rate > 0, calc what it would be like if it was open
-		if !open[curID] && cur.FlowRate > 0 {
-			openValvesClone := cloneMap(open)
-			openValvesClone[curID] = true
-			max = recur(curID, mins-1, openValvesClone) + ((mins - 1) * cur.FlowRate)
-		}
-
-		for _, tun := range cur.Tunnels {
-			t := recur(tun, mins-1, open)
-			max = util.Max(t, max)
-		}
-
-		// meno[key] = max
-		// fmt.Printf("min %v max %v\n", (minsMax - (minsMax - mins)), max)
-		return max
-	}
-
-	result := recur(start, minsMax, openValves)
-
-	return result
-}
-
-func cloneMap(in map[string]bool) map[string]bool {
-	m := make(map[string]bool)
 	for k, v := range in {
-		m[k] = v
+		newMap[k] = v
 	}
 
-	return m
+	return newMap
 }
 
-func sumOpen(valves map[string]*Valve, openValves map[string]bool) int {
-	sum := 0
-	for _, v := range valves {
-		if openValves[v.ID] {
-			sum += v.FlowRate
+func mapKey(vOrdered []string, open map[string]bool) string {
+	key := ""
+
+	for _, v := range vOrdered {
+		if open[v] {
+			key += "1,"
+		} else {
+			key += "0,"
 		}
 	}
 
-	return sum
+	return key
 }
 
-func part2(inputfile string) int {
-	return 0
+func buildFlowingValves(in map[string]*Valve) map[string]int {
+	r := map[string]int{}
+	for k, v := range in {
+		if v.FlowRate > 0 {
+			r[k] = v.FlowRate
+		}
+	}
+
+	return r
+}
+
+// buildOrderedFlowingValves result will be used to generate a consistent map key
+func buildOrderedFlowingValves(in map[string]int) []string {
+	r := []string{}
+	for k := range in {
+		r = append(r, k)
+	}
+
+	return r
+}
+
+func buildDistMap(in map[string]*Valve) map[string]map[string]int {
+	r := map[string]map[string]int{}
+
+	for x := range in {
+		for y := range in {
+
+			if _, ok := r[x]; !ok {
+				r[x] = map[string]int{}
+			}
+
+			// test if y is in the tunnels for x
+			if _, ok := in[x].Tunnels[y]; ok {
+				r[x][y] = 1
+			} else {
+				r[x][y] = util.MaxInt
+			}
+		}
+	}
+
+	for k := range r {
+		for i := range r {
+			for j := range r {
+				if r[i][k] == util.MaxInt || r[k][j] == util.MaxInt {
+					continue
+				}
+
+				r[i][j] = util.Min(r[i][j], r[i][k]+r[k][j])
+			}
+		}
+	}
+
+	return r
+}
+
+func part1(inputFile string) int {
+	valves := load(inputFile)
+	minsMax := 30
+
+	flowingValves := buildFlowingValves(valves)
+	distMap := buildDistMap(valves)
+
+	maxes := map[string]int{}
+	_ = maxes
+
+	max := 0
+	var visit func(src string, mins int, open map[string]bool, flow int)
+	visit = func(src string, mins int, open map[string]bool, flow int) {
+		max = util.Max(max, flow)
+
+		for dst, pressure := range flowingValves {
+			updMins := mins - distMap[src][dst] - 1
+			if open[dst] || updMins <= 0 {
+				continue
+			}
+
+			updOpen := copyMap(open)
+			updOpen[dst] = true
+			updFlow := (updMins * pressure) + flow
+
+			visit(dst, updMins, updOpen, updFlow)
+		}
+
+	}
+
+	visit("AA", minsMax, map[string]bool{}, 0)
+	return max
+}
+
+func part2(inputFile string) int {
+	valves := load(inputFile)
+	minsMax := 26
+
+	flowingValves := buildFlowingValves(valves)
+	flowingValvesOrdered := buildOrderedFlowingValves(flowingValves)
+	distMap := buildDistMap(valves)
+
+	maxes := map[string]int{}
+
+	var visit func(src string, mins int, open map[string]bool, flow int)
+	visit = func(src string, mins int, open map[string]bool, flow int) {
+		openKey := mapKey(flowingValvesOrdered, open)
+		maxes[openKey] = util.Max(maxes[openKey], flow)
+
+		for dst, pressure := range flowingValves {
+			updMins := mins - distMap[src][dst] - 1
+			if open[dst] || updMins <= 0 {
+				continue
+			}
+
+			updOpen := copyMap(open)
+			updOpen[dst] = true
+			updFlow := (updMins * pressure) + flow
+
+			visit(dst, updMins, updOpen, updFlow)
+		}
+
+	}
+
+	visit("AA", minsMax, map[string]bool{}, 0)
+
+	max := 0
+	for k, v := range maxes {
+		for k2, v2 := range maxes {
+			// only if didn't visit same spots
+			if !isOverlap(k, k2) {
+				max = util.Max(max, v+v2)
+
+			}
+		}
+	}
+
+	return max
+}
+
+func isOverlap(k1, k2 string) bool {
+	k1s := strings.Split(k1, ",")
+	k2s := strings.Split(k2, ",")
+
+	for i := 0; i < len(k1s)-1; i++ {
+
+		if k1s[i] == "1" && k2s[i] == "1" {
+			return true
+		}
+	}
+
+	return false
 }
