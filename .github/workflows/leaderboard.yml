@@ -2,7 +2,7 @@ name: Leaderboard
 
 on:
   workflow_dispatch:
-  # schedule:
+  schedule:
     # 9am (UTC = 3pm or 15 hundred o'clock)
     # - cron: '0 15 * * *'
     # 9pm (UTC = 3am or 03 hundred o'clock)
