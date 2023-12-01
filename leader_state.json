@@ -61,13 +61,16 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 1,
-      "local_score": 18,
+      "stars": 2,
+      "local_score": 36,
       "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
             "get_star_ts": 1701407681
+          },
+          "2": {
+            "get_star_ts": 1701408661
           }
         }
       }
@@ -115,10 +118,16 @@
     "803232": {
       "id": 803232,
       "name": "VyNgo97",
-      "stars": 0,
-      "local_score": 0,
+      "stars": 1,
+      "local_score": 17,
       "global_score": 0,
-      "completion_day_level": {}
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1701410834
+          }
+        }
+      }
     },
     "847890": {
       "id": 847890,
@@ -139,10 +148,16 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 0,
-      "local_score": 0,
+      "stars": 1,
+      "local_score": 16,
       "global_score": 0,
-      "completion_day_level": {}
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1701441143
+          }
+        }
+      }
     },
     "991386": {
       "id": 991386,
