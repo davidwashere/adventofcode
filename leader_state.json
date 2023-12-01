@@ -154,13 +154,16 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 1,
-      "local_score": 16,
+      "stars": 2,
+      "local_score": 33,
       "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
             "get_star_ts": 1701441143
+          },
+          "2": {
+            "get_star_ts": 1701455864
           }
         }
       }
