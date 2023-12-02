@@ -53,8 +53,8 @@
     "256058": {
       "id": 256058,
       "name": "cmeinco",
-      "stars": 2,
-      "local_score": 30,
+      "stars": 4,
+      "local_score": 66,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -63,6 +63,14 @@
           },
           "2": {
             "get_star_ts": 1701486580
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1701494786
+          },
+          "2": {
+            "get_star_ts": 1701495121
           }
         }
       }
@@ -163,8 +171,8 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 2,
-      "local_score": 33,
+      "stars": 3,
+      "local_score": 50,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -173,6 +181,11 @@
           },
           "2": {
             "get_star_ts": 1701455864
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1701529760
           }
         }
       }
