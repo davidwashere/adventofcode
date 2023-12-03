@@ -78,8 +78,8 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 4,
-      "local_score": 68,
+      "stars": 6,
+      "local_score": 104,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -96,6 +96,14 @@
           },
           "2": {
             "get_star_ts": 1701538529
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1701583393
+          },
+          "2": {
+            "get_star_ts": 1701585263
           }
         }
       }
