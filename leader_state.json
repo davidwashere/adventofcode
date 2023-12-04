@@ -133,10 +133,16 @@
     "759608": {
       "id": 759608,
       "name": "Steven Goff",
-      "stars": 0,
-      "local_score": 0,
+      "stars": 1,
+      "local_score": 17,
       "global_score": 0,
-      "completion_day_level": {}
+      "completion_day_level": {
+        "3": {
+          "1": {
+            "get_star_ts": 1701657797
+          }
+        }
+      }
     },
     "766543": {
       "id": 766543,
