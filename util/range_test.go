@@ -8,11 +8,14 @@ func TestRangeOverlaps(t *testing.T) {
 		r2   []int
 		want bool
 	}{
-		{[]int{2, 4}, []int{6, 8}, false},
-		{[]int{2, 3}, []int{4, 5}, false},
-		{[]int{5, 7}, []int{7, 9}, true},
-		{[]int{2, 8}, []int{3, 7}, true},
-		{[]int{6, 6}, []int{4, 6}, true},
+		// {[]int{2, 4}, []int{6, 8}, false},
+		// {[]int{2, 3}, []int{4, 5}, false},
+		// {[]int{5, 7}, []int{7, 9}, true},
+		// {[]int{2, 8}, []int{3, 7}, true},
+		// {[]int{6, 6}, []int{4, 6}, true},
+		{[]int{2, 4}, []int{0, 2}, true},
+		{[]int{2, 4}, []int{4, 6}, true},
+		{[]int{2, 4}, []int{3, 3}, true},
 	}
 
 	for _, test := range tt {

@@ -43,17 +43,18 @@ func part1(inputFile string) int {
 		for _, match := range matches {
 			num, _ := strconv.Atoi(line[match[0]:match[1]])
 
-			loX := match[0] - 1
-			hiX := match[1]
-
-		Outer:
-			for tx := loX; tx <= hiX; tx++ {
-				for ty := y - 1; ty <= y+1; ty++ {
-					if !numOrDotRe.MatchString(grid.Get(tx, ty)) {
-						parts = append(parts, num)
-						break Outer
+			found := false
+			for tx := match[0]; tx < match[1] && !found; tx++ {
+				grid.VisitOrthoAndDiag(tx, y, func(val string, x, y int) {
+					if found {
+						return
 					}
-				}
+
+					if !numOrDotRe.MatchString(grid.Get(x, y)) {
+						parts = append(parts, num)
+						found = true
+					}
+				})
 			}
 		}
 	}
@@ -82,12 +83,12 @@ func part2(inputFile string) int {
 			matches := numRe.FindAllStringIndex(line, -1)
 			for _, match := range matches {
 				// determine if any number borders the '*'
-				num, _ := strconv.Atoi(line[match[0]:match[1]])
-				for tx := x - 1; tx <= x+1; tx++ {
-					if tx >= match[0] && tx < match[1] {
-						nums = append(nums, num)
-						break
-					}
+
+				rng1 := []int{x - 1, x + 1}
+				rng2 := []int{match[0], match[1] - 1}
+				if util.RangeOverlaps(rng1, rng2) {
+					num, _ := strconv.Atoi(line[match[0]:match[1]])
+					nums = append(nums, num)
 				}
 			}
 		}
