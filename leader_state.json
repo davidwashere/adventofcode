@@ -53,8 +53,8 @@
     "256058": {
       "id": 256058,
       "name": "cmeinco",
-      "stars": 5,
-      "local_score": 82,
+      "stars": 6,
+      "local_score": 99,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -76,6 +76,9 @@
         "3": {
           "1": {
             "get_star_ts": 1701660535
+          },
+          "2": {
+            "get_star_ts": 1701742282
           }
         }
       }
@@ -83,8 +86,8 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 6,
-      "local_score": 104,
+      "stars": 8,
+      "local_score": 139,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -109,6 +112,14 @@
           },
           "2": {
             "get_star_ts": 1701585263
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1701740041
+          },
+          "2": {
+            "get_star_ts": 1701740538
           }
         }
       }
