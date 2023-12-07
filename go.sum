@@ -1,3 +1,5 @@
+github.com/cauesmelo/aoc-2023 v0.0.0-20231206044853-fc2123caf14f h1:C2Kw/6bgJwOa/xAbGg22vwTp/cQMaz5I92amDkh792o=
+github.com/cauesmelo/aoc-2023 v0.0.0-20231206044853-fc2123caf14f/go.mod h1:AUMU6hU99dd+bUPCQENdkf7DUE0yRBXXKfPDNW0yJ4Y=
 golang.org/x/net v0.0.0-20211205041911-012df41ee64c h1:7SfqwP5fxEtl/P02w5IhKc86ziJ+A25yFrkVgoy2FT8=
 golang.org/x/net v0.0.0-20211205041911-012df41ee64c/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

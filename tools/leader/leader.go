@@ -166,29 +166,31 @@ func sortMemberKeysByName(m map[string]Member) []string {
 func publishToDiscord(results *strings.Builder) {
 	discordURL := os.Getenv(discordURLEnvKey)
 	log.Printf("%v length: %v", discordURLEnvKey, len(discordURL))
-	if len(discordURL) > 0 {
-		// GITHUB_EVENT_NAME=schedule for cron workflows
-		data := struct {
-			Content string `json:"content"`
-		}{
-			"```\n" + results.String() + "\n```",
-		}
-
-		dataB, err := json.Marshal(data)
-		util.Check(err)
-
-		reader := bytes.NewReader(dataB)
-		// reader := strings.NewReader(results.String())
-
-		resp, err := http.Post(discordURL, "application/json", reader)
-		util.Check(err)
-		defer resp.Body.Close()
-
-		dataB, err = io.ReadAll(resp.Body)
-		util.Check(err)
-
-		log.Printf("Discord POST StatusCode [%v], Body: %v", resp.StatusCode, string(dataB))
+	if len(discordURL) == 0 {
+		log.Println("Skipping Discord Publish... missing URL")
+		return
 	}
+	// GITHUB_EVENT_NAME=schedule for cron workflows
+	data := struct {
+		Content string `json:"content"`
+	}{
+		"```\n" + results.String() + "\n```",
+	}
+
+	dataB, err := json.Marshal(data)
+	util.Check(err)
+
+	reader := bytes.NewReader(dataB)
+	// reader := strings.NewReader(results.String())
+
+	resp, err := http.Post(discordURL, "application/json", reader)
+	util.Check(err)
+	defer resp.Body.Close()
+
+	dataB, err = io.ReadAll(resp.Body)
+	util.Check(err)
+
+	log.Printf("Discord POST StatusCode [%v], Body: %v", resp.StatusCode, string(dataB))
 }
 
 func pullAndCacheLeaderboard() Leaderboard {
