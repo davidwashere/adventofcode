@@ -53,8 +53,8 @@
     "256058": {
       "id": 256058,
       "name": "cmeinco",
-      "stars": 8,
-      "local_score": 132,
+      "stars": 9,
+      "local_score": 149,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -87,6 +87,11 @@
           },
           "2": {
             "get_star_ts": 1701746875
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1702005629
           }
         }
       }
