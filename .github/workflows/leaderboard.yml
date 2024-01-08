@@ -7,8 +7,9 @@ on:
     # - cron: '0 15 * * *'
     # 9pm (UTC = 3am or 03 hundred o'clock)
     # - cron: '0 3 * * *'
+    # Run this one below during december
     # every hour 9am CST to 11pm CST
-    - cron: '0 15-23,0-5 * * *'
+    # - cron: '0 15-23,0-5 * * *'
 
 jobs:
 
