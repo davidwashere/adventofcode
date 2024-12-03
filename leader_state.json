@@ -142,10 +142,19 @@
     "957001": {
       "id": 957001,
       "name": "George Lamperis",
-      "stars": 0,
-      "local_score": 0,
+      "stars": 2,
+      "local_score": 34,
       "global_score": 0,
-      "completion_day_level": {}
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1733203835
+          },
+          "2": {
+            "get_star_ts": 1733204826
+          }
+        }
+      }
     },
     "987808": {
       "id": 987808,
