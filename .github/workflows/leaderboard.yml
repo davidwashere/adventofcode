@@ -1,11 +1,12 @@
+# Will post the leaderboard results to AoC discord
 name: Leaderboard
 
 on:
   workflow_dispatch:
-  # schedule:
+  schedule:
     # Run this first one below during december
     # every hour 9am CST to 11pm CST
-    # - cron: '0 15-23,0-5 * * *'
+    - cron: '0 15-23,0-5 * * *'
     
     # 9am (UTC = 3pm or 15 hundred o'clock)
     # - cron: '0 15 * * *'
