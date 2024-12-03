@@ -1,6 +1,6 @@
 {
   "owner_id": 264332,
-  "event": "2023",
+  "event": "2024",
   "members": {
     "1039001": {
       "id": 1039001,
@@ -53,118 +53,32 @@
     "256058": {
       "id": 256058,
       "name": "cmeinco",
-      "stars": 9,
-      "local_score": 149,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1701485918
-          },
-          "2": {
-            "get_star_ts": 1701486580
-          }
-        },
-        "2": {
-          "1": {
-            "get_star_ts": 1701494786
-          },
-          "2": {
-            "get_star_ts": 1701495121
-          }
-        },
-        "3": {
-          "1": {
-            "get_star_ts": 1701660535
-          },
-          "2": {
-            "get_star_ts": 1701742282
-          }
-        },
-        "4": {
-          "1": {
-            "get_star_ts": 1701745307
-          },
-          "2": {
-            "get_star_ts": 1701746875
-          }
-        },
-        "5": {
-          "1": {
-            "get_star_ts": 1702005629
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 16,
-      "local_score": 282,
+      "stars": 4,
+      "local_score": 72,
       "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
-            "get_star_ts": 1701407681
+            "get_star_ts": 1733199176
           },
           "2": {
-            "get_star_ts": 1701408661
+            "get_star_ts": 1733199353
           }
         },
         "2": {
           "1": {
-            "get_star_ts": 1701538367
+            "get_star_ts": 1733199978
           },
           "2": {
-            "get_star_ts": 1701538529
-          }
-        },
-        "3": {
-          "1": {
-            "get_star_ts": 1701583393
-          },
-          "2": {
-            "get_star_ts": 1701585263
-          }
-        },
-        "4": {
-          "1": {
-            "get_star_ts": 1701740041
-          },
-          "2": {
-            "get_star_ts": 1701740538
-          }
-        },
-        "5": {
-          "1": {
-            "get_star_ts": 1701838231
-          },
-          "2": {
-            "get_star_ts": 1701841887
-          }
-        },
-        "6": {
-          "1": {
-            "get_star_ts": 1701913582
-          },
-          "2": {
-            "get_star_ts": 1701913977
-          }
-        },
-        "7": {
-          "1": {
-            "get_star_ts": 1702002698
-          },
-          "2": {
-            "get_star_ts": 1702004076
-          }
-        },
-        "8": {
-          "1": {
-            "get_star_ts": 1702223039
-          },
-          "2": {
-            "get_star_ts": 1702224199
+            "get_star_ts": 1733200901
           }
         }
       }
@@ -180,35 +94,18 @@
     "676994": {
       "id": 676994,
       "name": "Kris Heyden",
-      "stars": 1,
-      "local_score": 15,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1701451762
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "759608": {
       "id": 759608,
       "name": "Steven Goff",
-      "stars": 2,
-      "local_score": 35,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "3": {
-          "1": {
-            "get_star_ts": 1701657797
-          }
-        },
-        "8": {
-          "1": {
-            "get_star_ts": 1702050431
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "766543": {
       "id": 766543,
@@ -229,16 +126,10 @@
     "803232": {
       "id": 803232,
       "name": "VyNgo97",
-      "stars": 1,
-      "local_score": 17,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1701410834
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "847890": {
       "id": 847890,
@@ -259,32 +150,10 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 5,
-      "local_score": 85,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1701441143
-          },
-          "2": {
-            "get_star_ts": 1701455864
-          }
-        },
-        "2": {
-          "1": {
-            "get_star_ts": 1701529760
-          },
-          "2": {
-            "get_star_ts": 1701532769
-          }
-        },
-        "4": {
-          "1": {
-            "get_star_ts": 1701738215
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "991386": {
       "id": 991386,
