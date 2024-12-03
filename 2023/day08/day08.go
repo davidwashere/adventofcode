@@ -77,7 +77,7 @@ func part2(inputFile string) int {
 	g := load(inputFile)
 
 	curs := []string{}
-	for k, _ := range g.nodes {
+	for k := range g.nodes {
 		if strings.HasSuffix(k, "A") {
 			curs = append(curs, k)
 		}
