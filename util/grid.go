@@ -578,10 +578,28 @@ func (g *InfGrid[T]) GetN(x, y int, dims ...int) T {
 	return g.Get(x, y+1, dims...)
 }
 
+// GetNMany is like GetN but returns count values
+func (g *InfGrid[T]) GetNMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x, y+i, dims...))
+	}
+	return r
+}
+
 // GetE will return the value east of the given coordinate (x+1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetE(x, y int, dims ...int) T {
 	return g.Get(x+1, y, dims...)
+}
+
+// GetEMany is like GetE but returns count values
+func (g *InfGrid[T]) GetEMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x+i, y, dims...))
+	}
+	return r
 }
 
 // GetS will return the value south of the given coordinate (y-1), if the coordinate is outside the extents
@@ -590,10 +608,28 @@ func (g *InfGrid[T]) GetS(x, y int, dims ...int) T {
 	return g.Get(x, y-1, dims...)
 }
 
+// GetSMany is like GetS but returns count values
+func (g *InfGrid[T]) GetSMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x, y-i, dims...))
+	}
+	return r
+}
+
 // GetW will return the value west of the given coordinate (x-1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetW(x, y int, dims ...int) T {
 	return g.Get(x-1, y, dims...)
+}
+
+// GetWMany is like GetW but returns count values
+func (g *InfGrid[T]) GetWMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x-i, y, dims...))
+	}
+	return r
 }
 
 // GetNE will return the value north-east of the given coordinate (x+1, y+1), if the coordinate is outside the extents
@@ -602,10 +638,28 @@ func (g *InfGrid[T]) GetNE(x, y int, dims ...int) T {
 	return g.Get(x+1, y+1, dims...)
 }
 
+// GetNEMany is like GetNE but returns count values
+func (g *InfGrid[T]) GetNEMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x+i, y+i, dims...))
+	}
+	return r
+}
+
 // GetSE will return the value south-east of the given coordinate (x+1, y-1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetSE(x, y int, dims ...int) T {
 	return g.Get(x+1, y-1, dims...)
+}
+
+// GetSEMany is like GetSE but returns count values
+func (g *InfGrid[T]) GetSEMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x+i, y-i, dims...))
+	}
+	return r
 }
 
 // GetSW will return the value south-west of the given coordinate (x-1, y-1), if the coordinate is outside the extents
@@ -614,10 +668,28 @@ func (g *InfGrid[T]) GetSW(x, y int, dims ...int) T {
 	return g.Get(x-1, y-1, dims...)
 }
 
+// GetSWMany is like GetSW but returns count values
+func (g *InfGrid[T]) GetSWMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x-i, y-i, dims...))
+	}
+	return r
+}
+
 // GetNW will return the value north-west of the given coordinate (x-1, y+1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetNW(x, y int, dims ...int) T {
 	return g.Get(x-1, y+1, dims...)
+}
+
+// GetNWMany is like GetNW but returns count values
+func (g *InfGrid[T]) GetNWMany(x, y int, count int, dims ...int) []T {
+	r := []T{}
+	for i := 1; i <= count; i++ {
+		r = append(r, g.Get(x-i, y+i, dims...))
+	}
+	return r
 }
 
 // GetOrtho will return the values north, east, south, and west of the given coordinate, if a coordinate is outside
