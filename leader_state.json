@@ -142,8 +142,8 @@
     "871071": {
       "id": 871071,
       "name": "k1ngpr4wn",
-      "stars": 5,
-      "local_score": 93,
+      "stars": 6,
+      "local_score": 112,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -165,6 +165,9 @@
         "3": {
           "1": {
             "get_star_ts": 1764792839
+          },
+          "2": {
+            "get_star_ts": 1764800771
           }
         }
       }
