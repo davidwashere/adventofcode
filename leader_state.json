@@ -1,6 +1,6 @@
 {
   "owner_id": 264332,
-  "event": "2024",
+  "event": "2025",
   "members": {
     "1039001": {
       "id": 1039001,
@@ -61,51 +61,10 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 10,
-      "local_score": 179,
+      "stars": 0,
+      "local_score": 0,
       "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1733199176
-          },
-          "2": {
-            "get_star_ts": 1733199353
-          }
-        },
-        "2": {
-          "1": {
-            "get_star_ts": 1733199978
-          },
-          "2": {
-            "get_star_ts": 1733200901
-          }
-        },
-        "3": {
-          "1": {
-            "get_star_ts": 1733277412
-          },
-          "2": {
-            "get_star_ts": 1733277873
-          }
-        },
-        "4": {
-          "1": {
-            "get_star_ts": 1733292175
-          },
-          "2": {
-            "get_star_ts": 1733292252
-          }
-        },
-        "5": {
-          "1": {
-            "get_star_ts": 1733379195
-          },
-          "2": {
-            "get_star_ts": 1733379449
-          }
-        }
-      }
+      "completion_day_level": {}
     },
     "362761": {
       "id": 362761,
@@ -166,51 +125,27 @@
     "957001": {
       "id": 957001,
       "name": "George Lamperis",
-      "stars": 8,
-      "local_score": 137,
-      "global_score": 0,
-      "completion_day_level": {
-        "1": {
-          "1": {
-            "get_star_ts": 1733203835
-          },
-          "2": {
-            "get_star_ts": 1733204826
-          }
-        },
-        "2": {
-          "1": {
-            "get_star_ts": 1733244550
-          },
-          "2": {
-            "get_star_ts": 1733246712
-          }
-        },
-        "3": {
-          "1": {
-            "get_star_ts": 1733249021
-          },
-          "2": {
-            "get_star_ts": 1733280759
-          }
-        },
-        "4": {
-          "1": {
-            "get_star_ts": 1733362170
-          },
-          "2": {
-            "get_star_ts": 1733363681
-          }
-        }
-      }
-    },
-    "987808": {
-      "id": 987808,
-      "name": "drc",
       "stars": 0,
       "local_score": 0,
       "global_score": 0,
       "completion_day_level": {}
+    },
+    "987808": {
+      "id": 987808,
+      "name": "drc",
+      "stars": 2,
+      "local_score": 36,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1764627920
+          },
+          "2": {
+            "get_star_ts": 1764654429
+          }
+        }
+      }
     },
     "991386": {
       "id": 991386,
