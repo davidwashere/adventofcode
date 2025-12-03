@@ -61,13 +61,24 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 1,
-      "local_score": 17,
+      "stars": 4,
+      "local_score": 68,
       "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
             "get_star_ts": 1764738508
+          },
+          "2": {
+            "get_star_ts": 1764741693
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1764742441
+          },
+          "2": {
+            "get_star_ts": 1764744979
           }
         }
       }
@@ -128,6 +139,31 @@
       "global_score": 0,
       "completion_day_level": {}
     },
+    "871071": {
+      "id": 871071,
+      "name": "k1ngpr4wn",
+      "stars": 4,
+      "local_score": 74,
+      "global_score": 0,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1764699531
+          },
+          "2": {
+            "get_star_ts": 1764700148
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1764701594
+          },
+          "2": {
+            "get_star_ts": 1764708765
+          }
+        }
+      }
+    },
     "957001": {
       "id": 957001,
       "name": "George Lamperis",
@@ -139,8 +175,8 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 3,
-      "local_score": 54,
+      "stars": 4,
+      "local_score": 74,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -154,6 +190,9 @@
         "2": {
           "1": {
             "get_star_ts": 1764736510
+          },
+          "2": {
+            "get_star_ts": 1764742638
           }
         }
       }
