@@ -3,6 +3,19 @@ name: Leaderboard
 
 on:
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force refresh of cache'
+        required: false
+        default: 'false'
+      discord_target:
+        description: 'Discord server to post to'
+        required: false
+        default: 'aoc'
+        type: choice
+        options:
+          - aoc
+          - cachie server
   # schedule:
     # Run this first one below during december
     # every hour 9am CST to 11pm CST
@@ -38,12 +51,12 @@ jobs:
       env:
         LEADER_URL: ${{ secrets.LEADER_URL }}
         SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-        DISCORD_URL: ${{ secrets.DISCORD_URL }}
+        DISCORD_URL: ${{ inputs.discord_target == 'cachie server' && secrets.DISCORD_URL_CACHIE_SERVER || secrets.DISCORD_URL }}
         # NUM_STARS_TO_PRINT: 2
         LEADER_STATE_DIR: ${{ github.workspace }}
       run: |
         cd main
-        go run ./tools/leader
+        go run ./tools/leader ${{ inputs.force == 'true' && 'force' || '' }}
 
     - name: Persist State
       run: |

@@ -104,6 +104,7 @@ func buildResultsContent(l Leaderboard) *strings.Builder {
 
 		fmt.Fprintf(results, "%+v\n", m.Name)
 
+		// numStars will print only the last N stars
 		daysToUse := dayKeys
 		if len(daysToUse) > numStars {
 			daysToUse = daysToUse[len(daysToUse)-numStars:]
