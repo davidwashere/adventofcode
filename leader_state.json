@@ -61,10 +61,16 @@
     "264332": {
       "id": 264332,
       "name": "davidwashere",
-      "stars": 0,
-      "local_score": 0,
+      "stars": 1,
+      "local_score": 17,
       "global_score": 0,
-      "completion_day_level": {}
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1764738508
+          }
+        }
+      }
     },
     "362761": {
       "id": 362761,
@@ -133,8 +139,8 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 2,
-      "local_score": 36,
+      "stars": 3,
+      "local_score": 54,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -143,6 +149,11 @@
           },
           "2": {
             "get_star_ts": 1764654429
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1764736510
           }
         }
       }
