@@ -99,16 +99,7 @@ func (g *InfGrid[T]) WithDumpFunc(f func(val T, freshRow bool)) *InfGrid[T] {
 
 // Set a value to the grid at the provided coordinates and dimensions
 func (g *InfGrid[T]) Set(val T, x, y int, dims ...int) {
-	x, y = g.applyRotateToCoords(x, y)
-
-	if g.flipH {
-		y = g.yExtents.max - y + g.yExtents.min
-	}
-
-	if g.flipV {
-		x = g.xExtents.max - x + g.xExtents.min
-	}
-
+	x, y = g.getRealCoords(x, y)
 	dimKey := _createInfGridDimKey(dims...)
 
 	if !g.boundsLocked {
@@ -189,13 +180,9 @@ func (g *InfGrid[T]) AddDimension() {
 	g.dimExtents = append(g.dimExtents, extents)
 }
 
-// Get a value from the grid at the provided coordinates and dimensions, returns the 'default'
-// value if the coordinate is outside the extents of the grid
-func (g *InfGrid[T]) Get(x, y int, dims ...int) T {
-	if !g.initialized {
-		return g.def
-	}
-
+// getRealCoords translates x and y to the underlying datastore's x and y.
+// ie: applies flips and rotates to get the 'actual' data's coords.
+func (g *InfGrid[T]) getRealCoords(x, y int) (int, int) {
 	x, y = g.applyRotateToCoords(x, y)
 
 	if g.flipH {
@@ -205,6 +192,18 @@ func (g *InfGrid[T]) Get(x, y int, dims ...int) T {
 	if g.flipV {
 		x = g.xExtents.max - x + g.xExtents.min
 	}
+
+	return x, y
+}
+
+// Get a value from the grid at the provided coordinates and dimensions, returns the 'default'
+// value if the coordinate is outside the extents of the grid
+func (g *InfGrid[T]) Get(x, y int, dims ...int) T {
+	if !g.initialized {
+		return g.def
+	}
+
+	x, y = g.getRealCoords(x, y)
 
 	// If the x,y coord is outside current extents return default value
 	if x < g.xExtents.min || x > g.xExtents.max || y < g.yExtents.min || y > g.yExtents.max {
@@ -791,6 +790,8 @@ func (g *InfGrid[T]) VisitOrthoAndDiag(x, y int, visitFunc func(val T, x int, y 
 func (g *InfGrid[T]) Delete(x, y int, dims ...int) T {
 	v := g.Get(x, y, dims...)
 	dimKey := _createInfGridDimKey(dims...)
+
+	x, y = g.getRealCoords(x, y)
 
 	delete(g.data[dimKey][x], y)
 
