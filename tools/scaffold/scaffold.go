@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"golang.org/x/net/publicsuffix"
@@ -101,6 +102,62 @@ func getInputFromAoC(day, year int) []byte {
 	return data
 }
 
+func getSampleFromAoC(day, year int) []byte {
+	url := fmt.Sprintf("https://adventofcode.com/%v/day/%v", year, day)
+	log.Printf("pulling from %v", url)
+
+	client := getClient(url)
+	// resp, err := http.Get(url)
+	resp, err := client.Get(url)
+	util.Check(err)
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		log.Printf("failed pulling input [%v] %v", resp.StatusCode, resp.Status)
+		os.Exit(1)
+	}
+
+	log.Printf("pull success, reading data...")
+	data, err := ioutil.ReadAll(resp.Body)
+	util.Check(err)
+
+	data = parseSampleFromPage(data)
+
+	return data
+}
+
+// parseSampleFromPage extracts the first <code> block
+// from the page after seeing the key phrase "puzzle input"
+func parseSampleFromPage(dataB []byte) []byte {
+	data := string(dataB)
+
+	token := "puzzle input"
+
+	ind := strings.Index(data, token)
+	if ind < 0 {
+		log.Printf("%q not found in aoc page", token)
+		return nil
+	}
+
+	data = data[ind:]
+
+	token = "<code>"
+	ind = strings.Index(data, token)
+	if ind < 0 {
+		log.Printf("%q not found in aoc page", token)
+		return nil
+	}
+
+	data = data[ind+len(token):]
+	token = "</code>"
+	ind = strings.Index(data, token)
+	data = data[:ind]
+
+	data = strings.TrimSpace(data)
+
+	return []byte(data)
+}
+
 func getDayYear() (int, int) {
 	day, err := strconv.Atoi(os.Args[1])
 	util.Check(err)
@@ -157,13 +214,19 @@ func pullDayInput() {
 	data := getInputFromAoC(day, year)
 
 	filename := filepath.Join(outPath, "input.txt")
-	// os.Stat(filename)
 
 	log.Printf("writing data to %v", filename)
 	err := ioutil.WriteFile(filename, data, 0644)
 	util.Check(err)
 
 	log.Printf("input successfully written")
+
+	data = getSampleFromAoC(day, year)
+	filename = filepath.Join(outPath, "sample.txt")
+	log.Printf("writing data to %v", filename)
+	err = ioutil.WriteFile(filename, data, 0644)
+	util.Check(err)
+	log.Printf("sample successfully written")
 }
 
 func haveEnvVars() bool {

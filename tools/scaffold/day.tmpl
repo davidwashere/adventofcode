@@ -5,8 +5,12 @@ import (
 	"fmt"
 )
 
-var (
+type dayItem struct {
 
+}
+
+var (
+	items := []dayItem{}
 )
 
 func load(inputFile string) {
@@ -28,11 +32,19 @@ func load(inputFile string) {
 func part1(inputFile string) int {
 	load(inputFile)
 
-	return 0
+	result := 0
+	for _, item := range items {
+	}
+
+	return result
 }
 
 func part2(inputFile string) int {
 	load(inputFile)
 
-	return 0
+	result := 0
+	for _, item := range items {
+	}
+
+	return result
 }
