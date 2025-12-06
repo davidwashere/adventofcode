@@ -10,3 +10,4 @@ triggerer.exe
 !triggerer/
 *.log
 delme/
+*.py
