@@ -141,6 +141,21 @@ func parseSampleFromPage(dataB []byte) []byte {
 
 	data = data[ind:]
 
+	token = "<pre>"
+	ind = strings.Index(data, token)
+	if ind < 0 {
+		log.Printf("%q not found in aoc page", token)
+		return nil
+	}
+	data = data[ind+len(token):]
+	token = "</pre>"
+	ind = strings.Index(data, token)
+	if ind < 0 {
+		log.Printf("%q not found in aoc page", token)
+		return nil
+	}
+	data = data[:ind]
+
 	token = "<code>"
 	ind = strings.Index(data, token)
 	if ind < 0 {

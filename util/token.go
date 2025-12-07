@@ -27,6 +27,10 @@ func ParseTokens(input string) Tokens {
 	return tokens
 }
 
+func ParseStringsRegex(regex, input string) []string {
+	return _tokenParseWithRegex(regex, input)
+}
+
 func _tokenParseWithRegex(regex, input string) []string {
 	re := regexp.MustCompile(regex)
 	res := []string{}
