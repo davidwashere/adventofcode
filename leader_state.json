@@ -5,13 +5,16 @@
     "1039001": {
       "id": 1039001,
       "name": "pvacey",
-      "stars": 1,
-      "local_score": 15,
+      "stars": 2,
+      "local_score": 31,
       "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
             "get_star_ts": 1764962454
+          },
+          "2": {
+            "get_star_ts": 1765146361
           }
         }
       }
