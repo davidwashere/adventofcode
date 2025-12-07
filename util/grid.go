@@ -502,7 +502,8 @@ func (g *InfGrid[T]) Dump(dims ...int) {
 		fmt.Println("Grid Not Initialized")
 	}
 
-	for y := g.yExtents.max; y >= g.yExtents.min; y-- {
+	// TODO: the direction of the y coords should depend on if 0,0 is meant to represent top left or bot left
+	for y := g.yExtents.min; y <= g.yExtents.max; y++ {
 		for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 			val := g.Get(x, y, dims...)
 			g.dumpFunc(val, false)

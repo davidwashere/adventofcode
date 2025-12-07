@@ -11,13 +11,13 @@ type dayItem struct {
 
 var (
 	items = []dayItem{}
+	grid := util.NewInfGrid[string]().WithDefaultValue(".")
 )
 
 func load(inputFile string) {
 	data, _ := util.ReadFileToStringSlice(inputFile)
 	// data, _ := util.ReadFileToIntSlice(inputFile)
 	// data, _ := util.ReadFileToStringSliceWithDelim(inputFile, "\n\n")
-	// grid := util.NewInfGrid[string]().WithDefaultValue(".")
 
 	for _, line := range data {
 		tokens := util.ParseTokens(line)
