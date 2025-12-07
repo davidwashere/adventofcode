@@ -66,26 +66,15 @@ func part2(inputFile string) int {
 		}
 
 		if c == "^" && above == "|" {
+			if counts.Get(x-1, y) != 0 {
+
+			}
 			counts.Set(counts.Get(x-1, y)+abovecount, x-1, y)
 			counts.Set(counts.Get(x+1, y)+abovecount, x+1, y)
 			grid.Set("|", x-1, y)
 			grid.Set("|", x+1, y)
 		}
 	})
-
-	// counts.WithDumpFunc(func(val int, freshRow bool) {
-	// 	if freshRow {
-	// 		fmt.Println("")
-	// 		return
-	// 	}
-	// 	if val == 0 {
-	// 		fmt.Printf(" ")
-	// 		return
-	// 	}
-
-	// 	fmt.Printf("%d", val)
-	// })
-	// counts.Dump()
 
 	sum := 0
 	for _, v := range counts.GetRow(counts.Height() - 1) {
