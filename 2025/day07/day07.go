@@ -17,6 +17,7 @@ func load(inputFile string) {
 		}
 	}
 
+	grid.WithTopOrigin()
 	grid.Dump()
 }
 
@@ -25,7 +26,7 @@ func part1(inputFile string) int {
 
 	result := 0
 	grid.VisitAll(func(val string, x, y int, dims ...int) {
-		above := grid.Get(x, y-1)
+		above := grid.GetN(x, y)
 		c := grid.Get(x, y)
 		if c != "^" && (above == "S" || above == "|") {
 			grid.Set("|", x, y)
@@ -48,10 +49,11 @@ func part2(inputFile string) int {
 	load(inputFile)
 
 	counts := util.NewInfGrid[int]().WithDefaultValue(0)
+	counts.WithTopOrigin()
 
 	grid.VisitAll(func(val string, x, y int, dims ...int) {
-		above := grid.Get(x, y-1)
-		abovecount := counts.Get(x, y-1)
+		above := grid.GetN(x, y)
+		abovecount := counts.GetN(x, y)
 		c := grid.Get(x, y)
 		if c != "^" && (above == "S" || above == "|") {
 			switch above {
@@ -69,8 +71,8 @@ func part2(inputFile string) int {
 			if counts.Get(x-1, y) != 0 {
 
 			}
-			counts.Set(counts.Get(x-1, y)+abovecount, x-1, y)
-			counts.Set(counts.Get(x+1, y)+abovecount, x+1, y)
+			counts.Set(counts.GetW(x, y)+abovecount, x-1, y)
+			counts.Set(counts.GetE(x, y)+abovecount, x+1, y)
 			grid.Set("|", x-1, y)
 			grid.Set("|", x+1, y)
 		}

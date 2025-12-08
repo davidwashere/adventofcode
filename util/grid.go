@@ -55,6 +55,11 @@ type InfGrid[T any] struct {
 
 	// function used when dump is called
 	dumpFunc func(T, bool)
+
+	// bottomOrigin when true increases in y move north, and decreases
+	// in y move south. When false increases in y move south, decreases
+	// move north.
+	bottomOrigin bool
 }
 
 type extents struct {
@@ -64,10 +69,11 @@ type extents struct {
 
 func NewInfGrid[T any]() *InfGrid[T] {
 	grid := InfGrid[T]{
-		data:     map[string]map[int]map[int]T{},
-		yExtents: newExtents(),
-		xExtents: newExtents(),
-		dumpFunc: defaultDumpFunc[T],
+		data:         map[string]map[int]map[int]T{},
+		yExtents:     newExtents(),
+		xExtents:     newExtents(),
+		dumpFunc:     defaultDumpFunc[T],
+		bottomOrigin: true,
 	}
 	return &grid
 }
@@ -94,6 +100,20 @@ func (g *InfGrid[T]) WithDefaultValue(defaultValue T) *InfGrid[T] {
 
 func (g *InfGrid[T]) WithDumpFunc(f func(val T, freshRow bool)) *InfGrid[T] {
 	g.dumpFunc = f
+	return g
+}
+
+// WithTopOrigin positions the 'origin' northmost such that increases in y
+// move south, decreases move north.
+func (g *InfGrid[T]) WithTopOrigin() *InfGrid[T] {
+	g.bottomOrigin = false
+	return g
+}
+
+// WithBottomOrigin positions the origin such that increaes in y move north,
+// decreaess move south.
+func (g *InfGrid[T]) WithBottomOrigin() *InfGrid[T] {
+	g.bottomOrigin = true
 	return g
 }
 
@@ -387,6 +407,16 @@ func (g *InfGrid[T]) VisitAll4D(visitFunc func(val T, x int, y int, z int, w int
 // VisitN2D will visit every coord north of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
 func (g *InfGrid[T]) VisitN2D(x, y int, visitFunc func(val T, x int, y int) bool) {
+	if !g.bottomOrigin { // north means decrementing y
+		for i := y - 1; i >= g.GetMinY(); i-- {
+			v := g.Get(x, i)
+			if !visitFunc(v, x, i) {
+				break
+			}
+		}
+		return
+	}
+
 	for i := y + 1; i <= g.GetMaxY(); i++ {
 		v := g.Get(x, i)
 		if !visitFunc(v, x, i) {
@@ -398,6 +428,16 @@ func (g *InfGrid[T]) VisitN2D(x, y int, visitFunc func(val T, x int, y int) bool
 // VisitS2D will visit every coord south of the provided coordinate, moving outward, stopping when it
 // hits a min/max coord. Return false from visitFunc to stop visiting
 func (g *InfGrid[T]) VisitS2D(x, y int, visitFunc func(val T, x int, y int) bool) {
+	if !g.bottomOrigin { // south means incrementing y
+		for i := y + 1; i <= g.GetMaxY(); i++ {
+			v := g.Get(x, i)
+			if !visitFunc(v, x, i) {
+				break
+			}
+		}
+		return
+	}
+
 	for i := y - 1; i >= g.GetMinY(); i-- {
 		v := g.Get(x, i)
 		if !visitFunc(v, x, i) {
@@ -502,8 +542,19 @@ func (g *InfGrid[T]) Dump(dims ...int) {
 		fmt.Println("Grid Not Initialized")
 	}
 
-	// TODO: the direction of the y coords should depend on if 0,0 is meant to represent top left or bot left
-	for y := g.yExtents.min; y <= g.yExtents.max; y++ {
+	if !g.bottomOrigin {
+		for y := g.yExtents.min; y <= g.yExtents.max; y++ {
+			for x := g.xExtents.min; x <= g.xExtents.max; x++ {
+				val := g.Get(x, y, dims...)
+				g.dumpFunc(val, false)
+			}
+			var noop T
+			g.dumpFunc(noop, true)
+		}
+		return
+	}
+
+	for y := g.yExtents.max; y >= g.yExtents.min; y-- {
 		for x := g.xExtents.min; x <= g.xExtents.max; x++ {
 			val := g.Get(x, y, dims...)
 			g.dumpFunc(val, false)
@@ -515,11 +566,17 @@ func (g *InfGrid[T]) Dump(dims ...int) {
 
 // TopEdge returns the top 'row' of the grid at dimensions specified
 func (g *InfGrid[T]) TopEdge(dims ...int) []T {
+	if !g.bottomOrigin {
+		return g.GetRow(g.yExtents.min, dims...)
+	}
 	return g.GetRow(g.yExtents.max, dims...)
 }
 
 // BottomEdge returns the bottom 'row' of the grid at dimensions specified
 func (g *InfGrid[T]) BottomEdge(dims ...int) []T {
+	if !g.bottomOrigin {
+		return g.GetRow(g.yExtents.max, dims...)
+	}
 	return g.GetRow(g.yExtents.min, dims...)
 }
 
@@ -572,14 +629,26 @@ func (g *InfGrid[T]) Rotate(deg int) {
 	g.deg = (g.deg + deg) % 360
 }
 
-// GetN will return the value north of the given coordinate (y+1), if the coordinate is outside the extents
+// GetN will return the value north of the given coordinate (y+1) with bottom origin, if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetN(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x, y-1, dims...)
+	}
+
 	return g.Get(x, y+1, dims...)
 }
 
 // GetNMany is like GetN but returns count values
 func (g *InfGrid[T]) GetNMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x, y-i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x, y+i, dims...))
@@ -605,11 +674,23 @@ func (g *InfGrid[T]) GetEMany(x, y int, count int, dims ...int) []T {
 // GetS will return the value south of the given coordinate (y-1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetS(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x, y+1, dims...)
+	}
+
 	return g.Get(x, y-1, dims...)
 }
 
 // GetSMany is like GetS but returns count values
 func (g *InfGrid[T]) GetSMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x, y+i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x, y-i, dims...))
@@ -635,11 +716,23 @@ func (g *InfGrid[T]) GetWMany(x, y int, count int, dims ...int) []T {
 // GetNE will return the value north-east of the given coordinate (x+1, y+1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetNE(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x+1, y-1, dims...)
+	}
+
 	return g.Get(x+1, y+1, dims...)
 }
 
 // GetNEMany is like GetNE but returns count values
 func (g *InfGrid[T]) GetNEMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x+i, y-i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x+i, y+i, dims...))
@@ -650,11 +743,23 @@ func (g *InfGrid[T]) GetNEMany(x, y int, count int, dims ...int) []T {
 // GetSE will return the value south-east of the given coordinate (x+1, y-1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetSE(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x+1, y+1, dims...)
+	}
+
 	return g.Get(x+1, y-1, dims...)
 }
 
 // GetSEMany is like GetSE but returns count values
 func (g *InfGrid[T]) GetSEMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x+i, y+i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x+i, y-i, dims...))
@@ -665,11 +770,23 @@ func (g *InfGrid[T]) GetSEMany(x, y int, count int, dims ...int) []T {
 // GetSW will return the value south-west of the given coordinate (x-1, y-1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetSW(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x-1, y+1, dims...)
+	}
+
 	return g.Get(x-1, y-1, dims...)
 }
 
 // GetSWMany is like GetSW but returns count values
 func (g *InfGrid[T]) GetSWMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x-i, y+i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x-i, y-i, dims...))
@@ -680,11 +797,23 @@ func (g *InfGrid[T]) GetSWMany(x, y int, count int, dims ...int) []T {
 // GetNW will return the value north-west of the given coordinate (x-1, y+1), if the coordinate is outside the extents
 // of the grid returns the default value
 func (g *InfGrid[T]) GetNW(x, y int, dims ...int) T {
+	if !g.bottomOrigin {
+		return g.Get(x-1, y-1, dims...)
+	}
+
 	return g.Get(x-1, y+1, dims...)
 }
 
 // GetNWMany is like GetNW but returns count values
 func (g *InfGrid[T]) GetNWMany(x, y int, count int, dims ...int) []T {
+	if !g.bottomOrigin {
+		r := []T{}
+		for i := 1; i <= count; i++ {
+			r = append(r, g.Get(x-i, y-i, dims...))
+		}
+		return r
+	}
+
 	r := []T{}
 	for i := 1; i <= count; i++ {
 		r = append(r, g.Get(x-i, y+i, dims...))
