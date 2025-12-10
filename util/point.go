@@ -25,6 +25,14 @@ func NewPoint3(x, y, z int) Point3 {
 	return Point3{x, y, z}
 }
 
+func (p Point3) Dist(p2 Point3) float64 {
+	return math.Sqrt(
+		math.Pow(float64(p2.X-p.X), 2) +
+			math.Pow(float64(p2.Y-p.Y), 2) +
+			math.Pow(float64(p2.Z-p.Z), 2),
+	)
+}
+
 // DistOrtho calculates the number of 'steps' between two points
 // where horizontal, vertical, and diagonal moves are allowed
 //
