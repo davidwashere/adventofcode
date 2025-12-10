@@ -11,7 +11,7 @@ type dayItem struct {
 
 var (
 	items = []dayItem{}
-	grid := util.NewInfGrid[string]().WithDefaultValue(".")
+	grid = util.NewInfGrid[string]().WithDefaultValue(".")
 )
 
 func load(inputFile string) {
