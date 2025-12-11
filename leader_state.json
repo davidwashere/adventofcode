@@ -5,8 +5,8 @@
     "1039001": {
       "id": 1039001,
       "name": "pvacey",
-      "stars": 5,
-      "local_score": 79,
+      "stars": 7,
+      "local_score": 111,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -28,6 +28,14 @@
         "3": {
           "1": {
             "get_star_ts": 1765335029
+          },
+          "2": {
+            "get_star_ts": 1765419612
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1765422436
           }
         }
       }
@@ -297,8 +305,8 @@
     "987808": {
       "id": 987808,
       "name": "drc",
-      "stars": 13,
-      "local_score": 228,
+      "stars": 14,
+      "local_score": 246,
       "global_score": 0,
       "completion_day_level": {
         "1": {
@@ -352,6 +360,9 @@
         "7": {
           "1": {
             "get_star_ts": 1765319376
+          },
+          "2": {
+            "get_star_ts": 1765421464
           }
         }
       }
